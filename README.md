@@ -45,5 +45,7 @@
 - [ ] as an administrator I should be able to see all orders
 - [ ] as an administrator I should be able to tag products 
 - [ ] as an administator I should be able to see a map, where all the customer orders have shipped.
-
+-----
+# other (non-required) features
+- [ ]
 
