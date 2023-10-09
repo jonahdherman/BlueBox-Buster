@@ -64,6 +64,10 @@ const App = ()=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
 
+  const createProduct = async(product)=> {
+     await api.createProduct({ product, products, setProducts});
+  };
+
   const updateLineItem = async(lineItem)=> {
     await api.updateLineItem({ lineItem, cart, lineItems, setLineItems });
   };
@@ -141,6 +145,7 @@ const App = ()=> {
                 cartItems = { cartItems }
                 createLineItem = { createLineItem }
                 updateLineItem = { updateLineItem }
+                createProduct = { createProduct }
               />
               { auth.is_admin ? (
                 <Routes>

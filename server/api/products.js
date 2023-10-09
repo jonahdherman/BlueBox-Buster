@@ -1,6 +1,7 @@
 const {
-  fetchProducts
-} = require('../db');
+  fetchProducts,
+  createProduct
+} = require('../db/products');
 
 const express = require('express');
 const app = express.Router();
@@ -13,6 +14,11 @@ app.get('/', async(req, res, next)=> {
   catch(ex){
     next(ex);
   }
+});
+
+app.post('/', isLoggedIn, isAdmin, async(req, res, next)=> {
+  console.log(req.body);
+  res.send(await createProduct(req.body));
 });
 
 app.put('/products/:id', isLoggedIn, isAdmin, (req, res, next)=> {

@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import CreateProduct from './CreateProduct';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth})=> {
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct })=> {
   return (
     <div>
       <h2>Products</h2>
+      {
+        auth.is_admin ? (
+          <CreateProduct createProduct={createProduct}/>
+        ) : null
+      }
       <ul>
         {
           products.map( product => {

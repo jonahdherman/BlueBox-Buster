@@ -40,7 +40,7 @@
 - [ ] as an administrator I should be able to add and edit products
 - [ ] as an administrator I should be able to make a user a vip
 - [ ] as an administrator adminstrator I should be able to mark a product as vip_only, which can only be purchased by vip users.
-- [ ] as an administrator I should be able to see all users
+- [x] as an administrator I should be able to see all users
 - [ ] as an administrator I should be able to see all wish lists 
 - [ ] as an administrator I should be able to see all orders
 - [ ] as an administrator I should be able to tag products 
