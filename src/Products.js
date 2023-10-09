@@ -11,7 +11,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth})=
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
             return (
               <li key={ product.id }>
-                {`${ product.name }: $${(product.price).toFixed(2)}`}
+                {`${ product.name }: $${(product.price / 100).toFixed(2)}`}
                 <br></br>
                 {`${ product.description }`}
                 {
