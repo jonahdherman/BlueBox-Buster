@@ -33,7 +33,8 @@ const seed = async()=> {
       created_at TIMESTAMP DEFAULT now(),
       username VARCHAR(100) UNIQUE NOT NULL,
       password VARCHAR(100) NOT NULL,
-      is_admin BOOLEAN DEFAULT false NOT NULL
+      is_admin BOOLEAN DEFAULT false NOT NULL,
+      is_vip BOOLEAN DEFAULT false NOT NULL
     );
 
     CREATE TABLE products(
