@@ -1,7 +1,11 @@
 import React from 'react';
 
-const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, increaseQuantity, decreaseQuantity })=> {
-  
+const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, cartCount, cartItems, increaseQuantity, decreaseQuantity })=> {
+  let totalPrice = 0;
+  cartItems.forEach(lineItem => {
+    const product = products.find(product => product.id === lineItem.product_id)
+    totalPrice += product.price * lineItem.quantity
+  })
 
   return (
     <div>
@@ -12,8 +16,7 @@ const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, increase
             const product = products.find(product => product.id === lineItem.product_id) || {};
             return (
               <li key={ lineItem.id }>
-                { product.name }
-                ({ lineItem.quantity })
+                { product.name } ({ lineItem.quantity } x ${ (product.price / 100).toFixed(2) })
                 <button onClick={ ()=> removeFromCart(lineItem)}>Remove From Cart</button>
                 <button onClick={ ()=> increaseQuantity(lineItem) }>+</button>
                 <button onClick={ ()=> decreaseQuantity(lineItem)}>-</button>
@@ -22,6 +25,7 @@ const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, increase
           })
         }
       </ul>
+      <h3>Cart Total: ${(totalPrice / 100).toFixed(2)} ({cartCount} items)</h3>
       {
         lineItems.filter(lineItem => lineItem.order_id === cart.id ).length ? <button onClick={()=> {
           updateOrder({...cart, is_cart: false });

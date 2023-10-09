@@ -7,12 +7,15 @@ import Cart from './Cart';
 import Login from './Login';
 //import WishList from './WishList';
 import api from './api';
+import UpdateProduct from './UpdateProduct';
+import Users from './Users';
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [lineItems, setLineItems] = useState([]);
   const [auth, setAuth] = useState({});
+  const [users, setUsers] = useState([]);
   //const [wishList, setWishList] = useState([]);
 
   const attemptLoginWithToken = async()=> {
@@ -48,6 +51,14 @@ const App = ()=> {
     }
   }, [auth]);
 
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchUsers(setUsers);
+      };
+      fetchData();
+    }
+  }, [auth]);
 
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
@@ -114,6 +125,9 @@ const App = ()=> {
               <Link to='/products'>Products ({ products.length })</Link>
               <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               <Link to='/cart'>Cart ({ cartCount })</Link>
+              {
+                auth.is_admin ? <Link to='/users'>Users ({users.length})</Link> : ''
+              }
               {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
               <span>
                 Welcome { auth.username }!
@@ -128,6 +142,13 @@ const App = ()=> {
                 createLineItem = { createLineItem }
                 updateLineItem = { updateLineItem }
               />
+              { auth.is_admin ? (
+                <Routes>
+                  <Route path={'/products/:id/edit'} element={ <UpdateProduct /> }/>
+                  <Route path={'/users'} element={ <Users users={ users } />}/>
+                </Routes>
+              ) : ''
+              }
               <Cart
                 cart = { cart }
                 lineItems = { lineItems }
@@ -136,6 +157,8 @@ const App = ()=> {
                 removeFromCart = { removeFromCart }
                 increaseQuantity={ increaseQuantity }
                 decreaseQuantity={ decreaseQuantity }
+                cartCount={ cartCount }
+                cartItems={ cartItems }
               />
               <Orders
                 orders = { orders }
@@ -164,6 +187,7 @@ const App = ()=> {
           </div>
         )
       }
+      
     </div>
   );
 };

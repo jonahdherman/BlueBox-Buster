@@ -6,7 +6,11 @@ const {
 } = require('./products');
 
 const {
-  createUser,
+  fetchUsers,
+  createUser
+} = require('./users');
+
+const {
   authenticate,
   findUserByToken
 } = require('./auth');
@@ -88,6 +92,7 @@ const seed = async()=> {
 module.exports = {
   fetchProducts,
   fetchOrders,
+  fetchUsers,
   fetchLineItems,
   createLineItem,
   updateLineItem,
