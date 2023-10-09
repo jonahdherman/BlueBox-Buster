@@ -136,6 +136,8 @@ const App = ()=> {
                 removeFromCart = { removeFromCart }
                 increaseQuantity={ increaseQuantity }
                 decreaseQuantity={ decreaseQuantity }
+                cartCount={ cartCount }
+                cartItems={ cartItems }
               />
               <Orders
                 orders = { orders }
