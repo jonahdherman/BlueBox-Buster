@@ -142,10 +142,13 @@ const App = ()=> {
                 createLineItem = { createLineItem }
                 updateLineItem = { updateLineItem }
               />
-              <Routes>
-                <Route path={'/products/:id/edit'} element={ <UpdateProduct /> }/>
-                <Route path={'/users'} element={ <Users users={ users } />}/>
-              </Routes>
+              { auth.is_admin ? (
+                <Routes>
+                  <Route path={'/products/:id/edit'} element={ <UpdateProduct /> }/>
+                  <Route path={'/users'} element={ <Users users={ users } />}/>
+                </Routes>
+              ) : ''
+              }
               <Cart
                 cart = { cart }
                 lineItems = { lineItems }
