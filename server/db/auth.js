@@ -8,7 +8,7 @@ const findUserByToken = async(token) => {
   try {
     const payload = await jwt.verify(token, process.env.JWT);
     const SQL = `
-      SELECT id, username, is_admin
+      SELECT id, username, is_admin, is_vip
       FROM users
       WHERE id = $1
     `;
@@ -49,6 +49,18 @@ const authenticate = async(credentials)=> {
   }
 
   return jwt.sign({ id: response.rows[0].id }, process.env.JWT);
+};
+
+const createUser = async(user)=> {
+  if(!user.username.trim() || !user.password.trim()){
+    throw Error('must have username and password');
+  }
+  user.password = await bcrypt.hash(user.password, 5);
+  const SQL = `
+    INSERT INTO users (id, username, password, is_admin, is_vip) VALUES($1, $2, $3, $4, $5) RETURNING *
+  `;
+  const response = await client.query(SQL, [ uuidv4(), user.username, user.password, user.is_admin, user.is_vip ]);
+  return response.rows[0];
 };
 
 module.exports = {
