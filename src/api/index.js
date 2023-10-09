@@ -45,6 +45,29 @@ const updateOrder = async({ order, setOrders })=> {
   setOrders(response.data);
 };
 
+const increaseQuantity = async ({lineItem, lineItems, setLineItems}) => {
+  const response = await axios.put(`/api/lineItems/${lineItem.id}`, {
+    ...lineItem,
+    quantity: lineItem.quantity + 1
+  }, getHeaders());
+  setLineItems(lineItems.map(lineItem => lineItem.id == response.data.id ? response.data : lineItem));
+};
+
+
+const decreaseQuantity = async ({lineItem, lineItems, setLineItems}) => {
+  if (lineItem.quantity > 1) {
+    const response = await axios.put(`/api/lineItems/${lineItem.id}`, {
+    ...lineItem,
+    quantity: lineItem.quantity - 1
+  }, getHeaders());
+  setLineItems(lineItems.map(lineItem => lineItem.id == response.data.id ? response.data : lineItem));
+  }
+  if (lineItem.quantity === 1) {
+    await removeFromCart({lineItem, lineItems, setLineItems});
+  }
+  
+}
+
 const removeFromCart = async({ lineItem, lineItems, setLineItems })=> {
   const response = await axios.delete(`/api/lineItems/${lineItem.id}`, getHeaders());
   setLineItems(lineItems.filter( _lineItem => _lineItem.id !== lineItem.id));
@@ -87,7 +110,9 @@ const api = {
   updateLineItem,
   updateOrder,
   removeFromCart,
-  attemptLoginWithToken
+  attemptLoginWithToken,
+  increaseQuantity,
+  decreaseQuantity
 };
 
 export default api;

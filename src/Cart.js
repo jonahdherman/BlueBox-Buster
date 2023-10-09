@@ -1,6 +1,8 @@
 import React from 'react';
 
-const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products })=> {
+const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, increaseQuantity, decreaseQuantity })=> {
+  
+
   return (
     <div>
       <h2>Cart</h2>
@@ -13,6 +15,8 @@ const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products })=> {
                 { product.name }
                 ({ lineItem.quantity })
                 <button onClick={ ()=> removeFromCart(lineItem)}>Remove From Cart</button>
+                <button onClick={ ()=> increaseQuantity(lineItem) }>+</button>
+                <button onClick={ ()=> decreaseQuantity(lineItem)}>-</button>
               </li>
             );
           })
