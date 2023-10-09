@@ -17,7 +17,6 @@ const Login = ({ login }) => {
   }
   return (
     <div>
-
       <form onSubmit={_login}>
         <input
           placeholder='username'
