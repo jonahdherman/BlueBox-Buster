@@ -1,5 +1,5 @@
 const {
-  fetchProducts,
+  fetchProducts
 } = require('../db');
 
 const express = require('express');

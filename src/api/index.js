@@ -18,6 +18,11 @@ const fetchOrders = async(setOrders)=> {
   setOrders(response.data);
 };
 
+const fetchUsers = async(setUsers)=> {
+  const response = await axios.get('/api/users', getHeaders());
+  setUsers(response.data);
+};
+
 const fetchLineItems = async(setLineItems)=> {
   const response = await axios.get('/api/lineItems', getHeaders());
   setLineItems(response.data);
@@ -105,6 +110,7 @@ const api = {
   logout,
   fetchProducts,
   fetchOrders,
+  fetchUsers,
   fetchLineItems,
   createLineItem,
   updateLineItem,
