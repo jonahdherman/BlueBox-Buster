@@ -5,7 +5,7 @@ import Products from './Products';
 import Orders from './Orders';
 import Cart from './Cart';
 import Login from './Login';
-import WishList from './WishList';
+//import WishList from './WishList';
 import api from './api';
 
 const App = ()=> {
@@ -13,7 +13,7 @@ const App = ()=> {
   const [orders, setOrders] = useState([]);
   const [lineItems, setLineItems] = useState([]);
   const [auth, setAuth] = useState({});
-  const [wishList, setWishList] = useState([]);
+  //const [wishList, setWishList] = useState([]);
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -73,13 +73,13 @@ const App = ()=> {
     await api.decreaseQuantity({ lineItem, lineItems, setLineItems });
   }
 
-  const updateWishList =async(wishList) => {
-    await api.updateWishList({wishList, setWishList});
-  };
+  // const updateWishList =async(wishList) => {
+  //   await api.updateWishList({wishList, setWishList});
+  // };
 
-  const removeFromWishList = async(lineItem) => {
-    await api.removeFromWishList({lineItem, lineItems, setLineItems});
-  };
+  // const removeFromWishList = async(lineItem) => {
+  //   await api.removeFromWishList({lineItem, lineItems, setLineItems});
+  // };
 
   const cart = orders.find(order => order.is_cart) || {};
 
@@ -89,13 +89,13 @@ const App = ()=> {
     return acc += item.quantity;
   }, 0);
 
-  const list = orders.find(order => order.is_wishList) || {};
+  // const list = orders.find(order => order.is_wishList) || {};
 
-  const wishListItems = lineItems.filter(lineItem => lineItem.order_id === wishList.id);
+  // const wishListItems = lineItems.filter(lineItem => lineItem.order_id === wishList.id);
 
-  const wishListCount = wishListItems.reduce((acc, item) => {
-    return acc += item.quantity;
-  }, 0);
+  // const wishListCount = wishListItems.reduce((acc, item) => {
+  //   return acc += item.quantity;
+  // }, 0);
 
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
@@ -114,7 +114,7 @@ const App = ()=> {
               <Link to='/products'>Products ({ products.length })</Link>
               <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               <Link to='/cart'>Cart ({ cartCount })</Link>
-              <Link to='/wish_list'>Wish List ({wishListCount})</Link>
+              {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
               <span>
                 Welcome { auth.username }!
                 <button onClick={ logout }>Logout</button>
@@ -142,13 +142,13 @@ const App = ()=> {
                 products = { products }
                 lineItems = { lineItems }
               />
-              <WishList
+              {/* <WishList
                 wishList = {list}
                 lineItems = {lineItems}
                 products = {products}
                 updateWishList = {updateWishList}
                 removeFromWishList = {removeFromWishList}
-              />
+              /> */}
             </main>
             </>
         ):(
