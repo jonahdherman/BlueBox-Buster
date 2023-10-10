@@ -17,6 +17,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
             return (
               <li key={ product.id }>
+                {product.image ? <img src={ product.image } /> : null} <br/>
                 {`${ product.name }: $${(product.price / 100).toFixed(2)}`}
                 <br></br>
                 {`${ product.description }`}
