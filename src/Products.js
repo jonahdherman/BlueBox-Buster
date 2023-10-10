@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 
 const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct })=> {
+  console.log(products)
+  console.log(auth)
   return (
     <div>
       <h2>Products</h2>

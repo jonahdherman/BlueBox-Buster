@@ -46,7 +46,8 @@ const seed = async()=> {
       created_at TIMESTAMP DEFAULT now(),
       name VARCHAR(100) UNIQUE NOT NULL,
       price INTEGER DEFAULT 1 NOT NULL,
-      description TEXT NOT NULL
+      description TEXT NOT NULL,
+      vip_only BOOLEAN DEFAULT false NOT NULL
     );
 
     CREATE TABLE orders(
@@ -74,10 +75,10 @@ const seed = async()=> {
     createUser({ username: 'ethyl', password: '1234', is_admin: true, is_vip: true})
   ]);
   const [foo, bar, bazz, quq] = await Promise.all([
-    createProduct({ name: 'foo', price: 125, description: 'description 1' }),
-    createProduct({ name: 'bar', price: 277, description: 'description 2' }),
-    createProduct({ name: 'bazz', price: 305, description: 'description 3' }),
-    createProduct({ name: 'quq', price: 420, description: 'description 4' }),
+    createProduct({ name: 'foo', price: 125, description: 'description 1', vip_only: true }),
+    createProduct({ name: 'bar', price: 277, description: 'description 2', vip_only: false }),
+    createProduct({ name: 'bazz', price: 305, description: 'description 3', vip_only: false }),
+    createProduct({ name: 'quq', price: 420, description: 'description 4', vip_only: false }),
   ]);
   let orders = await fetchOrders(ethyl.id);
   let cart = orders.find(order => order.is_cart);
