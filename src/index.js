@@ -10,6 +10,7 @@ import api from './api';
 import Users from './Users';
 import UpdateProduct from './UpdateProduct'
 import Product from './Product';
+import Register from './Register';
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
@@ -117,6 +118,10 @@ const App = ()=> {
   //   return acc += item.quantity;
   // }, 0);
 
+  const registerUser = async(credentials) => {
+    await api.register({ credentials, setAuth});
+  }
+
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
   }
@@ -193,6 +198,7 @@ const App = ()=> {
         ):(
           <div>
             <Login login={ login }/>
+            <Register registerUser={ registerUser }/>
             <Products
               products={ products }
               cartItems = { cartItems }

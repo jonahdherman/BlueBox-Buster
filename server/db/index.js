@@ -41,7 +41,6 @@ const loadImage = (filePath) => {
   
 }
 
-
 const seed = async()=> {
   const SQL = `
     DROP TABLE IF EXISTS reviews;
@@ -163,7 +162,7 @@ const seed = async()=> {
     createProduct({ 
       name: 'Scarface',
       price: 3499, 
-      description: `Tony Montana manages to leave Cuba during the Mariel exodus of 1980. He finds himself in a Florida
+      description: `(1983) Tony Montana manages to leave Cuba during the Mariel exodus of 1980. He finds himself in a Florida
       refugee camp but his friend Manny has a way out for them: undertake a contract killing and arrangements will be
       made to get a green card. He's soon working for drug dealer Frank Lopez and shows his mettle when a deal with 
       Colombian drug dealers goes bad. He also brings a new level of violence to Miami. Tony is protective of his 
@@ -189,6 +188,7 @@ module.exports = {
   fetchProducts,
   fetchOrders,
   fetchUsers,
+  createUser,
   fetchLineItems,
   createLineItem,
   updateLineItem,
