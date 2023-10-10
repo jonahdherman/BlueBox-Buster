@@ -124,11 +124,13 @@ const App = ()=> {
   const logout = ()=> {
     api.logout(setAuth);
   }
+  console.log(auth.id)
 
   return (
     <div>
       {
         auth.id ? (
+        
           <>
             <nav>
               <Link to='/products'>Products ({ products.length })</Link>
