@@ -27,10 +27,12 @@ const {
 
 const seed = async()=> {
   const SQL = `
+    DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS line_items;
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
+    
 
     CREATE TABLE users(
       id UUID PRIMARY KEY,
@@ -40,6 +42,7 @@ const seed = async()=> {
       is_admin BOOLEAN DEFAULT false NOT NULL,
       is_vip BOOLEAN DEFAULT false NOT NULL
     );
+
 
     CREATE TABLE products(
       id UUID PRIMARY KEY,
