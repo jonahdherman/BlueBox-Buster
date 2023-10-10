@@ -28,7 +28,7 @@ const isVip = (req, res, next)=> {
   }
   else {
     const error = Error('must be VIP');
-    error.status = 402;
+    error.status = 401;
     next(error);
   }
 };

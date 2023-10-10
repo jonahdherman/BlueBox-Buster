@@ -4,7 +4,7 @@ const {
   
   const express = require('express');
   const app = express.Router();
-  const { isLoggedIn, isAdmin, isVip } = require('./middleware');
+  const { isLoggedIn, isAdmin, } = require('./middleware');
   
   app.get('/', isLoggedIn, isAdmin, async(req, res, next)=> {
     try {
