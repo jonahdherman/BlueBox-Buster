@@ -187,16 +187,7 @@ const App = ()=> {
                 updateWishList = {updateWishList}
                 removeFromWishList = {removeFromWishList}
               /> */}
-              <Routes>
-              <Route path='/products/:id' element={
-            <Product
-              products={products}
-              cartItems={cartItems}
-              createLineItem={createLineItem}
-              updateLineItem={updateLineItem}
-            />}
-          />
-          </Routes>
+              
             </main>
             </>
         ):(
