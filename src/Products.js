@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 
 const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct })=> {
+  console.log(products)
+  console.log(auth)
   return (
     <div>
       <h2>Products</h2>
@@ -17,8 +19,14 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
             return (
               <li key={ product.id }>
-                {product.image ? <img src={ product.image } /> : null} <br/>
-                {`${ product.name }: $${(product.price / 100).toFixed(2)}`}
+                {
+                  product.image ? <img src={ product.image } /> : null
+                } 
+                 <br/>
+                <Link to={`/products/${product.id}`}>
+                  {`${ product.name }`}
+                </Link>
+                {`: $${(product.price / 100).toFixed(2)}`}
                 <br></br>
                 {`${ product.description }`}
                 {

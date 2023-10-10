@@ -44,10 +44,12 @@ const loadImage = (filePath) => {
 
 const seed = async()=> {
   const SQL = `
+    DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS line_items;
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
+    
 
     CREATE TABLE users(
       id UUID PRIMARY KEY,
@@ -58,13 +60,15 @@ const seed = async()=> {
       is_vip BOOLEAN DEFAULT false NOT NULL
     );
 
+
     CREATE TABLE products(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
       name VARCHAR(100) UNIQUE NOT NULL,
       price INTEGER DEFAULT 1 NOT NULL,
       description TEXT NOT NULL,
-      image TEXT
+      image TEXT,
+      vip_only BOOLEAN DEFAULT false NOT NULL
     );
 
     CREATE TABLE orders(
@@ -91,6 +95,7 @@ const seed = async()=> {
     createUser({ username: 'lucy', password: 'l_password', is_admin: false, is_vip: false}),
     createUser({ username: 'ethyl', password: '1234', is_admin: true, is_vip: true})
   ]);
+
   const godfatherImage = await loadImage('/images/godfather.png');
   const starwarsImage = await loadImage('/images/starwars.png');
   const landbeforetimeImage = await loadImage('/images/landbeforetime.png');
@@ -106,7 +111,8 @@ const seed = async()=> {
       The video tape heads have been manually cleaned and it works perfectly.
       It comes with the Remote Control and Audio / Video TV connection cables.
       The user manual is widely available to view, print or download online.`, 
-      image: vcrImage
+      image: vcrImage,
+      vip_only: false
      }),
     createProduct({
        name: 'The Godfather', 
@@ -117,9 +123,10 @@ const seed = async()=> {
        Vito is a powerful man, and is kind to all those who give him respect but is ruthless against those who 
        do not. But when a powerful and treacherous rival wants to sell drugs and needs the Don's influence for 
        the same, Vito refuses to do it. What follows is a clash between Vito's fading old values and the new ways
-        which may cause Michael to do the thing he was most reluctant in doing and wage a mob war against all the
-         other mafia families which could tear the Corleone family apart.`, 
-       image: godfatherImage 
+       which may cause Michael to do the thing he was most reluctant in doing and wage a mob war against all the
+       other mafia families which could tear the Corleone family apart.`, 
+       image: godfatherImage,
+       vip_only: true
       }),
     createProduct({ 
       name: 'Star Wars: Original Trilogy', 
@@ -128,7 +135,8 @@ const seed = async()=> {
       produced. These were the movies released from 1977 to 1983. They primarily focus on the Rebel Alliance trying 
       to free the galaxy from the clutches of the Galactic Empire, as well as Luke Skywalker's quest to become a 
       Jedi and face Sith Lord Darth Vader and his master Darth Sidious.`,
-      image: starwarsImage 
+      image: starwarsImage,
+      vip_only: true
     }),
     createProduct({ 
       name: 'The Land Before Time', 
@@ -137,7 +145,8 @@ const seed = async()=> {
       A land of lush vegetation where the dinosaurs can thrive and live in peace. Along the way he meets four other 
       young dinosaurs, each one a different species, and they encounter several obstacles and the evil predator 
       Sharptooth as they learn to work together in order to survive`,
-      image: landbeforetimeImage
+      image: landbeforetimeImage,
+      vip_only: false
     }),
     createProduct({ 
       name: 'Top Gun',
@@ -148,7 +157,8 @@ const seed = async()=> {
       Now, Mitchell must give his all; however, his father's mysterious and untimely demise still haunts him. 
       Can Maverick prove his worth to Charlie, the flying school's no-nonsense astrophysics instructor? Will he be 
       able to suppress his wild nature to win the prestigious Top Gun Trophy?`,
-      image: topgunImage 
+      image: topgunImage,
+      vip_only: false
     }),
     createProduct({ 
       name: 'Scarface',
@@ -160,8 +170,10 @@ const seed = async()=> {
       younger sister but his mother knows what he does for a living and disowns him. Tony is impatient and wants 
       it all however, including Frank's empire and his mistress Elvira Hancock. Once at the top however, Tony's 
       outrageous actions make him a target and everything comes crumbling down.`,
-      image: scarfaceImage 
+      image: scarfaceImage,
+      vip_only: false
     }),
+
   ]);
   let orders = await fetchOrders(ethyl.id);
   let cart = orders.find(order => order.is_cart);

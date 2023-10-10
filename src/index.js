@@ -9,6 +9,7 @@ import Login from './Login';
 import api from './api';
 import Users from './Users';
 import UpdateProduct from './UpdateProduct'
+import Product from './Product';
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
@@ -158,6 +159,8 @@ const App = ()=> {
                 <Routes>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
+                  <Route path='/products/:id' element={<Product products={ products } />}
+                    />
                 </Routes>
               ) : ''
               }
@@ -184,6 +187,16 @@ const App = ()=> {
                 updateWishList = {updateWishList}
                 removeFromWishList = {removeFromWishList}
               /> */}
+              <Routes>
+              <Route path='/products/:id' element={
+            <Product
+              products={products}
+              cartItems={cartItems}
+              createLineItem={createLineItem}
+              updateLineItem={updateLineItem}
+            />}
+          />
+          </Routes>
             </main>
             </>
         ):(
