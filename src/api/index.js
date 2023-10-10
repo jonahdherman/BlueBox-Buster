@@ -103,6 +103,14 @@ const attemptLoginWithToken = async(setAuth)=> {
   }
 }
 
+const register = async({ credentials, setAuth }) => {
+  const response = await axios.post('/api/users', credentials);
+  console.log(response);
+  if (response.data.id && response.data.username === credentials.username) {
+    login({credentials, setAuth});
+  }
+}
+
 const login = async({ credentials, setAuth })=> {
   const response = await axios.post('/api/login', credentials);
   const { token } = response.data;
@@ -118,6 +126,7 @@ const logout = (setAuth)=> {
 const api = {
   login,
   logout,
+  register,
   fetchProducts,
   fetchOrders,
   fetchUsers,
