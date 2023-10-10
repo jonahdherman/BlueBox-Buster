@@ -1,7 +1,6 @@
 import React from "react";
 
 const AllOrders = ({ allOrders, products, allLineItems }) => {
-    console.log(allOrders)
     return (
         <div>
             <h1>ALL ORDERS</h1>
