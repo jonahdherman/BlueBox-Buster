@@ -51,7 +51,6 @@ const authenticate = async(credentials)=> {
   return jwt.sign({ id: response.rows[0].id }, process.env.JWT);
 };
 
-
 module.exports = {
   authenticate,
   findUserByToken
