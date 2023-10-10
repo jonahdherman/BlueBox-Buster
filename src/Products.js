@@ -19,6 +19,10 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
             return (
               <li key={ product.id }>
+                {
+                  product.image ? <img src={ product.image } /> : null
+                } 
+                 <br/>
                 <Link to={`/products/${product.id}`}>
                   {`${ product.name }`}
                 </Link>

@@ -28,7 +28,7 @@
 - [ ] as a user I should be able to search for products, based on the name of the product.
 -----
 - [ ] as a user I should be able to bookmark the search results
-- [ ] as a vip user I should be able to see that I am a vip user
+- [x] as a vip user I should be able to see that I am a vip user
 - [ ] as a vip user I should be able to see vip_only products
 - [ ] as a non-vip user, I should not be able to see vip_only products
 - [ ] as a user I should be able to page through products in groups of 10 products per page
