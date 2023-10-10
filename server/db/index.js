@@ -69,9 +69,9 @@ const seed = async()=> {
   await client.query(SQL);
 
   const [moe, lucy, ethyl] = await Promise.all([
-    createUser({ username: 'moe', password: 'm_password', is_admin: false}),
-    createUser({ username: 'lucy', password: 'l_password', is_admin: false}),
-    createUser({ username: 'ethyl', password: '1234', is_admin: true})
+    createUser({ username: 'moe', password: 'm_password', is_admin: false, is_vip: true}),
+    createUser({ username: 'lucy', password: 'l_password', is_admin: false, is_vip: false}),
+    createUser({ username: 'ethyl', password: '1234', is_admin: true, is_vip: true})
   ]);
   const [foo, bar, bazz, quq] = await Promise.all([
     createProduct({ name: 'foo', price: 125, description: 'description 1' }),

@@ -23,7 +23,7 @@ const isAdmin = (req, res, next)=> {
 };
 
 const isVip = (req, res, next)=> {
-  if(req.user.is_vip){
+  if(!req.user.is_vip){
     next();
   }
   else {
