@@ -124,7 +124,6 @@ const App = ()=> {
   const logout = ()=> {
     api.logout(setAuth);
   }
-  console.log(auth.id)
 
   return (
     <div>
