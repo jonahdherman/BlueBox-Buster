@@ -19,11 +19,13 @@ const {
 
 const {
   fetchLineItems,
+  fetchAllLineItems,
   createLineItem,
   updateLineItem,
   deleteLineItem,
   updateOrder,
-  fetchOrders
+  fetchOrders,
+  fetchAllOrders
 } = require('./cart');
 
 const loadImage = (filePath) => {
@@ -187,9 +189,11 @@ const seed = async()=> {
 module.exports = {
   fetchProducts,
   fetchOrders,
+  fetchAllOrders,
   fetchUsers,
   createUser,
   fetchLineItems,
+  fetchAllLineItems,
   createLineItem,
   updateLineItem,
   deleteLineItem,
