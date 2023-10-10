@@ -139,6 +139,9 @@ const App = ()=> {
               {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
               <span>
                 Welcome { auth.username }!
+                {
+                 auth.is_vip === true ? 'VIP!' : '' 
+                }
                 <button onClick={ logout }>Logout</button>
               </span>
             </nav>

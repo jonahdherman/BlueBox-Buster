@@ -23,12 +23,12 @@ const isAdmin = (req, res, next)=> {
 };
 
 const isVip = (req, res, next)=> {
-  if(req.user.is_vip){
+  if(!req.user.is_vip){
     next();
   }
   else {
     const error = Error('must be VIP');
-    error.status = 402;
+    error.status = 401;
     next(error);
   }
 };
