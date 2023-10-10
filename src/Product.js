@@ -5,7 +5,6 @@ const Product = ({ products}) => {
     const { id } = useParams();
     const product = products.find(product => product.id === id);
 
-    console.log(product)
     if (!product) {
         return null
     }
