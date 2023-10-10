@@ -5,7 +5,7 @@ const uuidv4 = v4;
 
 const fetchUsers = async()=> {
   const SQL = `
-    SELECT *
+    SELECT id, created_at, username, is_admin, is_vip
     FROM users
   `;
   const response = await client.query(SQL);

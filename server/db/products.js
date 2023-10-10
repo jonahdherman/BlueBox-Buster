@@ -21,7 +21,19 @@ const createProduct = async(product)=> {
   return response.rows[0];
 };
 
+const updateProduct = async(product)=> {
+  const SQL = `
+    UPDATE products 
+    SET name=$1, price=$2, description=$3
+    WHERE id=$4
+    RETURNING *
+  `;
+  const response = await client.query(SQL, [ product.name, product.price, product.description, product.id ]);
+  return response.rows[0];
+};
+
 module.exports = {
   fetchProducts,
-  createProduct
+  createProduct,
+  updateProduct
 };

@@ -7,8 +7,8 @@ import Cart from './Cart';
 import Login from './Login';
 //import WishList from './WishList';
 import api from './api';
-import UpdateProduct from './UpdateProduct';
 import Users from './Users';
+import UpdateProduct from './UpdateProduct'
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
@@ -71,6 +71,10 @@ const App = ()=> {
   const updateLineItem = async(lineItem)=> {
     await api.updateLineItem({ lineItem, cart, lineItems, setLineItems });
   };
+
+  const updateProduct = async(updatedProduct)=> {
+    await api.updateProduct({ updatedProduct, products, setProducts});
+  }
 
   const updateOrder = async(order)=> {
     await api.updateOrder({ order, setOrders });
@@ -149,8 +153,8 @@ const App = ()=> {
               />
               { auth.is_admin ? (
                 <Routes>
-                  <Route path={'/products/:id/edit'} element={ <UpdateProduct /> }/>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
+                  <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
                 </Routes>
               ) : ''
               }

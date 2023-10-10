@@ -1,28 +1,36 @@
 const {
   fetchProducts,
-  createProduct
+  createProduct,
+  updateProduct
 } = require('../db/products');
 
 const express = require('express');
 const app = express.Router();
 const { isLoggedIn, isAdmin } = require('./middleware');
 
-app.get('/', async(req, res, next)=> {
+app.get('/', async (req, res, next) => {
   try {
     res.send(await fetchProducts());
   }
-  catch(ex){
+  catch (ex) {
     next(ex);
   }
 });
 
-app.post('/', isLoggedIn, isAdmin, async(req, res, next)=> {
-  console.log(req.body);
-  res.send(await createProduct(req.body));
+app.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    res.send(await createProduct(req.body));
+  } catch (error) {
+    next(error)
+  }
 });
 
-app.put('/products/:id', isLoggedIn, isAdmin, (req, res, next)=> {
-  res.send('hello world');
+app.put('/:id', isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    res.send(await updateProduct(req.body));
+  } catch (error) {
+    next(error);
+  }
 });
 
 
