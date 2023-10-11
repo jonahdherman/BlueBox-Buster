@@ -38,8 +38,8 @@
 -----
 - [ ] as a non logged in user, I should be able to add items to my cart, with those items getting added to my cart when I authenticate
 - [x] as an administrator I should be able to add and edit products
-- [ ] as an administrator I should be able to make a user a vip
-- [ ] as an administrator adminstrator I should be able to mark a product as vip_only, which can only be purchased by vip users.
+- [x] as an administrator I should be able to make a user a vip
+- [x] as an administrator adminstrator I should be able to mark a product as vip_only, which can only be purchased by vip users.
 - [x] as an administrator I should be able to see all users
 - [ ] as an administrator I should be able to see all wish lists 
 - [x] as an administrator I should be able to see all orders
