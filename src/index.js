@@ -12,6 +12,7 @@ import UpdateProduct from './UpdateProduct'
 import Product from './Product';
 import Register from './Register';
 import AllOrders from './AllOrders';
+import UpdateUser from './UpdateUser';
 import { all } from 'axios';
 
 const App = ()=> {
@@ -58,14 +59,14 @@ const App = ()=> {
     }
   }, [auth]);
   
-  useEffect(() => {
-    if(auth.id){
-      const fetchData = async() => {
-        await api.fetchWishLists(setWishList);
-      };
-      fetchData();
-    }
-  }, [auth]);
+  // useEffect(() => {
+  //   if(auth.id){
+  //     const fetchData = async() => {
+  //       await api.fetchWishLists(setWishList);
+  //     };
+  //     fetchData();
+  //   }
+  // }, [auth]);
 
   useEffect(()=> {
     if(auth.is_admin){
@@ -155,6 +156,10 @@ const App = ()=> {
     await api.register({ credentials, setAuth});
   }
 
+  const updateUser = async(updatedUser) => {
+     await api.updateUser({ updatedUser, setUsers, users});
+  }
+
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
   }
@@ -210,6 +215,7 @@ const App = ()=> {
                   <Route path={'/users'} element={ <Users users={ users } />}/>
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
                   <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
+                  <Route path={'/users/:id/edit'} element={<UpdateUser users={users} updateUser={ updateUser }/>}/>
                 </Routes>
               ) : ''
               }

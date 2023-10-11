@@ -9,7 +9,8 @@ const {
 
 const {
   fetchUsers,
-  createUser
+  createUser,
+  updateUser
 } = require('./users');
 
 const {
@@ -194,6 +195,7 @@ module.exports = {
   fetchAllOrders,
   fetchUsers,
   createUser,
+  updateUser,
   fetchLineItems,
   fetchAllLineItems,
   createLineItem,
