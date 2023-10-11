@@ -17,7 +17,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
         ) : null
       }
       {
-        auth.is_vip ? (
+        auth.is_vip || auth.is_admin ? (
           <div>
             <h2>Vip Exclusive!</h2>
             <ul>
