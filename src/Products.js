@@ -83,6 +83,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             .filter(product => !term || product.name.indexOf(term) !== -1)
             .map(product => {
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+            const cutOff = product.description.toString().slice(0, 250)
             //console.log(cartItems);
 
             const wishListItem = cartItems.find(lineItem => lineItem.product_id === product.id);
