@@ -2,8 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct }) => {
-
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct })=> {
+  
+  const nonVip = products.filter( product => product.vip_only === false)
+  const yesVip = products.filter( product => product.vip_only === true)
+  const both = nonVip.concat(yesVip)
+  let all = []
+  
+  {
+  auth.is_vip === false ? all = nonVip : all = both
+  }
+  
   return (
     <div>
       <h2>Products</h2>
@@ -14,8 +23,14 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
       }
       <ul>
         {
-          products.map(product => {
+
+              
+          
+          
+          all.map( product => {
+
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+            
             return (
               <li key={product.id}>
                 {
