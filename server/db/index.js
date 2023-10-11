@@ -102,14 +102,6 @@ const seed = async()=> {
       CONSTRAINT product_and_order_key UNIQUE(product_id, order_id)
     );
     
-    CREATE TABLE wishList_items(
-      id UUID PRIMARY KEY,
-      created_at TIMESTAMP DEFAULT now(),
-      product_id UUID REFERENCES products(id) NOT NULL,
-      order_id UUID REFERENCES orders(id) NOT NULL,
-      quantity INTEGER DEFAULT 1,
-      CONSTRAINT product_and_wishlist_key UNIQUE(product_id, wishlist_id)
-    );
 
     CREATE TABLE reviews(
       id UUID PRIMARY KEY,
