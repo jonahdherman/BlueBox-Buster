@@ -7,13 +7,23 @@ import Cart from './Cart';
 import Login from './Login';
 //import WishList from './WishList';
 import api from './api';
+import Users from './Users';
+import UpdateProduct from './UpdateProduct'
+import Product from './Product';
+import Register from './Register';
+import AllOrders from './AllOrders';
+import { all } from 'axios';
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [lineItems, setLineItems] = useState([]);
   const [auth, setAuth] = useState({});
-//  const [wishList, setWishList] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [allOrders, setAllOrders] = useState([]);
+  const [allLineItems, setAllLineItems] = useState([]);
+  //const [wishList, setWishList] = useState([]);
+
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -57,14 +67,46 @@ const App = ()=> {
   //   }
   // }, [auth]);
 
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchUsers(setUsers);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchAllOrders(setAllOrders);
+      };
+      fetchData();
+    }
+  }, [auth, orders]);
+
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchAllLineItems(setAllLineItems);
+      };
+      fetchData();
+    }
+  }, [auth, lineItems]);
 
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
-  
+  const createProduct = async(product)=> {
+     await api.createProduct({ product, products, setProducts});
+  };
   const updateLineItem = async(lineItem)=> {
     await api.updateLineItem({ lineItem, cart, lineItems, setLineItems });
   };
+
+  const updateProduct = async(updatedProduct)=> {
+    await api.updateProduct({ updatedProduct, products, setProducts});
+  }
 
   const updateOrder = async(order)=> {
     await api.updateOrder({ order, setOrders });
@@ -108,7 +150,11 @@ const App = ()=> {
   // const wishListCount = wishListItems.reduce((acc, item) => {
   //   return acc += item.quantity;
   // }, 0);
-  
+
+  const registerUser = async(credentials) => {
+    await api.register({ credentials, setAuth});
+  }
+
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
   }
@@ -121,14 +167,26 @@ const App = ()=> {
     <div>
       {
         auth.id ? (
+        
           <>
             <nav>
               <Link to='/products'>Products ({ products.length })</Link>
               <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               <Link to='/cart'>Cart ({ cartCount })</Link>
+              {
+                auth.is_admin ? (
+                  <div>
+                    <Link to='/users'>Users ({users.length})</Link>
+                    <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
+                  </div>
+                ): ''
+              }
               {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
               <span>
                 Welcome { auth.username }!
+                {
+                 auth.is_vip === true ? 'VIP!' : '' 
+                }
                 <button onClick={ logout }>Logout</button>
               </span>
             </nav>
@@ -139,7 +197,19 @@ const App = ()=> {
                 cartItems = { cartItems }
                 createLineItem = { createLineItem }
                 updateLineItem = { updateLineItem }
+                createProduct = { createProduct }
               />
+              <Routes>
+                <Route path='/products/:id' element={<Product products={ products } />}/>
+              </Routes>
+              { auth.is_admin ? (
+                <Routes>
+                  <Route path={'/users'} element={ <Users users={ users } />}/>
+                  <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
+                  <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
+                </Routes>
+              ) : ''
+              }
               <Cart
                 cart = { cart }
                 lineItems = { lineItems }
@@ -148,6 +218,8 @@ const App = ()=> {
                 removeFromCart = { removeFromCart }
                 increaseQuantity={ increaseQuantity }
                 decreaseQuantity={ decreaseQuantity }
+                cartCount={ cartCount }
+                cartItems={ cartItems }
               />
               <Orders
                 orders = { orders }
@@ -161,11 +233,13 @@ const App = ()=> {
                 updateWishList = {updateWishList}
                 removeFromWishList = {removeFromWishList}
               /> */}
+              
             </main>
             </>
         ):(
           <div>
             <Login login={ login }/>
+            <Register registerUser={ registerUser }/>
             <Products
               products={ products }
               cartItems = { cartItems }
@@ -176,6 +250,7 @@ const App = ()=> {
           </div>
         )
       }
+      
     </div>
   );
 };

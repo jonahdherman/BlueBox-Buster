@@ -24,9 +24,24 @@ const fetchOrders = async(setOrders)=> {
   setOrders(response.data);
 };
 
+const fetchAllOrders = async(setAllOrders)=> {
+  const response = await axios.get('/api/orders/all', getHeaders());
+  setAllOrders(response.data);
+};
+
+const fetchUsers = async(setUsers)=> {
+  const response = await axios.get('/api/users', getHeaders());
+  setUsers(response.data);
+};
+
 const fetchLineItems = async(setLineItems)=> {
   const response = await axios.get('/api/lineItems', getHeaders());
   setLineItems(response.data);
+};
+
+const fetchAllLineItems = async(setAllLineItems)=> {
+  const response = await axios.get('/api/lineItems/all', getHeaders());
+  setAllLineItems(response.data);
 };
 
 const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
@@ -37,6 +52,11 @@ const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
   setLineItems([...lineItems, response.data]);
 };
 
+const createProduct = async({ product, products, setProducts })=> {
+  const response = await axios.post('/api/products', product, getHeaders());
+  setProducts([...products, response.data]);
+};
+
 const updateLineItem = async({ lineItem, cart, lineItems, setLineItems })=> {
   const response = await axios.put(`/api/lineItems/${lineItem.id}`, {
     quantity: lineItem.quantity + 1,
@@ -44,6 +64,11 @@ const updateLineItem = async({ lineItem, cart, lineItems, setLineItems })=> {
   }, getHeaders());
   setLineItems(lineItems.map( lineItem => lineItem.id == response.data.id ? response.data: lineItem));
 };
+
+const updateProduct = async({ updatedProduct, products, setProducts }) => {
+    const response = await axios.put(`/api/products/${updatedProduct.id}`, updatedProduct, getHeaders());
+    setProducts(products.map(product => product.id === updatedProduct.id ? response.data : product));
+}
 
 const updateOrder = async({ order, setOrders })=> {
   await axios.put(`/api/orders/${order.id}`, order, getHeaders());
@@ -100,6 +125,14 @@ const attemptLoginWithToken = async(setAuth)=> {
   }
 }
 
+const register = async({ credentials, setAuth }) => {
+  const response = await axios.post('/api/users', credentials);
+  console.log(response);
+  if (response.data.id && response.data.username === credentials.username) {
+    login({credentials, setAuth});
+  }
+}
+
 const login = async({ credentials, setAuth })=> {
   const response = await axios.post('/api/login', credentials);
   const { token } = response.data;
@@ -115,14 +148,20 @@ const logout = (setAuth)=> {
 const api = {
   login,
   logout,
+  register,
   fetchProducts,
   fetchOrders,
   fetchWishLists,
+  fetchAllOrders,
+  fetchUsers,
   fetchLineItems,
+  fetchAllLineItems,
   createLineItem,
+  createProduct,
   updateLineItem,
   updateOrder,
   updateWishList,
+  updateProduct,
   removeFromCart,
   attemptLoginWithToken,
   increaseQuantity,
