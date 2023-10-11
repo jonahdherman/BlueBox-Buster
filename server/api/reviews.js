@@ -1,0 +1,27 @@
+const {
+  fetchReviews,
+  createReviews
+} = require('../db/products');
+
+const express = require('express');
+const app = express.Router();
+const { isLoggedIn, isAdmin } = require('./middleware');
+
+app.get('/', async (req, res, next) => {
+  try {
+    res.send(await fetchReviews());
+  }
+  catch (ex) {
+    next(ex);
+  }
+});
+
+app.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
+  try {
+    res.send(await createReviews(req.body));
+  } catch (error) {
+    next(error)
+  }
+});
+
+module.exports = app;
