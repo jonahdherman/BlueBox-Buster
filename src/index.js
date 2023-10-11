@@ -23,7 +23,7 @@ const App = ()=> {
   const [users, setUsers] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
-//  const [wishList, setWishList] = useState([]);
+  // const [wishListItems, setWishListItems] = useState([]);
 
 
   const attemptLoginWithToken = async()=> {
@@ -62,7 +62,7 @@ const App = ()=> {
   // useEffect(() => {
   //   if(auth.id){
   //     const fetchData = async() => {
-  //       await api.fetchWishLists(setWishList);
+  //       await api.fetchWishListItems(setWishListItems);
   //     };
   //     fetchData();
   //   }
@@ -206,8 +206,28 @@ const App = ()=> {
                 createProduct = { createProduct }
                 updateProduct={ updateProduct }
               />
+
               <Routes>
-                <Route path='products/search/:term'/>
+                <Route path='/products/search/:term' element={
+                  <Products
+                  auth = { auth }
+                  products={ products }
+                  cartItems = { cartItems }
+                  createLineItem = { createLineItem }
+                  updateLineItem = { updateLineItem }
+                  createProduct = { createProduct }
+                />
+                } />
+                <Route path='/products' element={
+                  <Products
+                  auth = { auth }
+                  products={ products }
+                  cartItems = { cartItems }
+                  createLineItem = { createLineItem }
+                  updateLineItem = { updateLineItem }
+                  createProduct = { createProduct }
+                />
+                } />
                 <Route path='/products/:id' element={<Product products={ products } />}/>
               </Routes>
               { auth.is_admin ? (
@@ -237,7 +257,7 @@ const App = ()=> {
               />
               {/* <WishList
                 wishList = {list}
-                lineItems = {lineItems}
+                wishListItems = {wishListItems}
                 products = {products}
                 updateWishList = {updateWishList}
                 removeFromWishList = {removeFromWishList}
