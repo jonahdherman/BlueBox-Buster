@@ -4,18 +4,21 @@ const CreateProduct = ({ createProduct }) => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
+    const [vip, setVip] = useState(false);
 
     const save = (event) => {
         event.preventDefault();
         const product = {
             name,
             price: (price * 100),
-            description
+            description,
+            vip_only: vip
         }
         createProduct(product)
         setName('');
         setPrice('');
         setDescription('');
+        setVip(false);
     }
 
     return(
@@ -42,6 +45,11 @@ const CreateProduct = ({ createProduct }) => {
                     placeholder="Enter Description"
                     onChange={event => setDescription(event.target.value)}
                 ></textarea>
+                <p>VIP exclusive?</p>
+                <select value={vip} onChange={event => setVip(event.target.value)}>
+                    <option value={false}>No</option>
+                    <option value={true}>Yes</option>
+                </select>
                 <button type='submit' disabled={!name || !price || !description}>Add Product</button>
             </form>
         </div>

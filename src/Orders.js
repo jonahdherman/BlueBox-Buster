@@ -1,6 +1,9 @@
 import React from 'react';
 
 const Orders = ({ orders, products, lineItems }) => {
+  if(!products.length) {
+    return null;
+  }
   return (
     <div>
       <h2>Orders</h2>
