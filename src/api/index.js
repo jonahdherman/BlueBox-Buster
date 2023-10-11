@@ -13,6 +13,12 @@ const fetchProducts = async(setProducts)=> {
   setProducts(response.data);
 };
 
+const fetchWishLists = async(setWishLists)=> {
+  const response = await axios.get('/api/products');
+  setWishLists(response.data);
+};
+
+
 const fetchOrders = async(setOrders)=> {
   const response = await axios.get('/api/orders', getHeaders());
   setOrders(response.data);
@@ -44,6 +50,12 @@ const updateOrder = async({ order, setOrders })=> {
   const response = await axios.get('/api/orders', getHeaders());
   setOrders(response.data);
 };
+
+const updateWishList = async({ wishList, setWishLists }) => {
+  await axios.put(`api/wishlists/${wishlist.id}`, wishList, getHeaders());
+  const response = await axios.get('/api/wishlists', getHeaders());
+  setWishLists(response.data);
+}
 
 const increaseQuantity = async ({lineItem, lineItems, setLineItems}) => {
   const response = await axios.put(`/api/lineItems/${lineItem.id}`, {
@@ -105,10 +117,12 @@ const api = {
   logout,
   fetchProducts,
   fetchOrders,
+  fetchWishLists,
   fetchLineItems,
   createLineItem,
   updateLineItem,
   updateOrder,
+  updateWishList,
   removeFromCart,
   attemptLoginWithToken,
   increaseQuantity,
