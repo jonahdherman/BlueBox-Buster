@@ -29,8 +29,8 @@
 -----
 - [ ] as a user I should be able to bookmark the search results
 - [x] as a vip user I should be able to see that I am a vip user
-- [ ] as a vip user I should be able to see vip_only products
-- [ ] as a non-vip user, I should not be able to see vip_only products
+- [x] as a vip user I should be able to see vip_only products
+- [x] as a non-vip user, I should not be able to see vip_only products
 - [ ] as a user I should be able to page through products in groups of 10 products per page
 - [ ] as a user I should be able to filter products based on tags
 - [ ] as a user I should be able to login via a third party app (github)
