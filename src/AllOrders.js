@@ -1,6 +1,9 @@
 import React from "react";
 
 const AllOrders = ({ allOrders, products, allLineItems }) => {
+    if (!products.length) {
+        return null;
+    }
     return (
         <div>
             <h1>ALL ORDERS</h1>
