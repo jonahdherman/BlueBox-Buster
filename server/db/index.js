@@ -50,6 +50,7 @@ const seed = async()=> {
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
+
     
 
     CREATE TABLE users(
@@ -87,6 +88,7 @@ const seed = async()=> {
       quantity INTEGER DEFAULT 1,
       CONSTRAINT product_and_order_key UNIQUE(product_id, order_id)
     );
+
 
   `;
   await client.query(SQL);

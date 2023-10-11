@@ -22,7 +22,8 @@ const App = ()=> {
   const [users, setUsers] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
-  //const [wishList, setWishList] = useState([]);
+//  const [wishList, setWishList] = useState([]);
+
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -52,6 +53,15 @@ const App = ()=> {
     if(auth.id){
       const fetchData = async()=> {
         await api.fetchLineItems(setLineItems);
+      };
+      fetchData();
+    }
+  }, [auth]);
+  
+  useEffect(() => {
+    if(auth.id){
+      const fetchData = async() => {
+        await api.fetchWishLists(setWishList);
       };
       fetchData();
     }
@@ -87,11 +97,9 @@ const App = ()=> {
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
-
   const createProduct = async(product)=> {
      await api.createProduct({ product, products, setProducts});
   };
-
   const updateLineItem = async(lineItem)=> {
     await api.updateLineItem({ lineItem, cart, lineItems, setLineItems });
   };
@@ -116,15 +124,16 @@ const App = ()=> {
     await api.decreaseQuantity({ lineItem, lineItems, setLineItems });
   }
 
-  // const updateWishList =async(wishList) => {
+  // const updateWishListItem =async(wishList) => {
   //   await api.updateWishList({wishList, setWishList});
   // };
-
+  
   // const removeFromWishList = async(lineItem) => {
   //   await api.removeFromWishList({lineItem, lineItems, setLineItems});
   // };
-
+  
   const cart = orders.find(order => order.is_cart) || {};
+  //console.log(cart);
 
   const cartItems = lineItems.filter(lineItem => lineItem.order_id === cart.id);
 
@@ -132,9 +141,11 @@ const App = ()=> {
     return acc += item.quantity;
   }, 0);
 
-  // const list = orders.find(order => order.is_wishList) || {};
-
-  // const wishListItems = lineItems.filter(lineItem => lineItem.order_id === wishList.id);
+  // const list = products.find(product => product.is_list) || {};
+  // //console.log(products);
+  
+  // const wishListItems = lineItems.filter(lineItem => lineItem.order_id === list.id);
+  // //console.log(wishListItems);
 
   // const wishListCount = wishListItems.reduce((acc, item) => {
   //   return acc += item.quantity;
@@ -162,6 +173,7 @@ const App = ()=> {
               <Link to='/products'>Products ({ products.length })</Link>
               <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               <Link to='/cart'>Cart ({ cartCount })</Link>
+              {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
               {
                 auth.is_admin ? (
                   <div>
@@ -170,7 +182,7 @@ const App = ()=> {
                   </div>
                 ): ''
               }
-              {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
+              
               <span>
                 Welcome { auth.username }!
                 {
@@ -190,6 +202,7 @@ const App = ()=> {
                 updateProduct={ updateProduct }
               />
               <Routes>
+                <Route path='products/search/:term'/>
                 <Route path='/products/:id' element={<Product products={ products } />}/>
               </Routes>
               { auth.is_admin ? (
@@ -230,13 +243,18 @@ const App = ()=> {
           <div>
             <Login login={ login }/>
             <Register registerUser={ registerUser }/>
-            <Products
-              products={ products }
-              cartItems = { cartItems }
-              createLineItem = { createLineItem }
-              updateLineItem = { updateLineItem }
-              auth = { auth }
-            />
+            <Routes>
+              <Route path='/products' element= {
+                <Products
+                  products={ products }
+                  cartItems = { cartItems }
+                  createLineItem = { createLineItem }
+                  updateLineItem = { updateLineItem }
+                  auth = { auth }
+                />
+              } />
+            </Routes>
+            
           </div>
         )
       }

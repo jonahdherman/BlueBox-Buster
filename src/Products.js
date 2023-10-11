@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 
 const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct }) => {
-
+  const navigate = useNavigate();
+  const { term } = useParams();
+  
   const nonVip = products.filter(product => product.vip_only === false)
   const yesVip = products.filter(product => product.vip_only === true)
 
@@ -20,6 +22,8 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
   return (
     <div>
       <h2>Products</h2>
+      <input placeholder='search for products' value = { term || ''} onChange = { ev => 
+        navigate(ev.target.value ? `/products/search/${ev.target.value}` : '/products')}/>
       {
         auth.is_admin ? (
           <CreateProduct createProduct={createProduct} />
@@ -31,7 +35,9 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             <h2>Vip Exclusive!</h2>
             <ul>
               {
-                yesVip.map(product => {
+                yesVip
+                .filter(product => !term || product.name.indexOf(term) !== -1)
+                .map(product => {
                   const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
                   return (
                     <li key={product.id}>
@@ -69,9 +75,16 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
       {auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2>}
       <ul>
         {
-          nonVip.map(product => {
+          nonVip
+            .filter(product => !term || product.name.indexOf(term) !== -1)
+            .map(product => {
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+            //console.log(cartItems);
 
+            const wishListItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+            //console.log(wishListItems);
+
+            //{wishListItem ? }
             return (
               <li key={product.id}>
                 {
@@ -88,6 +101,12 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                   auth.id ? (
                     cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                   ) : null
+                }
+                {
+                  auth.id ? (
+                    wishListItem ? <button onClick={ () => updateLineItem(wishListItem)}>Add Another To Wish List</button>: 
+                    <button onClick={ () => createLineItem(product)}>Add To Wish List</button>
+                  ):  null
                 }
                 {
                   auth.is_admin ? (
