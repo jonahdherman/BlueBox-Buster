@@ -188,13 +188,14 @@ const App = ()=> {
                 updateLineItem = { updateLineItem }
                 createProduct = { createProduct }
               />
+              <Routes>
+                <Route path='/products/:id' element={<Product products={ products } />}/>
+              </Routes>
               { auth.is_admin ? (
                 <Routes>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
                   <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
-                  <Route path='/products/:id' element={<Product products={ products } />}
-                    />
                 </Routes>
               ) : ''
               }
