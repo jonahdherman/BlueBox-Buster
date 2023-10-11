@@ -42,7 +42,7 @@
 - [ ] as an administrator adminstrator I should be able to mark a product as vip_only, which can only be purchased by vip users.
 - [x] as an administrator I should be able to see all users
 - [ ] as an administrator I should be able to see all wish lists 
-- [ ] as an administrator I should be able to see all orders
+- [x] as an administrator I should be able to see all orders
 - [ ] as an administrator I should be able to tag products 
 - [ ] as an administator I should be able to see a map, where all the customer orders have shipped.
 -----

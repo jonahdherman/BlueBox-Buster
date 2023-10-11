@@ -1,6 +1,7 @@
 const {
   fetchOrders,
   updateOrder,
+  fetchAllOrders
 } = require('../db');
 
 const express = require('express');
@@ -20,6 +21,15 @@ app.put('/:id', isLoggedIn, async(req, res, next)=> {
 app.get('/', isLoggedIn, async(req, res, next)=> {
   try {
     res.send(await fetchOrders(req.user.id));
+  }
+  catch(ex){
+    next(ex);
+  }
+});
+
+app.get('/all', isLoggedIn, isAdmin, async(req, res, next)=> {
+  try {
+    res.send(await fetchAllOrders());
   }
   catch(ex){
     next(ex);

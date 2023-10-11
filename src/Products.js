@@ -13,7 +13,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
       <h2>Products</h2>
       {
         auth.is_admin ? (
-          <CreateProduct createProduct={createProduct}/>
+          <CreateProduct createProduct={createProduct} />
         ) : null
       }
       {
@@ -61,31 +61,29 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
       <ul>
         {
           nonVip.map( product => {
-            
-            
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
             
             return (
-              <li key={ product.id }>
+              <li key={product.id}>
                 {
-                  product.image ? <img src={ product.image } /> : null
-                } 
-                 <br/>
+                  product.image ? <img src={product.image} /> : null
+                }
+                <br />
                 <Link to={`/products/${product.id}`}>
-                  {`${ product.name }`}
+                  {`${product.name}`}
                 </Link>
                 {`: $${(product.price / 100).toFixed(2)}`}
                 <br></br>
-                {`${ product.description }`}
+                {`${product.description}`}
                 {
                   auth.id ? (
-                    cartItem ? <button onClick={ ()=> updateLineItem(cartItem)}>Add Another</button>: <button onClick={ ()=> createLineItem(product)}>Add</button>
-                  ): null 
+                    cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
+                  ) : null
                 }
                 {
                   auth.is_admin ? (
                     <Link to={`/products/${product.id}/edit`}>Edit</Link>
-                  ): null
+                  ) : null
                 }
               </li>
             );
