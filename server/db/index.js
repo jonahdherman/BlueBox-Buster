@@ -3,6 +3,11 @@ const path = require('path');
 const fs = require('fs');
 
 const {
+  fetchReviews,
+  createReviews
+} = require('./reviews');
+
+const {
   fetchProducts,
   createProduct
 } = require('./products');
@@ -87,6 +92,14 @@ const seed = async()=> {
       order_id UUID REFERENCES orders(id) NOT NULL,
       quantity INTEGER DEFAULT 1,
       CONSTRAINT product_and_order_key UNIQUE(product_id, order_id)
+    );
+    
+    CREATE TABLE reviews(
+      id UUID PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT now(),
+      text VARCHAR(255),
+      product_id UUID REFERENCES products(id) NOT NULL,
+      rating SMALLINT
     );
 
 
@@ -193,6 +206,8 @@ module.exports = {
   fetchOrders,
   fetchAllOrders,
   fetchUsers,
+  fetchReviews,
+  createReviews,
   createUser,
   fetchLineItems,
   fetchAllLineItems,
