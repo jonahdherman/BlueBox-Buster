@@ -24,6 +24,7 @@ const App = ()=> {
   const [allLineItems, setAllLineItems] = useState([]);
   //const [wishList, setWishList] = useState([]);
 
+
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
   }
@@ -56,6 +57,15 @@ const App = ()=> {
       fetchData();
     }
   }, [auth]);
+  
+  // useEffect(() => {
+  //   if(auth.id){
+  //     const fetchData = async() => {
+  //       await api.fetchWishLists(setWishList);
+  //     };
+  //     fetchData();
+  //   }
+  // }, [auth]);
 
   useEffect(()=> {
     if(auth.is_admin){
@@ -87,11 +97,9 @@ const App = ()=> {
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
-
   const createProduct = async(product)=> {
      await api.createProduct({ product, products, setProducts});
   };
-
   const updateLineItem = async(lineItem)=> {
     await api.updateLineItem({ lineItem, cart, lineItems, setLineItems });
   };
@@ -119,12 +127,13 @@ const App = ()=> {
   // const updateWishList =async(wishList) => {
   //   await api.updateWishList({wishList, setWishList});
   // };
-
+  
   // const removeFromWishList = async(lineItem) => {
   //   await api.removeFromWishList({lineItem, lineItems, setLineItems});
   // };
-
+  
   const cart = orders.find(order => order.is_cart) || {};
+  //console.log(cart);
 
   const cartItems = lineItems.filter(lineItem => lineItem.order_id === cart.id);
 
@@ -132,9 +141,11 @@ const App = ()=> {
     return acc += item.quantity;
   }, 0);
 
-  // const list = orders.find(order => order.is_wishList) || {};
-
-  // const wishListItems = lineItems.filter(lineItem => lineItem.order_id === wishList.id);
+  // const list = products.find(product => product.is_list) || {};
+  // console.log(products);
+  
+  // const wishListItems = lineItems.filter(lineItem => lineItem.order_id === list.id);
+  // //console.log(wishListItems);
 
   // const wishListCount = wishListItems.reduce((acc, item) => {
   //   return acc += item.quantity;
