@@ -10,9 +10,6 @@ import api from './api';
 import Users from './Users';
 import UpdateProduct from './UpdateProduct'
 import Product from './Product';
-import Register from './Register';
-import AllOrders from './AllOrders';
-import { all } from 'axios';
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
@@ -20,8 +17,6 @@ const App = ()=> {
   const [lineItems, setLineItems] = useState([]);
   const [auth, setAuth] = useState({});
   const [users, setUsers] = useState([]);
-  const [allOrders, setAllOrders] = useState([]);
-  const [allLineItems, setAllLineItems] = useState([]);
   //const [wishList, setWishList] = useState([]);
 
   const attemptLoginWithToken = async()=> {
@@ -65,24 +60,6 @@ const App = ()=> {
       fetchData();
     }
   }, [auth]);
-
-  useEffect(()=> {
-    if(auth.is_admin){
-      const fetchData = async()=> {
-        await api.fetchAllOrders(setAllOrders);
-      };
-      fetchData();
-    }
-  }, [auth, orders]);
-
-  useEffect(()=> {
-    if(auth.is_admin){
-      const fetchData = async()=> {
-        await api.fetchAllLineItems(setAllLineItems);
-      };
-      fetchData();
-    }
-  }, [auth, lineItems]);
 
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
@@ -140,10 +117,6 @@ const App = ()=> {
   //   return acc += item.quantity;
   // }, 0);
 
-  const registerUser = async(credentials) => {
-    await api.register({ credentials, setAuth});
-  }
-
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
   }
@@ -156,19 +129,13 @@ const App = ()=> {
     <div>
       {
         auth.id ? (
-        
           <>
             <nav>
               <Link to='/products'>Products ({ products.length })</Link>
               <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               <Link to='/cart'>Cart ({ cartCount })</Link>
               {
-                auth.is_admin ? (
-                  <div>
-                    <Link to='/users'>Users ({users.length})</Link>
-                    <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
-                  </div>
-                ): ''
+                auth.is_admin ? <Link to='/users'>Users ({users.length})</Link> : ''
               }
               {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
               <span>
@@ -188,14 +155,12 @@ const App = ()=> {
                 updateLineItem = { updateLineItem }
                 createProduct = { createProduct }
               />
-              <Routes>
-                <Route path='/products/:id' element={<Product products={ products } />}/>
-              </Routes>
               { auth.is_admin ? (
                 <Routes>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
-                  <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
+                  <Route path='/products/:id' element={<Product products={ products } />}
+                    />
                 </Routes>
               ) : ''
               }
@@ -228,7 +193,6 @@ const App = ()=> {
         ):(
           <div>
             <Login login={ login }/>
-            <Register registerUser={ registerUser }/>
             <Products
               products={ products }
               cartItems = { cartItems }
@@ -236,6 +200,9 @@ const App = ()=> {
               updateLineItem = { updateLineItem }
               auth = { auth }
             />
+
+            
+              
           </div>
         )
       }
