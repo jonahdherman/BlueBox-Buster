@@ -187,6 +187,7 @@ const App = ()=> {
                 createLineItem = { createLineItem }
                 updateLineItem = { updateLineItem }
                 createProduct = { createProduct }
+                updateProduct={ updateProduct }
               />
               <Routes>
                 <Route path='/products/:id' element={<Product products={ products } />}/>

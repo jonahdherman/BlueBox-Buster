@@ -2,11 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct }) => {
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct }) => {
 
   const nonVip = products.filter(product => product.vip_only === false)
   const yesVip = products.filter(product => product.vip_only === true)
 
+  const assignVIP = (product)=> {
+    const vipProduct = {...product, vip_only: true}
+    updateProduct(vipProduct);
+  }
+
+  const removeVIP = (product)=> {
+    const vipProduct = {...product, vip_only: false}
+    updateProduct(vipProduct);
+  }
 
   return (
     <div>
@@ -41,10 +50,13 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                           cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                         ) : null
                       }
-                      {
-                        auth.is_admin ? (
-                          <Link to={`/products/${product.id}/edit`}>Edit</Link>
-                        ) : null
+                      {  auth.is_admin ? (
+                        <div>
+                        <Link to={`/products/${product.id}/edit`}>Edit</Link>
+                        <button onClick={() => removeVIP(product)}>Remove VIP only</button>
+                        </div>
+                      ) 
+                      : null
                       }
                     </li>
                   );
@@ -54,7 +66,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
           </div>
         ) : null
       }
-      { auth.is_vip ? <h2>Standard Products</h2> : <h2>All Products</h2>}
+      {auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2>}
       <ul>
         {
           nonVip.map(product => {
@@ -79,7 +91,10 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                 }
                 {
                   auth.is_admin ? (
-                    <Link to={`/products/${product.id}/edit`}>Edit</Link>
+                    <div>
+                        <Link to={`/products/${product.id}/edit`}>Edit</Link>
+                        <button onClick={() => assignVIP(product)}>Assign VIP only</button>
+                    </div>
                   ) : null
                 }
               </li>
