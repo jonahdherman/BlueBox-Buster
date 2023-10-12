@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const UpdateProduct = ({ products, updateProduct }) => {
     const { id } = useParams();
@@ -68,6 +68,9 @@ const UpdateProduct = ({ products, updateProduct }) => {
                 ></textarea>
                 <button type='submit'>Update</button>
             </form>
+            <div>
+                <Link to='/products'>Cancel</Link>
+            </div>
         </div>
     );
 }

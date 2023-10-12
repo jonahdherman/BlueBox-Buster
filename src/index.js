@@ -241,6 +241,7 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   createProduct = { createProduct }
+                  updateProduct={ updateProduct }
                 />
                 } />
                 <Route path='/products' element={
@@ -251,6 +252,7 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   createProduct = { createProduct }
+                  updateProduct={ updateProduct }
                 />
                 } />
                 <Route path='/cart' element={ 
