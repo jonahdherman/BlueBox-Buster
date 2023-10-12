@@ -2,6 +2,24 @@ const client = require('./client');
 const { v4 } = require('uuid');
 const uuidv4 = v4;
 
+const fetchTags = async()=> {
+    const SQL = `
+      SELECT *
+      FROM tags
+    `;
+    const response = await client.query(SQL);
+    return response.rows;
+  };
+
+  const fetchTag_lines = async()=> {
+    const SQL = `
+      SELECT *
+      FROM tag_lines
+    `;
+    const response = await client.query(SQL);
+    return response.rows;
+  };
+
 const createTag = async(tag)=> {
     const SQL = `
       INSERT INTO tags (id, name) 
@@ -27,5 +45,7 @@ const createTag = async(tag)=> {
 
 module.exports = {
   createTag,
-  createTag_line
+  createTag_line,
+  fetchTags,
+  fetchTag_lines
 };
