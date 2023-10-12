@@ -12,7 +12,11 @@ import UpdateProduct from './UpdateProduct'
 import Product from './Product';
 import Register from './Register';
 import AllOrders from './AllOrders';
+import Reviews from './Reviews'
+import UpdateUser from './UpdateUser';
 import { all } from 'axios';
+
+
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
@@ -22,8 +26,9 @@ const App = ()=> {
   const [users, setUsers] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
+  //const [wishList, setWishList] = useState([]);
+  const [reviews, setReviews] = useState([]);
   // const [wishListItems, setWishListItems] = useState([]);
-
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -36,6 +41,13 @@ const App = ()=> {
   useEffect(()=> {
     const fetchData = async()=> {
       await api.fetchProducts(setProducts);
+    };
+    fetchData();
+  }, []);
+  
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchReviews(setReviews);
     };
     fetchData();
   }, []);
@@ -76,37 +88,20 @@ const App = ()=> {
     }
   }, [auth]);
 
-  useEffect(()=> {
-    if(auth.is_admin){
-      const fetchData = async()=> {
-        await api.fetchAllOrders(setAllOrders);
-      };
-      fetchData();
-    }
-  }, [auth, orders]);
-
-  useEffect(()=> {
-    if(auth.is_admin){
-      const fetchData = async()=> {
-        await api.fetchAllLineItems(setAllLineItems);
-      };
-      fetchData();
-    }
-  }, [auth, lineItems]);
-
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
   const createProduct = async(product)=> {
      await api.createProduct({ product, products, setProducts});
   };
+  
   const updateLineItem = async(lineItem)=> {
     await api.updateLineItem({ lineItem, cart, lineItems, setLineItems });
   };
 
   const updateProduct = async(updatedProduct)=> {
     await api.updateProduct({ updatedProduct, products, setProducts});
-  }
+  };
 
   const updateOrder = async(order)=> {
     await api.updateOrder({ order, setOrders });
@@ -132,6 +127,10 @@ const App = ()=> {
   //   await api.removeFromWishList({lineItem, lineItems, setLineItems});
   // };
   
+  const createReviews = async(review)=> {
+    await api.createReviews({review, reviews, setReviews});
+  };
+  
   const cart = orders.find(order => order.is_cart) || {};
   //console.log(cart);
 
@@ -155,6 +154,10 @@ const App = ()=> {
     await api.register({ credentials, setAuth});
   }
 
+  const updateUser = async(updatedUser) => {
+     await api.updateUser({ updatedUser, setUsers, users});
+  }
+
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
   }
@@ -167,7 +170,6 @@ const App = ()=> {
     <div>
       {
         auth.id ? (
-        
           <>
             <nav>
               <Link to='/products'>Products ({ products.length })</Link>
@@ -175,12 +177,7 @@ const App = ()=> {
               <Link to='/cart'>Cart ({ cartCount })</Link>
               {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
               {
-                auth.is_admin ? (
-                  <div>
-                    <Link to='/users'>Users ({users.length})</Link>
-                    <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
-                  </div>
-                ): ''
+                auth.is_admin ? <Link to='/users'>Users ({users.length})</Link> : ''
               }
               
               <span>
@@ -191,8 +188,11 @@ const App = ()=> {
                 <button onClick={ logout }>Logout</button>
               </span>
             </nav>
+
             <main> 
               <Routes>
+                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } />}/>
+
                 <Route path='/products/search/:term' element={
                   <Products
                   auth = { auth }
@@ -213,7 +213,6 @@ const App = ()=> {
                   createProduct = { createProduct }
                 />
                 } />
-                <Route path='/products/:id' element={<Product products={ products } />}/>
                 <Route path='/cart' element={ 
                   <Cart
                     cart = { cart }
@@ -250,6 +249,7 @@ const App = ()=> {
                   <Route path={'/users'} element={ <Users users={ users } />}/>
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
                   <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
+                  <Route path={'/users/:id/edit'} element={<UpdateUser users={users} updateUser={ updateUser }/>}/>
                 </Routes>
               ) : ''
               }

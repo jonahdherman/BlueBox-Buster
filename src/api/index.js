@@ -13,6 +13,11 @@ const fetchProducts = async(setProducts)=> {
   setProducts(response.data);
 };
 
+const fetchReviews = async(setReviews)=> {
+  const response = await axios.get('/api/reviews');
+  setReviews(response.data);
+};
+
 const fetchWishLists = async(setWishLists)=> {
   const response = await axios.get('/api/products');
   setWishLists(response.data);
@@ -55,6 +60,11 @@ const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
 const createProduct = async({ product, products, setProducts })=> {
   const response = await axios.post('/api/products', product, getHeaders());
   setProducts([...products, response.data]);
+};
+
+const createReviews = async({ review, reviews, setReviews })=> {
+  const response = await axios.post('/api/products', review, getHeaders());
+  setReviews([...reviews, response.data]);
 };
 
 const updateLineItem = async({ lineItem, cart, lineItems, setLineItems })=> {
@@ -125,6 +135,11 @@ const attemptLoginWithToken = async(setAuth)=> {
   }
 }
 
+const updateUser = async({ updatedUser, setUsers, users }) => {
+  const response = await axios.put(`/api/users/${updatedUser.id}`, updatedUser, getHeaders());
+  setUsers(users.map(user => user.id === updatedUser.id ? response.data : user));
+}
+
 const register = async({ credentials, setAuth }) => {
   const response = await axios.post('/api/users', credentials);
   console.log(response);
@@ -154,10 +169,13 @@ const api = {
   fetchWishLists,
   fetchAllOrders,
   fetchUsers,
+  updateUser,
   fetchLineItems,
   fetchAllLineItems,
+  fetchReviews,
   createLineItem,
   createProduct,
+  createReviews,
   updateLineItem,
   updateOrder,
   updateWishList,
