@@ -21,7 +21,9 @@ const {
 
 const {
   createTag,
-  createTag_line
+  createTag_line,
+  fetchTags,
+  fetchTag_lines
 } = require('./tags');
 
 const {
@@ -253,6 +255,8 @@ module.exports = {
   fetchProducts,
   createProduct,
   updateProduct,
+  fetchTags,
+  fetchTag_lines,
   createTag,
   createTag_line,
   fetchOrders,

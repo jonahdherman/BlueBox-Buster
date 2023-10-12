@@ -26,8 +26,11 @@ const App = ()=> {
   const [users, setUsers] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
-  //const [wishList, setWishList] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [tag_lines, setTag_lines] = useState([]);
+  //const [wishList, setWishList] = useState([]);
+  
   // const [wishListItems, setWishListItems] = useState([]);
 
   const attemptLoginWithToken = async()=> {
@@ -51,6 +54,21 @@ const App = ()=> {
     };
     fetchData();
   }, []);
+
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchTags(setTags);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchTag_lines(setTag_lines);
+    };
+    fetchData();
+  }, []);
+  
 
   useEffect(()=> {
     if(auth.id){
