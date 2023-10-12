@@ -191,17 +191,7 @@ const App = ()=> {
                 <button onClick={ logout }>Logout</button>
               </span>
             </nav>
-            <main>
-              <Products
-                auth = { auth }
-                products={ products }
-                cartItems = { cartItems }
-                createLineItem = { createLineItem }
-                updateLineItem = { updateLineItem }
-                createProduct = { createProduct }
-                updateProduct={ updateProduct }
-              />
-
+            <main> 
               <Routes>
                 <Route path='/products/search/:term' element={
                   <Products
@@ -224,7 +214,37 @@ const App = ()=> {
                 />
                 } />
                 <Route path='/products/:id' element={<Product products={ products } />}/>
+                <Route path='/cart' element={ 
+                  <Cart
+                    cart = { cart }
+                    lineItems = { lineItems }
+                    products = { products }
+                    updateOrder = { updateOrder }
+                    removeFromCart = { removeFromCart }
+                    increaseQuantity={ increaseQuantity }
+                    decreaseQuantity={ decreaseQuantity }
+                    cartCount={ cartCount }
+                    cartItems={ cartItems }
+                />
+                } />
+                <Route path='/orders' element={ 
+                  <Orders
+                  orders = { orders }
+                  products = { products }
+                  lineItems = { lineItems }
+                />
+                } />
+                {/* <Route path='/wishlist' element={ 
+                  <WishList
+                  wishList = {list}
+                  wishListItems = {wishListItems}
+                  products = {products}
+                  updateWishList = {updateWishList}
+                  removeFromWishList = {removeFromWishList}
+                  />
+                } /> */}
               </Routes>
+
               { auth.is_admin ? (
                 <Routes>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
@@ -233,29 +253,6 @@ const App = ()=> {
                 </Routes>
               ) : ''
               }
-              <Cart
-                cart = { cart }
-                lineItems = { lineItems }
-                products = { products }
-                updateOrder = { updateOrder }
-                removeFromCart = { removeFromCart }
-                increaseQuantity={ increaseQuantity }
-                decreaseQuantity={ decreaseQuantity }
-                cartCount={ cartCount }
-                cartItems={ cartItems }
-              />
-              <Orders
-                orders = { orders }
-                products = { products }
-                lineItems = { lineItems }
-              />
-              {/* <WishList
-                wishList = {list}
-                wishListItems = {wishListItems}
-                products = {products}
-                updateWishList = {updateWishList}
-                removeFromWishList = {removeFromWishList}
-              /> */}
               
             </main>
             </>
