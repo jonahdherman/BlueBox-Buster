@@ -1,6 +1,5 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import Reviews from './Reviews'
 
 const Product = ({ products, reviews, createReviews }) => {
     const { id } = useParams();
@@ -19,11 +18,18 @@ const Product = ({ products, reviews, createReviews }) => {
                 <h2>{product.name}</h2>
                 <h4>{`$${(product.price / 100).toFixed(2)}`}</h4>
                 <h4>Description: {product.description}</h4>
-                <Reviews 
-                products={ products }
-                reviews={ reviews }
-                createReviews={ createReviews }
-                />
+                <h4>Reviews</h4>
+                <ul>
+                {
+                  reviews.filter(review => review.product_id === product.id).map(review => {
+                      return (
+                        <li key={review.id}>
+                          { review.text }
+                        </li>
+                      )
+                  })   
+                }
+                </ul>
             </div>
             
         </div>
