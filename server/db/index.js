@@ -189,6 +189,11 @@ const seed = async()=> {
     }),
 
   ]);
+  const seedReviews = await Promise.all([
+    createReviews({ text: 'Would recommend.', product_id: seedData[1].id, rating: 5 }),
+    createReviews({ text: 'Great movie.', product_id: seedData[2].id, rating: 3 }),
+    createReviews({ text: 'Definitely a good one.', product_id: seedData[3].id, rating: 1 })
+  ]);
   let orders = await fetchOrders(ethyl.id);
   let cart = orders.find(order => order.is_cart);
   let lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[1].id});

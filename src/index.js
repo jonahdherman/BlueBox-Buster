@@ -12,7 +12,10 @@ import UpdateProduct from './UpdateProduct'
 import Product from './Product';
 import Register from './Register';
 import AllOrders from './AllOrders';
+import Reviews from './Reviews'
 import { all } from 'axios';
+
+
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
@@ -23,7 +26,10 @@ const App = ()=> {
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
   //const [wishList, setWishList] = useState([]);
-
+  const [reviews, setReviews] = useState([]);
+ 
+  console.log(lineItems)
+  console.log(products)
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -36,6 +42,13 @@ const App = ()=> {
   useEffect(()=> {
     const fetchData = async()=> {
       await api.fetchProducts(setProducts);
+    };
+    fetchData();
+  }, []);
+  
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchReviews(setReviews);
     };
     fetchData();
   }, []);
@@ -100,13 +113,14 @@ const App = ()=> {
   const createProduct = async(product)=> {
      await api.createProduct({ product, products, setProducts});
   };
+  
   const updateLineItem = async(lineItem)=> {
     await api.updateLineItem({ lineItem, cart, lineItems, setLineItems });
   };
 
   const updateProduct = async(updatedProduct)=> {
     await api.updateProduct({ updatedProduct, products, setProducts});
-  }
+  };
 
   const updateOrder = async(order)=> {
     await api.updateOrder({ order, setOrders });
@@ -131,6 +145,10 @@ const App = ()=> {
   // const removeFromWishList = async(lineItem) => {
   //   await api.removeFromWishList({lineItem, lineItems, setLineItems});
   // };
+  
+  const createReviews = async(review)=> {
+    await api.createReviews({review, reviews, setReviews});
+  };
   
   const cart = orders.find(order => order.is_cart) || {};
   //console.log(cart);
@@ -200,7 +218,7 @@ const App = ()=> {
                 createProduct = { createProduct }
               />
               <Routes>
-                <Route path='/products/:id' element={<Product products={ products } />}/>
+                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } />}/>
               </Routes>
               { auth.is_admin ? (
                 <Routes>

@@ -1,7 +1,7 @@
 const {
   fetchReviews,
   createReviews
-} = require('../db/products');
+} = require('../db/reviews');
 
 const express = require('express');
 const app = express.Router();
