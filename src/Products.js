@@ -38,7 +38,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             <ul>
               {
                 yesVip
-                .filter(product => !term || product.name.indexOf(term) !== -1)
+                .filter(product => !term || product.name.toLowerCase().includes(term.toLowerCase()))
                 .map(product => {
                   const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
                   const cutOff = product.description.toString().slice(0, 250)
@@ -82,7 +82,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
       <ul>
         {
           nonVip
-            .filter(product => !term || product.name.indexOf(term) !== -1)
+            .filter(product => !term || product.name.toLowerCase().includes(term.toLowerCase()))
             .map(product => {
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
             const cutOff = product.description.toString().slice(0, 250)
