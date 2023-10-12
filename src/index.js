@@ -12,8 +12,11 @@ import UpdateProduct from './UpdateProduct'
 import Product from './Product';
 import Register from './Register';
 import AllOrders from './AllOrders';
+import Reviews from './Reviews'
 import UpdateUser from './UpdateUser';
 import { all } from 'axios';
+
+
 
 const App = ()=> {
   const [products, setProducts] = useState([]);
@@ -23,8 +26,9 @@ const App = ()=> {
   const [users, setUsers] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
+  //const [wishList, setWishList] = useState([]);
+  const [reviews, setReviews] = useState([]);
   // const [wishListItems, setWishListItems] = useState([]);
-
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -37,6 +41,13 @@ const App = ()=> {
   useEffect(()=> {
     const fetchData = async()=> {
       await api.fetchProducts(setProducts);
+    };
+    fetchData();
+  }, []);
+  
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchReviews(setReviews);
     };
     fetchData();
   }, []);
@@ -83,13 +94,14 @@ const App = ()=> {
   const createProduct = async(product)=> {
      await api.createProduct({ product, products, setProducts});
   };
+  
   const updateLineItem = async(lineItem)=> {
     await api.updateLineItem({ lineItem, cart, lineItems, setLineItems });
   };
 
   const updateProduct = async(updatedProduct)=> {
     await api.updateProduct({ updatedProduct, products, setProducts});
-  }
+  };
 
   const updateOrder = async(order)=> {
     await api.updateOrder({ order, setOrders });
@@ -114,6 +126,10 @@ const App = ()=> {
   // const removeFromWishList = async(lineItem) => {
   //   await api.removeFromWishList({lineItem, lineItems, setLineItems});
   // };
+  
+  const createReviews = async(review)=> {
+    await api.createReviews({review, reviews, setReviews});
+  };
   
   const cart = orders.find(order => order.is_cart) || {};
   //console.log(cart);
@@ -172,9 +188,10 @@ const App = ()=> {
                 <button onClick={ logout }>Logout</button>
               </span>
             </nav>
-            <main>
-
+            <main> 
               <Routes>
+                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } />}/>
+
                 <Route path='/products/search/:term' element={
                   <Products
                   auth = { auth }
@@ -195,8 +212,37 @@ const App = ()=> {
                   createProduct = { createProduct }
                 />
                 } />
-                <Route path='/products/:id' element={<Product products={ products } />}/>
+                <Route path='/cart' element={ 
+                  <Cart
+                    cart = { cart }
+                    lineItems = { lineItems }
+                    products = { products }
+                    updateOrder = { updateOrder }
+                    removeFromCart = { removeFromCart }
+                    increaseQuantity={ increaseQuantity }
+                    decreaseQuantity={ decreaseQuantity }
+                    cartCount={ cartCount }
+                    cartItems={ cartItems }
+                />
+                } />
+                <Route path='/orders' element={ 
+                  <Orders
+                  orders = { orders }
+                  products = { products }
+                  lineItems = { lineItems }
+                />
+                } />
+                {/* <Route path='/wishlist' element={ 
+                  <WishList
+                  wishList = {list}
+                  wishListItems = {wishListItems}
+                  products = {products}
+                  updateWishList = {updateWishList}
+                  removeFromWishList = {removeFromWishList}
+                  />
+                } /> */}
               </Routes>
+
               { auth.is_admin ? (
                 <Routes>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
@@ -206,29 +252,6 @@ const App = ()=> {
                 </Routes>
               ) : ''
               }
-              <Cart
-                cart = { cart }
-                lineItems = { lineItems }
-                products = { products }
-                updateOrder = { updateOrder }
-                removeFromCart = { removeFromCart }
-                increaseQuantity={ increaseQuantity }
-                decreaseQuantity={ decreaseQuantity }
-                cartCount={ cartCount }
-                cartItems={ cartItems }
-              />
-              <Orders
-                orders = { orders }
-                products = { products }
-                lineItems = { lineItems }
-              />
-              {/* <WishList
-                wishList = {list}
-                wishListItems = {wishListItems}
-                products = {products}
-                updateWishList = {updateWishList}
-                removeFromWishList = {removeFromWishList}
-              /> */}
               
             </main>
             </>
