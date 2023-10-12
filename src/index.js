@@ -173,15 +173,6 @@ const App = ()=> {
               </span>
             </nav>
             <main>
-              <Products
-                auth = { auth }
-                products={ products }
-                cartItems = { cartItems }
-                createLineItem = { createLineItem }
-                updateLineItem = { updateLineItem }
-                createProduct = { createProduct }
-                updateProduct={ updateProduct }
-              />
 
               <Routes>
                 <Route path='/products/search/:term' element={

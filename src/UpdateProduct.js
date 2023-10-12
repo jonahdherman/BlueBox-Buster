@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-
 const UpdateProduct = ({ products, updateProduct }) => {
     const { id } = useParams();
     const product = products.find(product => product.id === id)
@@ -19,7 +18,6 @@ const UpdateProduct = ({ products, updateProduct }) => {
             setDescription(product.description);
             setError('');
         }
-
     }, [products]);
 
     if (!product) {
@@ -40,7 +38,6 @@ const UpdateProduct = ({ products, updateProduct }) => {
             setError(err)
         }
     }
-
 
     return (
         <div>

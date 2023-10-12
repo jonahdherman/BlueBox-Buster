@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
+import ProductImageEditor from './ProductImageEditor';
 
 const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct }) => {
   const navigate = useNavigate();
@@ -62,8 +63,9 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                       }
                       {  auth.is_admin ? (
                         <div>
-                        <Link to={`/products/${product.id}/edit`}>Edit</Link>
+                        <Link to={`/products/${product.id}/edit`}>Edit</Link><br />
                         <button onClick={() => removeVIP(product)}>Remove VIP only</button>
+                        <ProductImageEditor product={ product } updateProduct={ updateProduct }/>
                         </div>
                       ) 
                       : null
@@ -87,7 +89,6 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             //console.log(cartItems);
 
             const wishListItem = cartItems.find(lineItem => lineItem.product_id === product.id);
-            const cutOff = product.description.toString().slice(0, 250)
             //console.log(wishListItems);
 
             //{wishListItem ? }
@@ -119,8 +120,9 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                 {
                   auth.is_admin ? (
                     <div>
-                        <Link to={`/products/${product.id}/edit`}>Edit</Link>
+                        <Link to={`/products/${product.id}/edit`}>Edit</Link><br />
                         <button onClick={() => assignVIP(product)}>Assign VIP only</button>
+                        <ProductImageEditor product={ product } updateProduct={ updateProduct }/>
                     </div>
                   ) : null
                 }
