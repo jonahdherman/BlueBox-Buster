@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"; 
 import ProductImageEditor from "./ProductImageEditor";
 
-const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term }) => {
+const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines }) => {
 
     const yesVip = products.filter(product => product.vip_only === true);
 
@@ -20,6 +20,8 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth
                         yesVip
                             .filter(product => !term || product.name.toLowerCase().includes(term.toLowerCase()))
                             .map(product => {
+                                const productLines = tag_lines.filter(tag_line => tag_line.product_id === product.id);
+                                const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                                 const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
                                 const cutOff = product.description.toString().slice(0, 250)
                                 return (
@@ -30,7 +32,18 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth
                                         <br />
                                         {`${product.name}`}
                                         {`: $${(product.price / 100).toFixed(2)}`}
-                                        <br />
+                                        
+                                        <p>tags</p>
+                                        <ul>
+                                            {
+                                                productTags.map(tag => {
+                                                    return(
+                                                        <li key={tag.id}>{tag.name}</li>
+                                                    );
+                                                })
+                                            }
+                                        </ul>
+
                                         {`${cutOff}...`}
                                         <Link to={`/products/${product.id}`}>
                                             {`Read More`}

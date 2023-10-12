@@ -4,7 +4,7 @@ import CreateProduct from './CreateProduct';
 import VipProducts from './VipProducts';
 import NonVipProducts from './NonVipProducts';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct }) => {
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, tags, tag_lines }) => {
   const navigate = useNavigate();
   const { term } = useParams();
 
@@ -20,11 +20,11 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
       }
       { 
         auth.is_vip || auth.is_admin ? 
-        <VipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term}/> 
+        <VipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines }/> 
         : null 
       }
       { auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2> }
-      <NonVipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term}/>
+      <NonVipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines }/>
     </div>
   );
 };
