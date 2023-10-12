@@ -88,6 +88,24 @@ const App = ()=> {
     }
   }, [auth]);
 
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchAllOrders(setAllOrders);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchAllLineItems(setAllLineItems);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
@@ -177,7 +195,12 @@ const App = ()=> {
               <Link to='/cart'>Cart ({ cartCount })</Link>
               {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
               {
-                auth.is_admin ? <Link to='/users'>Users ({users.length})</Link> : ''
+                auth.is_admin ? 
+                <div>
+                <Link to='/users'>Users ({users.length})</Link>
+                <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
+                </div>
+                : ''
               }
               
               <span>
