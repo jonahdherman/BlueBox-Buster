@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ProductImageEditor from "./ProductImageEditor";
 
-const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term }) => {
+const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines }) => {
 
     const nonVip = products.filter(product => product.vip_only === false)
 
@@ -18,14 +18,10 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                     nonVip
                         .filter(product => !term || product.name.toLowerCase().includes(term.toLowerCase()))
                         .map(product => {
+                            const productLines = tag_lines.filter(tag_line => tag_line.product_id === product.id);
+                            const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
                             const cutOff = product.description.toString().slice(0, 250)
-                            //console.log(cartItems);
-
-                            const wishListItem = cartItems.find(lineItem => lineItem.product_id === product.id);
-                            //console.log(wishListItems);
-
-                            //{wishListItem ? }
                             return (
                                 <li key={product.id}>
                                     {
@@ -34,21 +30,29 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                     <br />
                                     {`${product.name}`}
                                     {`: $${(product.price / 100).toFixed(2)}`}
-                                    <br />
+                                    { productTags.length ?
+                                        <div>
+                                            <p>tags</p>
+                                            <ul>
+                                                {
+                                                    productTags.map(tag => {
+                                                        return (
+                                                            <li key={tag.id}>{tag.name}</li>
+                                                        );
+                                                    })
+                                                }
+                                            </ul>
+                                        </div> : <p>No tags</p>
+                                    }
+
                                     {`${cutOff}...`}
                                     <Link to={`/products/${product.id}`}>
                                         {`Read More`}
                                     </Link>
-                                    <br></br>
+                                    <br />
                                     {
                                         auth.id ? (
                                             cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
-                                        ) : null
-                                    }
-                                    {
-                                        auth.id ? (
-                                            wishListItem ? <button onClick={() => updateLineItem(wishListItem)}>Add Another To Wish List</button> :
-                                                <button onClick={() => createLineItem(product)}>Add To Wish List</button>
                                         ) : null
                                     }
                                     {

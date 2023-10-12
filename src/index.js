@@ -242,6 +242,8 @@ const App = ()=> {
                   updateLineItem = { updateLineItem }
                   createProduct = { createProduct }
                   updateProduct={ updateProduct }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
                 />
                 } />
                 <Route path='/products' element={
@@ -253,6 +255,8 @@ const App = ()=> {
                   updateLineItem = { updateLineItem }
                   createProduct = { createProduct }
                   updateProduct={ updateProduct }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
                 />
                 } />
                 <Route path='/cart' element={ 
@@ -310,6 +314,8 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   auth = { auth }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
                 />
               } />
             </Routes>
