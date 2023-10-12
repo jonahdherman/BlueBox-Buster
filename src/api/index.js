@@ -135,6 +135,11 @@ const attemptLoginWithToken = async(setAuth)=> {
   }
 }
 
+const updateUser = async({ updatedUser, setUsers, users }) => {
+  const response = await axios.put(`/api/users/${updatedUser.id}`, updatedUser, getHeaders());
+  setUsers(users.map(user => user.id === updatedUser.id ? response.data : user));
+}
+
 const register = async({ credentials, setAuth }) => {
   const response = await axios.post('/api/users', credentials);
   console.log(response);
@@ -164,6 +169,7 @@ const api = {
   fetchWishLists,
   fetchAllOrders,
   fetchUsers,
+  updateUser,
   fetchLineItems,
   fetchAllLineItems,
   fetchReviews,

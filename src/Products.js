@@ -1,18 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct }) => {
-
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct }) => {
+  const navigate = useNavigate();
+  const { term } = useParams();
+  
   const nonVip = products.filter(product => product.vip_only === false)
   const yesVip = products.filter(product => product.vip_only === true)
+
+  const assignVIP = (product)=> {
+    const vipProduct = {...product, vip_only: true}
+    updateProduct(vipProduct);
+  }
+
+  const removeVIP = (product)=> {
+    const vipProduct = {...product, vip_only: false}
+    updateProduct(vipProduct);
+  }
 
   return (
     <div>
       <h2>Products</h2>
+      <input placeholder='search for products' value = { term || ''} onChange = { ev => 
+        navigate(ev.target.value ? `/products/search/${ev.target.value}` : '/products')}/>
       {
         auth.is_admin ? (
           <CreateProduct createProduct={createProduct} />
+
         ) : null
       }
       {
@@ -21,29 +36,37 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             <h2>Vip Exclusive!</h2>
             <ul>
               {
-                yesVip.map(product => {
+                yesVip
+                .filter(product => !term || product.name.indexOf(term) !== -1)
+                .map(product => {
                   const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+                  const cutOff = product.description.toString().slice(0, 250)
                   return (
                     <li key={product.id}>
                       {
                         product.image ? <img src={product.image} /> : null
                       }
                       <br />
-                      <Link to={`/products/${product.id}`}>
                         {`${product.name}`}
-                      </Link>
                       {`: $${(product.price / 100).toFixed(2)}`}
                       <br />
-                      {`${product.description}`}
+                      {`${cutOff}...`}
+                      <Link to={`/products/${product.id}`}>
+                        {`Read More`}
+                      </Link>
+                      <br></br>
                       {
                         auth.id ? (
                           cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                         ) : null
                       }
-                      {
-                        auth.is_admin ? (
-                          <Link to={`/products/${product.id}/edit`}>Edit</Link>
-                        ) : null
+                      {  auth.is_admin ? (
+                        <div>
+                        <Link to={`/products/${product.id}/edit`}>Edit</Link>
+                        <button onClick={() => removeVIP(product)}>Remove VIP only</button>
+                        </div>
+                      ) 
+                      : null
                       }
                     </li>
                   );
@@ -53,14 +76,18 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
           </div>
         ) : null
       }
-      { auth.is_vip ? <h2>Standard Products</h2> : <h2>All Products</h2>}
+      {auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2>}
       <ul>
         {
-          nonVip.map(product => {
+          nonVip
+            .filter(product => !term || product.name.indexOf(term) !== -1)
+            .map(product => {
             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+            const cutOff = product.description.toString().slice(0, 250)
             //console.log(cartItems);
 
             const wishListItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+            const cutOff = product.description.toString().slice(0, 250)
             //console.log(wishListItems);
 
             //{wishListItem ? }
@@ -70,12 +97,14 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                   product.image ? <img src={product.image} /> : null
                 }
                 <br />
-                <Link to={`/products/${product.id}`}>
                   {`${product.name}`}
-                </Link>
                 {`: $${(product.price / 100).toFixed(2)}`}
+                <br />
+                {`${cutOff}...`}
+                <Link to={`/products/${product.id}`}>
+                  {`Read More`}
+                </Link>
                 <br></br>
-                {`${product.description}`}
                 {
                   auth.id ? (
                     cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
@@ -89,7 +118,10 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                 }
                 {
                   auth.is_admin ? (
-                    <Link to={`/products/${product.id}/edit`}>Edit</Link>
+                    <div>
+                        <Link to={`/products/${product.id}/edit`}>Edit</Link>
+                        <button onClick={() => assignVIP(product)}>Assign VIP only</button>
+                    </div>
                   ) : null
                 }
               </li>

@@ -14,7 +14,8 @@ const {
 
 const {
   fetchUsers,
-  createUser
+  createUser,
+  updateUser
 } = require('./users');
 
 const {
@@ -32,6 +33,14 @@ const {
   fetchOrders,
   fetchAllOrders
 } = require('./cart');
+
+const {
+  fetchWishListItems,
+  fetchAllWishListItems,
+  createWishListItem,
+  updateWishListItem,
+  deleteWishListItem
+} = require('./wishlist');
 
 const loadImage = (filePath) => {
   return new Promise((resolve, reject)=>{
@@ -55,6 +64,7 @@ const seed = async()=> {
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
+
     
 
     CREATE TABLE users(
@@ -93,6 +103,7 @@ const seed = async()=> {
       CONSTRAINT product_and_order_key UNIQUE(product_id, order_id)
     );
     
+
     CREATE TABLE reviews(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
@@ -100,6 +111,8 @@ const seed = async()=> {
       product_id UUID REFERENCES products(id) NOT NULL,
       rating SMALLINT
     );
+
+
 
   `;
   await client.query(SQL);
@@ -212,12 +225,18 @@ module.exports = {
   fetchReviews,
   createReviews,
   createUser,
+  updateUser,
   fetchLineItems,
   fetchAllLineItems,
   createLineItem,
   updateLineItem,
   deleteLineItem,
   updateOrder,
+  fetchWishListItems,
+  fetchAllWishListItems,
+  createWishListItem,
+  updateWishListItem,
+  deleteWishListItem,
   authenticate,
   findUserByToken,
   seed,
