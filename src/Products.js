@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct }) => {
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, createWishListItem, updateWishListItem }) => {
   const navigate = useNavigate();
   const { term } = useParams();
   
@@ -41,6 +41,8 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                 .map(product => {
                   const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
                   const cutOff = product.description.toString().slice(0, 250)
+
+                  const wishListItem = cartItems.find(lineItem => lineItem.product_id === product.id);
                   return (
                     <li key={product.id}>
                       {
@@ -59,6 +61,12 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                         auth.id ? (
                           cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                         ) : null
+                      }
+                      {
+                        auth.id ? (
+                          wishListItem ? <button onClick={ () => updateWishListItem(wishListItem)}>Add Another To Wish List</button>: 
+                            <button onClick={ () => createWishListItem(product)}>Add To Wish List</button>
+                        ):  null
                       }
                       {  auth.is_admin ? (
                         <div>
@@ -87,7 +95,6 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
             //console.log(cartItems);
 
             const wishListItem = cartItems.find(lineItem => lineItem.product_id === product.id);
-            const cutOff = product.description.toString().slice(0, 250)
             //console.log(wishListItems);
 
             //{wishListItem ? }
@@ -112,8 +119,8 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
                 }
                 {
                   auth.id ? (
-                    wishListItem ? <button onClick={ () => updateLineItem(wishListItem)}>Add Another To Wish List</button>: 
-                    <button onClick={ () => createLineItem(product)}>Add To Wish List</button>
+                    wishListItem ? <button onClick={ () => updateWishListItem(wishListItem)}>Add Another To Wish List</button>: 
+                    <button onClick={ () => createWishListItem(product)}>Add To Wish List</button>
                   ):  null
                 }
                 {

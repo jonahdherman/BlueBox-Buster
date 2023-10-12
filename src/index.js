@@ -5,7 +5,7 @@ import Products from './Products';
 import Orders from './Orders';
 import Cart from './Cart';
 import Login from './Login';
-//import WishList from './WishList';
+import WishList from './WishList';
 import api from './api';
 import Users from './Users';
 import UpdateProduct from './UpdateProduct'
@@ -26,9 +26,9 @@ const App = ()=> {
   const [users, setUsers] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
-  //const [wishList, setWishList] = useState([]);
+  const [wishList, setWishList] = useState([]);
   const [reviews, setReviews] = useState([]);
-  // const [wishListItems, setWishListItems] = useState([]);
+  const [wishListItems, setWishListItems] = useState([]);
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -70,14 +70,14 @@ const App = ()=> {
     }
   }, [auth]);
   
-  // useEffect(() => {
-  //   if(auth.id){
-  //     const fetchData = async() => {
-  //       await api.fetchWishListItems(setWishListItems);
-  //     };
-  //     fetchData();
-  //   }
-  // }, [auth]);
+  useEffect(() => {
+    if(auth.id){
+      const fetchData = async() => {
+        await api.fetchWishListItems(setWishListItems);
+      };
+      fetchData();
+    }
+  }, [auth]);
 
   useEffect(()=> {
     if(auth.is_admin){
@@ -119,13 +119,17 @@ const App = ()=> {
     await api.decreaseQuantity({ lineItem, lineItems, setLineItems });
   }
 
-  // const updateWishListItem =async(wishList) => {
-  //   await api.updateWishList({wishList, setWishList});
-  // };
+  const updateWishListItem = async(wishList) => {
+    await api.updateWishListItem({wishList, setWishList});
+  };
+
+  const createWishListItem = async(wishListItems) => {
+    await api.createWishList({wishListItems, setWishListItems});
+  }
   
-  // const removeFromWishList = async(lineItem) => {
-  //   await api.removeFromWishList({lineItem, lineItems, setLineItems});
-  // };
+  const removeFromWishList = async(lineItem) => {
+    await api.removeFromWishList({lineItem, lineItems, setLineItems});
+  };
   
   const createReviews = async(review)=> {
     await api.createReviews({review, reviews, setReviews});
@@ -140,15 +144,15 @@ const App = ()=> {
     return acc += item.quantity;
   }, 0);
 
-  // const list = products.find(product => product.is_list) || {};
-  // //console.log(products);
+  const list = products.find(product => product.is_list) || {};
+  //console.log(products);
   
   // const wishListItems = lineItems.filter(lineItem => lineItem.order_id === list.id);
   // //console.log(wishListItems);
 
-  // const wishListCount = wishListItems.reduce((acc, item) => {
-  //   return acc += item.quantity;
-  // }, 0);
+  const wishListCount = wishListItems.reduce((acc, item) => {
+    return acc += item.quantity;
+  }, 0);
 
   const registerUser = async(credentials) => {
     await api.register({ credentials, setAuth});
@@ -175,7 +179,7 @@ const App = ()=> {
               <Link to='/products'>Products ({ products.length })</Link>
               <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               <Link to='/cart'>Cart ({ cartCount })</Link>
-              {/* <Link to='/wish_list'>Wish List ({wishListCount})</Link> */}
+              <Link to='/wishlist'>Wish List ({wishListCount})</Link>
               {
                 auth.is_admin ? <Link to='/users'>Users ({users.length})</Link> : ''
               }
@@ -233,15 +237,16 @@ const App = ()=> {
                   lineItems = { lineItems }
                 />
                 } />
-                {/* <Route path='/wishlist' element={ 
+                <Route path='/wishlist' element={ 
                   <WishList
                   wishList = {list}
                   wishListItems = {wishListItems}
+                  createWishListItems = {createWishListItem}
                   products = {products}
-                  updateWishList = {updateWishList}
+                  updateWishList = {updateWishListItem}
                   removeFromWishList = {removeFromWishList}
                   />
-                } /> */}
+                } />
               </Routes>
 
               { auth.is_admin ? (
