@@ -9,7 +9,8 @@ const {
 
 const {
   fetchProducts,
-  createProduct
+  createProduct,
+  updateProduct
 } = require('./products');
 
 const {
@@ -17,6 +18,11 @@ const {
   createUser,
   updateUser
 } = require('./users');
+
+const {
+  createTag,
+  createTag_line
+} = require('./tags');
 
 const {
   authenticate,
@@ -59,13 +65,13 @@ const loadImage = (filePath) => {
 
 const seed = async()=> {
   const SQL = `
+    DROP TABLE IF EXISTS tag_lines;
     DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS line_items;
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
-
-    
+    DROP TABLE IF EXISTS tags;
 
     CREATE TABLE users(
       id UUID PRIMARY KEY,
@@ -75,7 +81,6 @@ const seed = async()=> {
       is_admin BOOLEAN DEFAULT false NOT NULL,
       is_vip BOOLEAN DEFAULT false NOT NULL
     );
-
 
     CREATE TABLE products(
       id UUID PRIMARY KEY,
@@ -103,7 +108,6 @@ const seed = async()=> {
       CONSTRAINT product_and_order_key UNIQUE(product_id, order_id)
     );
     
-
     CREATE TABLE reviews(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
@@ -112,6 +116,16 @@ const seed = async()=> {
       rating SMALLINT
     );
 
+    CREATE TABLE tags(
+      id UUID PRIMARY KEY,
+      name VARCHAR(100) UNIQUE NOT NULL
+    );
+
+    CREATE TABLE tag_lines(
+      id UUID PRIMARY KEY,
+      product_id UUID REFERENCES products(id) NOT NULL,
+      tag_id UUID REFERENCES tags(id) NOT NULL
+    );
 
 
   `;
@@ -129,6 +143,7 @@ const seed = async()=> {
   const topgunImage = await loadImage('/images/topgun.png');
   const scarfaceImage = await loadImage('/images/scarface.png');
   const vcrImage = await loadImage('/images/vcr.png');
+
   const seedData = await Promise.all([
     createProduct({
       name: 'VHS System', 
@@ -200,13 +215,30 @@ const seed = async()=> {
       image: scarfaceImage,
       vip_only: false
     }),
-
   ]);
+
+  const [familyFriendly, classic, scifi, crime, hardware] = await Promise.all([
+    createTag({ name: 'Family Friendly'}),
+    createTag({ name: 'Classic'}),
+    createTag({ name: 'Sci-Fi'}),
+    createTag({ name: 'Crime'}),
+    createTag({ name: 'Hardware'})
+  ]);
+
+  const [vhs_tag, godfather_tag1, godfather_tag2, starwars_tag, lbt_tag] = await Promise.all([
+    createTag_line({ product_id: seedData[0].id, tag_id: hardware.id}),
+    createTag_line({ product_id: seedData[1].id, tag_id: classic.id}),
+    createTag_line({ product_id: seedData[1].id, tag_id: crime.id}),
+    createTag_line({ product_id: seedData[2].id, tag_id: scifi.id}),
+    createTag_line({ product_id: seedData[3].id, tag_id: familyFriendly.id})
+  ]);
+
   const seedReviews = await Promise.all([
     createReviews({ text: 'Would recommend.', product_id: seedData[1].id, rating: 5 }),
     createReviews({ text: 'Great movie.', product_id: seedData[2].id, rating: 3 }),
     createReviews({ text: 'Definitely a good one.', product_id: seedData[3].id, rating: 1 })
   ]);
+  
   let orders = await fetchOrders(ethyl.id);
   let cart = orders.find(order => order.is_cart);
   let lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[1].id});
@@ -219,6 +251,10 @@ const seed = async()=> {
 
 module.exports = {
   fetchProducts,
+  createProduct,
+  updateProduct,
+  createTag,
+  createTag_line,
   fetchOrders,
   fetchAllOrders,
   fetchUsers,
