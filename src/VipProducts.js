@@ -34,16 +34,19 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth
                                         {`: $${(product.price / 100).toFixed(2)}`}
                                         
                                         <p>tags</p>
-                                        <ul>
-                                            {
-                                                productTags.map(tag => {
-                                                    return(
-                                                        <li key={tag.id}>{tag.name}</li>
-                                                    );
-                                                })
-                                            }
-                                        </ul>
-
+                                        { auth.is_admin ? <Link to={'/tags/edit'}>Edit tags</Link> : null }
+                                        { productTags.length ? 
+                                            <ul>
+                                                {
+                                                    productTags.map(tag => {
+                                                        return(
+                                                            <li key={tag.id}>{tag.name}</li>
+                                                        );
+                                                    })
+                                                }
+                                            </ul>
+                                                : <p>None</p>}
+                                        
                                         {`${cutOff}...`}
                                         <Link to={`/products/${product.id}`}>
                                             {`Read More`}
