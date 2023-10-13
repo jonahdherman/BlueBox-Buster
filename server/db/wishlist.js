@@ -34,9 +34,9 @@ const fetchAllWishListItems = async()=> {
   return response.rows;
 };
 
-const ensureWishList = async(wishlistItem)=> {
-  let wishlistId = wishlistItem.wishlist_id;
-  if(!wishlistId){
+ const ensureWishList = async(wishListItem)=> {
+  let wishListId = wishListItem.wishlists_id;
+  if(!wishListId){
     const SQL = `
       SELECT wishlist_id 
       FROM wishlist_items 
@@ -48,7 +48,7 @@ const ensureWishList = async(wishlistItem)=> {
   const SQL = `
     SELECT * 
     FROM wishlists
-    WHERE id = $1 and is_wishlist=true
+    WHERE id = $1 and is_wishList=true
   `;
   const response = await client.query(SQL, [wishlistId]);
   // if(!response.rows.length){
