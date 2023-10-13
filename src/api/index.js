@@ -53,6 +53,16 @@ const fetchAllLineItems = async(setAllLineItems)=> {
   setAllLineItems(response.data);
 };
 
+const fetchTags = async(setTags)=> {
+  const response = await axios.get('/api/tags');
+  setTags(response.data);
+};
+
+const fetchTag_lines = async(setTag_lines)=> {
+  const response = await axios.get('/api/tag_lines');
+  setTag_lines(response.data);
+};
+
 const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
   const response = await axios.post('/api/lineItems', {
     order_id: cart.id,
@@ -206,7 +216,9 @@ const api = {
   removeFromWishList,
   attemptLoginWithToken,
   increaseQuantity,
-  decreaseQuantity
+  decreaseQuantity,
+  fetchTags,
+  fetchTag_lines
 };
 
 export default api;

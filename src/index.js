@@ -29,6 +29,11 @@ const App = ()=> {
   const [wishList, setWishList] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [wishListItems, setWishListItems] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [tag_lines, setTag_lines] = useState([]);
+  //const [wishList, setWishList] = useState([]);
+
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -51,6 +56,21 @@ const App = ()=> {
     };
     fetchData();
   }, []);
+
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchTags(setTags);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchTag_lines(setTag_lines);
+    };
+    fetchData();
+  }, []);
+  
 
   useEffect(()=> {
     if(auth.id){
@@ -83,6 +103,24 @@ const App = ()=> {
     if(auth.is_admin){
       const fetchData = async()=> {
         await api.fetchUsers(setUsers);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchAllOrders(setAllOrders);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchAllLineItems(setAllLineItems);
       };
       fetchData();
     }
@@ -181,7 +219,12 @@ const App = ()=> {
               <Link to='/cart'>Cart ({ cartCount })</Link>
               <Link to='/wishlist'>Wish List ({wishListCount})</Link>
               {
-                auth.is_admin ? <Link to='/users'>Users ({users.length})</Link> : ''
+                auth.is_admin ? 
+                <div>
+                <Link to='/users'>Users ({users.length})</Link>
+                <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
+                </div>
+                : ''
               }
               
               <span>
@@ -192,7 +235,6 @@ const App = ()=> {
                 <button onClick={ logout }>Logout</button>
               </span>
             </nav>
-
             <main> 
               <Routes>
                 <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } />}/>
@@ -205,6 +247,9 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   createProduct = { createProduct }
+                  updateProduct={ updateProduct }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
                 />
                 } />
                 <Route path='/products' element={
@@ -215,6 +260,9 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   createProduct = { createProduct }
+                  updateProduct={ updateProduct }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
                 />
                 } />
                 <Route path='/cart' element={ 
@@ -273,6 +321,8 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   auth = { auth }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
                 />
               } />
             </Routes>

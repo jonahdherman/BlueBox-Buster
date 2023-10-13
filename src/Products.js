@@ -1,23 +1,13 @@
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
+import VipProducts from './VipProducts';
+import NonVipProducts from './NonVipProducts';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, createWishListItem, updateWishListItem }) => {
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, createWishListItem, updateWishListItem, tags, tag_lines }) => {
+
   const navigate = useNavigate();
   const { term } = useParams();
-  
-  const nonVip = products.filter(product => product.vip_only === false)
-  const yesVip = products.filter(product => product.vip_only === true)
-
-  const assignVIP = (product)=> {
-    const vipProduct = {...product, vip_only: true}
-    updateProduct(vipProduct);
-  }
-
-  const removeVIP = (product)=> {
-    const vipProduct = {...product, vip_only: false}
-    updateProduct(vipProduct);
-  }
 
   return (
     <div>
@@ -27,7 +17,6 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
       {
         auth.is_admin ? (
           <CreateProduct createProduct={createProduct} />
-
         ) : null
       }
       {
@@ -136,6 +125,13 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
           })
         }
       </ul>
+      { 
+        auth.is_vip || auth.is_admin ? 
+        <VipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines }/> 
+        : null 
+      }
+      { auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2> }
+      <NonVipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines }/>
     </div>
   );
 };
