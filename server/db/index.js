@@ -65,7 +65,7 @@ const seed = async()=> {
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS wishList_items;
-    DROP TABLE IF EXISTS wishLists;
+    DROP TABLE IF EXISTS wishlists;
     
 
     CREATE TABLE users(
@@ -122,7 +122,7 @@ const seed = async()=> {
       CONSTRAINT product_and_wishList_key UNIQUE(product_id, wishList_id)
     );
 
-    CREATE TABLE wishLists(
+    CREATE TABLE wishlists(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
       is_wishList BOOLEAN NOT NULL DEFAULT true,

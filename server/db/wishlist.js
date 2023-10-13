@@ -8,34 +8,34 @@ const fetchWishListItems = async(userId)=> {
     SELECT wishList_items.* 
     FROM
     wishList_items
-    JOIN wishLists
-    ON wishLists.id = wishList_items.wishList_id
+    JOIN wishlists
+    ON wishlists.id = wishList_items.wishList_id
     JOIN users
-    ON users.id = wishLists.user_id
-    WHERE wishLists.id = $1
+    ON users.id = wishlists.user_id
+    WHERE wishlists.id = $1
     ORDER BY product_id
   `;
   const response = await client.query(SQL, [ userId ]);
   return response.rows;
 };
 
-// const fetchAllWishListItems = async()=> {
-//   const SQL = `
-//     SELECT wishList_items.* 
-//     FROM
-//     wishList_items
-//     JOIN wishLists
-//     ON wishLists.id = wishList_items.wishLists_id
-//     JOIN users
-//     ON users.id = wishLists.user_id
-//     ORDER BY product_id
-//   `;
-//   const response = await client.query(SQL);
-//   return response.rows;
-// };
+const fetchAllWishListItems = async()=> {
+  const SQL = `
+    SELECT wishList_items.* 
+    FROM
+    wishList_items
+    JOIN wishlists
+    ON wishlists.id = wishList_items.wishlists_id
+    JOIN users
+    ON users.id = wishlists.user_id
+    ORDER BY product_id
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
 
 // const ensureWishList = async(wishListItem)=> {
-//   let wishListId = wishListItem.wishLists_id;
+//   let wishListId = wishListItem.wishlists_id;
 //   if(!wishListId){
 //     const SQL = `
 //       SELECT wishList_id 
@@ -47,7 +47,7 @@ const fetchWishListItems = async(userId)=> {
 //   }
 //   const SQL = `
 //     SELECT * 
-//     FROM wishLists
+//     FROM wishlists
 //     WHERE id = $1 and is_wishList=true
 //   `;
 //   const response = await client.query(SQL, [wishListId]);
@@ -91,7 +91,7 @@ const deleteWishListItem = async(lineItem)=> {
 
 const updateWishList = async(wishlist) => {
   const SQL = `
-  UPDATE wishLists SET is_wishList = $1 WHERE id = $2 RETURNING *
+  UPDATE wishlists SET is_wishList = $1 WHERE id = $2 RETURNING *
   `;
   const response = await client.query(SQL, [wishlist.is_wishlist, wishlist.id]);
   return response.rows[0];
@@ -99,14 +99,14 @@ const updateWishList = async(wishlist) => {
 
 const fetchWishLists = async(userId) => {
   const SQL = `
-    SELECT * FROM wishLists
+    SELECT * FROM wishlists
     WHERE user_id = $1
   `;
   let response = await client.query(SQL, [userId]);
   const wishlist = response.rows.find(row => row.is_wishlist);
   if(!wishlist) {
     await client.query(`
-      INSERT INTO wishLists(is_wishList, id, user_id) VALUES(true, $1, $2)
+      INSERT INTO wishlists(is_wishList, id, user_id) VALUES(true, $1, $2)
     `,
     [uuidv4(), userId]
     );
@@ -118,7 +118,7 @@ const fetchWishLists = async(userId) => {
 
 const fetchAllWishLists = async() => {
   const SQL = `
-    SELECT * FROM wishLists
+    SELECT * FROM wishlists
   `;
   let response =await client.query(SQL);
     return response.rows;
@@ -126,7 +126,7 @@ const fetchAllWishLists = async() => {
 
 module.exports = {
     fetchWishListItems,
-    //fetchAllWishListItems,
+    fetchAllWishListItems,
     createWishListItem,
     updateWishListItem,
     deleteWishListItem,
