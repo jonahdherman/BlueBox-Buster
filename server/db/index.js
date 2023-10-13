@@ -130,6 +130,13 @@ const seed = async()=> {
       user_id UUID REFERENCES users(id) NOT NULL
     );
     
+    CREATE TABLE wishLists(
+      id UUID PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT now(),
+      is_wishList BOOLEAN NOT NULL DEFAULT true,
+      user_id UUID REFERENCES users(id) NOT NULL
+    );
+
     CREATE TABLE wishList_items(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
@@ -138,7 +145,7 @@ const seed = async()=> {
       quantity INTEGER DEFAULT 1,
       CONSTRAINT product_and_wishList_key UNIQUE(product_id, wishList_id)
     );
-    
+
     CREATE TABLE tags(
       id UUID PRIMARY KEY,
       name VARCHAR(100) UNIQUE NOT NULL
