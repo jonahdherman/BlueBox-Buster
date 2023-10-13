@@ -73,7 +73,7 @@ const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
 
 const createWishListItem = async({product, wishList, wishListItems, setWishListItems}) => {
   const response = await axios.post('/api/wishlists', {
-    wishList_id: wishList.id,
+    wishlist_id: wishList.id,
     product_id: product.id
   }, getHeaders());
   setWishListItems([...wishListItems, response.data]);

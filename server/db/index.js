@@ -68,8 +68,8 @@ const loadImage = (filePath) => {
 
 const seed = async()=> {
   const SQL = `
-    DROP TABLE IF EXISTS wishList_items;
-    DROP TABLE IF EXISTS wishlists;
+   DROP TABLE IF EXISTS wishList_items;  
+   DROP TABLE IF EXISTS wishlists;
     DROP TABLE IF EXISTS tag_lines;
     DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS line_items;
@@ -77,8 +77,6 @@ const seed = async()=> {
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS tags;
-
-
 
     CREATE TABLE users(
       id UUID PRIMARY KEY,
@@ -124,13 +122,6 @@ const seed = async()=> {
     );
 
     CREATE TABLE wishlists(
-      id UUID PRIMARY KEY,
-      created_at TIMESTAMP DEFAULT now(),
-      is_wishList BOOLEAN NOT NULL DEFAULT true,
-      user_id UUID REFERENCES users(id) NOT NULL
-    );
-    
-    CREATE TABLE wishLists(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
       is_wishList BOOLEAN NOT NULL DEFAULT true,
