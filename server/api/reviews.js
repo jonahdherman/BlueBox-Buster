@@ -16,7 +16,7 @@ app.get('/', async (req, res, next) => {
   }
 });
 
-app.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
+app.post('/', isLoggedIn, async (req, res, next) => {
   try {
     res.send(await createReviews(req.body));
   } catch (error) {
