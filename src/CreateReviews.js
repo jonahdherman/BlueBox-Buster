@@ -33,6 +33,7 @@ const CreateReviews = ({ reviews, createReviews })=> {
               onChange={event => setText(event.target.value)}
             ></textarea>
             <div>
+              <p>Stars:</p>
             <input 
               value={rating}
               type="number" 
@@ -40,7 +41,7 @@ const CreateReviews = ({ reviews, createReviews })=> {
               name="quantity" 
               min="1" 
               max="5"
-              placeholder= "1"
+              placeholder= "?"
               onChange={event => setRating(event.target.value)}/>
               
             <button type='submit' disabled={ false }>Add Review</button>

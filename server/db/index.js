@@ -68,14 +68,15 @@ const loadImage = (filePath) => {
 
 const seed = async()=> {
   const SQL = `
+    DROP TABLE IF EXISTS wishList_items;
+    DROP TABLE IF EXISTS wishlists;
     DROP TABLE IF EXISTS tag_lines;
     DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS line_items;
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
-    DROP TABLE IF EXISTS wishList_items;
-    DROP TABLE IF EXISTS wishlists;
+
     DROP TABLE IF EXISTS tags;
 
 
@@ -136,6 +137,7 @@ const seed = async()=> {
       created_at TIMESTAMP DEFAULT now(),
       is_wishList BOOLEAN NOT NULL DEFAULT true,
       user_id UUID REFERENCES users(id) NOT NULL
+    );
     
     CREATE TABLE tags(
       id UUID PRIMARY KEY,
@@ -254,7 +256,6 @@ const seed = async()=> {
     createTag_line({ product_id: seedData[3].id, tag_id: familyFriendly.id}),
     createTag_line({ product_id: seedData[3].id, tag_id: classic.id})
   ]);
-  console.log(seedData[1])
 
   const seedReviews = await Promise.all([
     createReviews({ text: 'Would recommend.', product_id: seedData[1].id, rating: 5 }),

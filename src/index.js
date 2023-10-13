@@ -31,7 +31,6 @@ const App = ()=> {
   const [wishList, setWishList] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [wishListItems, setWishListItems] = useState([]);
-  const [reviews, setReviews] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
   //const [wishList, setWishList] = useState([]);
