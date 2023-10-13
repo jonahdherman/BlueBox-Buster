@@ -63,7 +63,7 @@ const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
 
 const createWishListItem = async({product, wishList, wishListItems, setWishListItems}) => {
   const response = await axios.post('/api/wishlists', {
-    wishlist_id: wishList.id,
+    wishList_id: wishList.id,
     product_id: product.id
   }, getHeaders());
   setWishListItems([...wishListItems, response.data]);
@@ -98,13 +98,12 @@ const updateOrder = async({ order, setOrders })=> {
   setOrders(response.data);
 };
 
-const updateWishListItem = async({ wishList, setWishLists }) => {
-  await axios.put(`api/wishlists/${wishlist.id}`, wishList, getHeaders());
-  const response = await axios.get('/api/wishlists', {
-    quantity: wishListItems.quantity + 1,
-    wishList_id: wishList.id
+const updateWishListItem = async({ wishListItem, wishList, wishListItems, setWishListItems })=> {
+  const response = await axios.put(`/api/wishlists/${wishListItem.id}`, {
+    quantity: wishListItem.quantity + 1,
+    order_id: wishList.id
   }, getHeaders());
-  setWishLists(response.data);
+  setWishListItems(wishListItems.map( wishListItem => wishListItem.id == response.data.id ? response.data: wishListItem));
 };
 
 const increaseQuantity = async ({lineItem, lineItems, setLineItems}) => {
@@ -137,7 +136,7 @@ const removeFromCart = async({ lineItem, lineItems, setLineItems })=> {
 
 const removeFromWishList = async({wishListItem, wishListItems, setWishListItems}) => {
   const response = await axios.delete(`/api/wishlists/${wishListItem.id}`, getHeaders());
-  setWishListItems(wishListItems.filter(_wishListItem => _wishListItem.id !== wishListItem.id));
+  setWishListItems(wishListItems.filter( _wishListItem => _wishListItem.id !== wishListItem.id));
 };
 
 const attemptLoginWithToken = async(setAuth)=> {

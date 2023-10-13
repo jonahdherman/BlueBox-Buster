@@ -28,7 +28,7 @@ const List = ({updateWishList, removeFromWishList, wishListItems, list, products
                 }
             </ul>
             {
-                wishListItem.filter(wishListItem => wishListItem.wishlist_id === wishlist.id).length ? <button onClick={() => {
+                wishListItems.filter(wishListItem => wishListItem.wishlist_id === wishlist.id).length ? <button onClick={() => {
                     updateWishList({...list, is_wishList:false });
                 }}>Create Wish List Item</button>: null
             }
