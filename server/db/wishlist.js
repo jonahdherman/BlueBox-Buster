@@ -34,27 +34,27 @@ const fetchAllWishListItems = async()=> {
   return response.rows;
 };
 
-// const ensureWishList = async(wishListItem)=> {
-//   let wishListId = wishListItem.wishlists_id;
-//   if(!wishListId){
-//     const SQL = `
-//       SELECT wishList_id 
-//       FROM wishList_items 
-//       WHERE id = $1 
-//     `;
-//     const response = await client.query(SQL, [wishListItem.id]);
-//     wishListId = response.rows[0].wishList_id;
-//   }
-//   const SQL = `
-//     SELECT * 
-//     FROM wishlists
-//     WHERE id = $1 and is_wishList=true
-//   `;
-//   const response = await client.query(SQL, [wishListId]);
-//   // if(!response.rows.length){
-//   //   throw Error("An order which has been placed can not be changed");
-//   // }
-// };
+ const ensureWishList = async(wishListItem)=> {
+  let wishListId = wishListItem.wishlists_id;
+  if(!wishListId){
+    const SQL = `
+      SELECT wishList_id 
+      FROM wishList_items 
+      WHERE id = $1 
+    `;
+    const response = await client.query(SQL, [wishListItem.id]);
+    wishListId = response.rows[0].wishList_id;
+  }
+  const SQL = `
+    SELECT * 
+    FROM wishlists
+    WHERE id = $1 and is_wishList=true
+  `;
+  const response = await client.query(SQL, [wishListId]);
+  // if(!response.rows.length){
+  //   throw Error("An order which has been placed can not be changed");
+  // }
+};
 
 const updateWishListItem = async(wishListItem)=> {
   await ensureWishList(wishListItem);
