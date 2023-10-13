@@ -2,7 +2,7 @@ const {
   fetchProducts,
   createProduct,
   updateProduct
-} = require('../db/products');
+} = require('../db');
 
 const express = require('express');
 const app = express.Router();

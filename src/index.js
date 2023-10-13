@@ -14,6 +14,8 @@ import Register from './Register';
 import AllOrders from './AllOrders';
 import Reviews from './Reviews'
 import UpdateUser from './UpdateUser';
+import Tags from './Tags';
+import EditTags from './EditTags';
 import { all } from 'axios';
 
 
@@ -29,6 +31,10 @@ const App = ()=> {
   const [wishList, setWishList] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [wishListItems, setWishListItems] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [tag_lines, setTag_lines] = useState([]);
+  //const [wishList, setWishList] = useState([]);
+
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -51,6 +57,21 @@ const App = ()=> {
     };
     fetchData();
   }, []);
+
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchTags(setTags);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(()=> {
+    const fetchData = async()=> {
+      await api.fetchTag_lines(setTag_lines);
+    };
+    fetchData();
+  }, []);
+  
 
   useEffect(()=> {
     if(auth.id){
@@ -88,11 +109,42 @@ const App = ()=> {
     }
   }, [auth]);
 
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchAllOrders(setAllOrders);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
+  useEffect(()=> {
+    if(auth.is_admin){
+      const fetchData = async()=> {
+        await api.fetchAllLineItems(setAllLineItems);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
+
   const createProduct = async(product)=> {
      await api.createProduct({ product, products, setProducts});
+  };
+
+  const createTag = async(tag)=> {
+    await api.createTag({ tag, tags, setTags});
+  };
+
+  const createTag_line = async(newTag_line)=> {
+    await api.createTag_line({ newTag_line, tag_lines, setTag_lines });
+  };
+
+  const deleteTag_line = async(tag_line)=> {
+    await api.deleteTag_line({ tag_line, tag_lines, setTag_lines });
   };
   
   const updateLineItem = async(lineItem)=> {
@@ -179,9 +231,16 @@ const App = ()=> {
               <Link to='/products'>Products ({ products.length })</Link>
               <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               <Link to='/cart'>Cart ({ cartCount })</Link>
+              <Link to='/tags'>Tags ({ tags.length })</Link>
               <Link to='/wishlist'>Wish List ({wishListCount})</Link>
+
               {
-                auth.is_admin ? <Link to='/users'>Users ({users.length})</Link> : ''
+                auth.is_admin ? 
+                <div>
+                <Link to='/users'>Users ({users.length})</Link>
+                <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
+                </div>
+                : ''
               }
               
               <span>
@@ -192,7 +251,6 @@ const App = ()=> {
                 <button onClick={ logout }>Logout</button>
               </span>
             </nav>
-
             <main> 
               <Routes>
                 <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } />}/>
@@ -205,6 +263,9 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   createProduct = { createProduct }
+                  updateProduct={ updateProduct }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
                 />
                 } />
                 <Route path='/products' element={
@@ -215,6 +276,27 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   createProduct = { createProduct }
+                  updateProduct={ updateProduct }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
+                />
+                } />
+                <Route path='/tags' element={ 
+                  <Tags
+                  tags = { tags }
+                  tag_lines = { tag_lines }
+                  auth = { auth }
+                  products={ products }
+                  createTag = { createTag }
+                />
+                } />
+                <Route path='/tags/:term' element={ 
+                  <Tags
+                  tags = { tags }
+                  tag_lines = { tag_lines }
+                  auth = { auth }
+                  products={ products }
+                  createTag = { createTag }
                 />
                 } />
                 <Route path='/cart' element={ 
@@ -255,6 +337,7 @@ const App = ()=> {
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
                   <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
                   <Route path={'/users/:id/edit'} element={<UpdateUser users={users} updateUser={ updateUser }/>}/>
+                  <Route path={'/tags/edit/'} element={ <EditTags products={products} tag_lines={ tag_lines } tags={tags} createTag_line={ createTag_line } deleteTag_line={ deleteTag_line}/> } />
                 </Routes>
               ) : ''
               }
@@ -273,6 +356,8 @@ const App = ()=> {
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
                   auth = { auth }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
                 />
               } />
             </Routes>

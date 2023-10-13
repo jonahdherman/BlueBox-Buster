@@ -53,6 +53,16 @@ const fetchAllLineItems = async(setAllLineItems)=> {
   setAllLineItems(response.data);
 };
 
+const fetchTags = async(setTags)=> {
+  const response = await axios.get('/api/tags');
+  setTags(response.data);
+};
+
+const fetchTag_lines = async(setTag_lines)=> {
+  const response = await axios.get('/api/tag_lines');
+  setTag_lines(response.data);
+};
+
 const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
   const response = await axios.post('/api/lineItems', {
     order_id: cart.id,
@@ -75,8 +85,23 @@ const createProduct = async({ product, products, setProducts })=> {
 };
 
 const createReviews = async({ review, reviews, setReviews })=> {
-  const response = await axios.post('/api/products', review, getHeaders());
+  const response = await axios.post('/api/reviews', review, getHeaders());
   setReviews([...reviews, response.data]);
+};
+
+const createTag = async({ tag, tags, setTags})=> {
+  const response = await axios.post('/api/tags', tag, getHeaders());
+  setTags([...tags, response.data].sort((a, b) => a.name.localeCompare(b.name)));
+};
+
+const createTag_line = async({ newTag_line, tag_lines, setTag_lines})=> {
+  const response = await axios.post('/api/tag_lines', newTag_line, getHeaders());
+  setTag_lines([...tag_lines, response.data]);
+};
+
+const deleteTag_line = async({ tag_line, tag_lines, setTag_lines})=> {
+  const response = await axios.delete(`/api/tag_lines/${tag_line.id}`, getHeaders());
+  setTag_lines(tag_lines.filter(tagline => tagline.id !== tag_line.id));
 };
 
 const updateLineItem = async({ lineItem, cart, lineItems, setLineItems })=> {
@@ -205,7 +230,12 @@ const api = {
   removeFromWishList,
   attemptLoginWithToken,
   increaseQuantity,
-  decreaseQuantity
+  decreaseQuantity,
+  fetchTags,
+  fetchTag_lines,
+  createTag,
+  createTag_line,
+  deleteTag_line
 };
 
 export default api;
