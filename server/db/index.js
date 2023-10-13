@@ -74,7 +74,10 @@ const seed = async()=> {
     DROP TABLE IF EXISTS products;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
+    DROP TABLE IF EXISTS wishList_items;
+    DROP TABLE IF EXISTS wishlists;
     DROP TABLE IF EXISTS tags;
+
 
     CREATE TABLE users(
       id UUID PRIMARY KEY,
@@ -118,12 +121,27 @@ const seed = async()=> {
       product_id UUID REFERENCES products(id) NOT NULL,
       rating SMALLINT
     );
+    
+    CREATE TABLE wishList_items(
+      id UUID PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT now(),
+      product_id UUID REFERENCES products(id) NOT NULL,
+      wishList_id UUID REFERENCES orders(id) NOT NULL,
+      quantity INTEGER DEFAULT 1,
+      CONSTRAINT product_and_wishList_key UNIQUE(product_id, wishList_id)
+    );
 
+    CREATE TABLE wishlists(
+      id UUID PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT now(),
+      is_wishList BOOLEAN NOT NULL DEFAULT true,
+      user_id UUID REFERENCES users(id) NOT NULL
+    
     CREATE TABLE tags(
       id UUID PRIMARY KEY,
       name VARCHAR(100) UNIQUE NOT NULL
     );
-
+    
     CREATE TABLE tag_lines(
       id UUID PRIMARY KEY,
       product_id UUID REFERENCES products(id) NOT NULL,
@@ -236,11 +254,15 @@ const seed = async()=> {
     createTag_line({ product_id: seedData[3].id, tag_id: familyFriendly.id}),
     createTag_line({ product_id: seedData[3].id, tag_id: classic.id})
   ]);
+  console.log(seedData[1])
 
   const seedReviews = await Promise.all([
     createReviews({ text: 'Would recommend.', product_id: seedData[1].id, rating: 5 }),
-    createReviews({ text: 'Great movie.', product_id: seedData[2].id, rating: 3 }),
-    createReviews({ text: 'Definitely a good one.', product_id: seedData[3].id, rating: 1 })
+    createReviews({ text: 'Excellent movie.', product_id: seedData[1].id, rating: 5 }),
+    createReviews({ text: 'Great movies.', product_id: seedData[2].id, rating: 3 }),
+    createReviews({ text: 'Definitely a good one.', product_id: seedData[3].id, rating: 4 }),
+    createReviews({ text: 'Watched it twice.', product_id: seedData[4].id, rating: 2 }),
+    createReviews({ text: 'You gotta watch this one.', product_id: seedData[5].id, rating: 1 })
   ]);
   
   let orders = await fetchOrders(ethyl.id);

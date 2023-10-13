@@ -21,7 +21,7 @@
 - [ ] as a user I should have profile settings which I can edit
 - [ ] as a user I should be able to add an avatar to my profile
 - [ ] as a user I should be able to add a shipping address to an order
-- [ ] as a user I should be able see reviews for products on the product detail page
+- [x] as a user I should be able see reviews for products on the product detail page
 - [ ] as a user I should be able to leave a review on the product detail page
 - [ ] as a user I should be able to add and remove products from a wish list
 - [ ] as a user I should be able to rank the products in my wishlist
