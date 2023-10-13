@@ -23,7 +23,8 @@ const {
   createTag,
   createTag_line,
   fetchTags,
-  fetchTag_lines
+  fetchTag_lines,
+  deleteTag_line
 } = require('./tags');
 
 const {
@@ -227,12 +228,13 @@ const seed = async()=> {
     createTag({ name: 'Hardware'})
   ]);
 
-  const [vhs_tag, godfather_tag1, godfather_tag2, starwars_tag, lbt_tag] = await Promise.all([
+  const [vhs_tag, godfather_tag1, godfather_tag2, starwars_tag, lbt_tag, lbt_tag2] = await Promise.all([
     createTag_line({ product_id: seedData[0].id, tag_id: hardware.id}),
     createTag_line({ product_id: seedData[1].id, tag_id: classic.id}),
     createTag_line({ product_id: seedData[1].id, tag_id: crime.id}),
     createTag_line({ product_id: seedData[2].id, tag_id: scifi.id}),
-    createTag_line({ product_id: seedData[3].id, tag_id: familyFriendly.id})
+    createTag_line({ product_id: seedData[3].id, tag_id: familyFriendly.id}),
+    createTag_line({ product_id: seedData[3].id, tag_id: classic.id})
   ]);
 
   const seedReviews = await Promise.all([
@@ -259,6 +261,7 @@ module.exports = {
   fetchTag_lines,
   createTag,
   createTag_line,
+  deleteTag_line,
   fetchOrders,
   fetchAllOrders,
   fetchUsers,

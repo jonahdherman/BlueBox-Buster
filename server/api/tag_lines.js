@@ -1,6 +1,7 @@
 const {
     createTag_line,
-    fetchTag_lines
+    fetchTag_lines,
+    deleteTag_line
   } = require('../db');
   
   const express = require('express');
@@ -19,6 +20,14 @@ const {
   app.post('/', isLoggedIn, isAdmin, async (req, res, next) => {
     try {
       res.send(await createTag_line(req.body));
+    } catch (error) {
+      next(error)
+    }
+  });
+
+  app.delete('/:id', isLoggedIn, isAdmin, async (req, res, next) => {
+    try {
+      res.send(await deleteTag_line({ id: req.params.id, ...req.body}));
     } catch (error) {
       next(error)
     }
