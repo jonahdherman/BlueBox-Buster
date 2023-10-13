@@ -1,3 +1,13 @@
+try {
+  require('../env');
+}
+catch(ex){
+  console.log(`
+  If running locally add env.js file to root directory
+  set process.env.GOOGLE_API
+  `);
+}
+
 const {
   seed,
   client,

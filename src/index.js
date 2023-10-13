@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef ,useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Link, HashRouter, Routes, Route } from 'react-router-dom';
 import Products from './Products';
@@ -33,6 +33,9 @@ const App = ()=> {
   const [wishListItems, setWishListItems] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
+  //const [wishList, setWishList] = useState([]);
+  const el = useRef();
+
 
 
   const attemptLoginWithToken = async()=> {
@@ -125,6 +128,14 @@ const App = ()=> {
       fetchData();
     }
   }, [auth]);
+
+  useEffect(()=> {
+    const map = new google.maps.Map(el.current, {
+      center: { lat: 40.749933, lng: -73.98633 },
+      zoom: 13,
+      mapTypeControl: false,
+    });
+  }, []);
 
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
@@ -223,6 +234,8 @@ const App = ()=> {
 
   return (
     <div>
+      <div ref={ el } style={{ height: '300px'}}/>
+
       {
         auth.id ? (
           <>
