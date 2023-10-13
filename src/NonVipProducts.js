@@ -30,9 +30,9 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                     <br />
                                     {`${product.name}`}
                                     {`: $${(product.price / 100).toFixed(2)}`}
+                                    <p>tags</p>
+                                    { auth.is_admin ? <Link to={'/tags/edit'}>Edit tags</Link> : null }
                                     { productTags.length ?
-                                        <div>
-                                            <p>tags</p>
                                             <ul>
                                                 {
                                                     productTags.map(tag => {
@@ -41,8 +41,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                                         );
                                                     })
                                                 }
-                                            </ul>
-                                        </div> : <p>No tags</p>
+                                            </ul> : <p>None</p>
                                     }
 
                                     {`${cutOff}...`}
