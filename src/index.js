@@ -33,7 +33,6 @@ const App = ()=> {
   const [wishListItems, setWishListItems] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
-  //const [wishList, setWishList] = useState([]);
 
 
   const attemptLoginWithToken = async()=> {
