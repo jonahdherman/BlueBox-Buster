@@ -63,7 +63,7 @@ const createProduct = async({ product, products, setProducts })=> {
 };
 
 const createReviews = async({ review, reviews, setReviews })=> {
-  const response = await axios.post('/api/products', review, getHeaders());
+  const response = await axios.post('/api/reviews', review, getHeaders());
   setReviews([...reviews, response.data]);
 };
 

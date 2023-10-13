@@ -14,6 +14,7 @@ const fetchReviews = async()=> {
 };
 
 const createReviews = async(review)=> {
+  console.log(review)
   const SQL = `
     INSERT INTO reviews (id, text, product_id, rating) VALUES($1, $2, $3, $4) RETURNING *
   `;

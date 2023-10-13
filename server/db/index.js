@@ -232,11 +232,12 @@ const seed = async()=> {
     createTag_line({ product_id: seedData[2].id, tag_id: scifi.id}),
     createTag_line({ product_id: seedData[3].id, tag_id: familyFriendly.id})
   ]);
+  console.log(seedData[1])
 
   const seedReviews = await Promise.all([
     createReviews({ text: 'Would recommend.', product_id: seedData[1].id, rating: 5 }),
-    createReviews({ text: 'Hell of a film.', product_id: seedData[1].id, rating: 5 }),
-    createReviews({ text: 'Great movie.', product_id: seedData[2].id, rating: 3 }),
+    createReviews({ text: 'Excellent movie.', product_id: seedData[1].id, rating: 5 }),
+    createReviews({ text: 'Great movies.', product_id: seedData[2].id, rating: 3 }),
     createReviews({ text: 'Definitely a good one.', product_id: seedData[3].id, rating: 4 }),
     createReviews({ text: 'Watched it twice.', product_id: seedData[4].id, rating: 2 }),
     createReviews({ text: 'You gotta watch this one.', product_id: seedData[5].id, rating: 1 })

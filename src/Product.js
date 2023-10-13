@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
+import CreateReviews from './CreateReviews';
 
 const Product = ({ products, reviews, createReviews }) => {
     const { id } = useParams();
@@ -24,16 +25,22 @@ const Product = ({ products, reviews, createReviews }) => {
                   reviews.filter(review => review.product_id === product.id).map(review => {
                       return (
                         <li key={review.id}>
-                          { review.text }
+                          { review.text } { review.rating } Stars
                         </li>
                       )
                   })   
                 }
                 </ul>
+               <CreateReviews createReviews={ createReviews } reviews={ reviews }/>
             </div>
-            
+             
         </div>
+        
+          
+        
+        
     );
+    
 }
 
 export default Product;
