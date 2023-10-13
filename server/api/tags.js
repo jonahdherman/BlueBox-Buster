@@ -1,6 +1,6 @@
 const {
     createTag,
-    fetchTags
+    fetchTags,
   } = require('../db');
   
   const express = require('express');

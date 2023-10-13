@@ -89,6 +89,21 @@ const createReviews = async({ review, reviews, setReviews })=> {
   setReviews([...reviews, response.data]);
 };
 
+const createTag = async({ tag, tags, setTags})=> {
+  const response = await axios.post('/api/tags', tag, getHeaders());
+  setTags([...tags, response.data].sort((a, b) => a.name.localeCompare(b.name)));
+};
+
+const createTag_line = async({ newTag_line, tag_lines, setTag_lines})=> {
+  const response = await axios.post('/api/tag_lines', newTag_line, getHeaders());
+  setTag_lines([...tag_lines, response.data]);
+};
+
+const deleteTag_line = async({ tag_line, tag_lines, setTag_lines})=> {
+  const response = await axios.delete(`/api/tag_lines/${tag_line.id}`, getHeaders());
+  setTag_lines(tag_lines.filter(tagline => tagline.id !== tag_line.id));
+};
+
 const updateLineItem = async({ lineItem, cart, lineItems, setLineItems })=> {
   const response = await axios.put(`/api/lineItems/${lineItem.id}`, {
     quantity: lineItem.quantity + 1,
@@ -218,7 +233,10 @@ const api = {
   increaseQuantity,
   decreaseQuantity,
   fetchTags,
-  fetchTag_lines
+  fetchTag_lines,
+  createTag,
+  createTag_line,
+  deleteTag_line
 };
 
 export default api;

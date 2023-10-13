@@ -14,6 +14,8 @@ import Register from './Register';
 import AllOrders from './AllOrders';
 import Reviews from './Reviews'
 import UpdateUser from './UpdateUser';
+import Tags from './Tags';
+import EditTags from './EditTags';
 import { all } from 'axios';
 
 
@@ -129,8 +131,21 @@ const App = ()=> {
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
+
   const createProduct = async(product)=> {
      await api.createProduct({ product, products, setProducts});
+  };
+
+  const createTag = async(tag)=> {
+    await api.createTag({ tag, tags, setTags});
+  };
+
+  const createTag_line = async(newTag_line)=> {
+    await api.createTag_line({ newTag_line, tag_lines, setTag_lines });
+  };
+
+  const deleteTag_line = async(tag_line)=> {
+    await api.deleteTag_line({ tag_line, tag_lines, setTag_lines });
   };
   
   const updateLineItem = async(lineItem)=> {
@@ -217,7 +232,9 @@ const App = ()=> {
               <Link to='/products'>Products ({ products.length })</Link>
               <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               <Link to='/cart'>Cart ({ cartCount })</Link>
+              <Link to='/tags'>Tags ({ tags.length })</Link>
               <Link to='/wishlist'>Wish List ({wishListCount})</Link>
+
               {
                 auth.is_admin ? 
                 <div>
@@ -265,6 +282,24 @@ const App = ()=> {
                   tag_lines = { tag_lines }
                 />
                 } />
+                <Route path='/tags' element={ 
+                  <Tags
+                  tags = { tags }
+                  tag_lines = { tag_lines }
+                  auth = { auth }
+                  products={ products }
+                  createTag = { createTag }
+                />
+                } />
+                <Route path='/tags/:term' element={ 
+                  <Tags
+                  tags = { tags }
+                  tag_lines = { tag_lines }
+                  auth = { auth }
+                  products={ products }
+                  createTag = { createTag }
+                />
+                } />
                 <Route path='/cart' element={ 
                   <Cart
                     cart = { cart }
@@ -303,6 +338,7 @@ const App = ()=> {
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
                   <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
                   <Route path={'/users/:id/edit'} element={<UpdateUser users={users} updateUser={ updateUser }/>}/>
+                  <Route path={'/tags/edit/'} element={ <EditTags products={products} tag_lines={ tag_lines } tags={tags} createTag_line={ createTag_line } deleteTag_line={ deleteTag_line}/> } />
                 </Routes>
               ) : ''
               }
