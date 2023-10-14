@@ -5,11 +5,18 @@ import ProductImageEditor from "./ProductImageEditor";
 const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines }) => {
 
     const yesVip = products.filter(product => product.vip_only === true);
+    const [checked, setChecked] = useState(false);
 
     const removeVIP = (product)=> {
         const vipProduct = {...product, vip_only: false}
         updateProduct(vipProduct);
       }
+      
+      const handleChange = () => { 
+    
+      console.log('The checkbox was toggled'); 
+    
+      }; 
 
     return (
         <div>
@@ -26,6 +33,11 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth
                                 const cutOff = product.description.toString().slice(0, 250)
                                 return (
                                     <li key={product.id}>
+                                        {
+                                           auth.id ?
+                                            <h5><input type='checkbox' onChange={ handleChange } />Bookmark Item</h5> 
+                                            : null
+                                        }
                                         {
                                             product.image ? <img src={product.image} /> : null
                                         }

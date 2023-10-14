@@ -44,7 +44,7 @@ const CreateReviews = ({ reviews, createReviews })=> {
               placeholder= "?"
               onChange={event => setRating(event.target.value)}/>
               
-            <button type='submit' disabled={ false }>Add Review</button>
+            <button type='submit' disabled={ !text || !rating }>Add Review</button>
             </div>
         </form>
         </div>
