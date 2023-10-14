@@ -94,7 +94,8 @@ const seed = async()=> {
       price INTEGER DEFAULT 1 NOT NULL,
       description TEXT NOT NULL,
       image TEXT,
-      vip_only BOOLEAN DEFAULT false NOT NULL
+      vip_only BOOLEAN DEFAULT false NOT NULL,
+      is_bookmarked BOOLEAN DEFAULT false NOT NULL
     );
 
     CREATE TABLE orders(
@@ -175,7 +176,8 @@ const seed = async()=> {
       It comes with the Remote Control and Audio / Video TV connection cables.
       The user manual is widely available to view, print or download online.`, 
       image: vcrImage,
-      vip_only: false
+      vip_only: false,
+      is_bookmarked: false
      }),
     createProduct({
        name: 'The Godfather', 
@@ -189,7 +191,8 @@ const seed = async()=> {
        which may cause Michael to do the thing he was most reluctant in doing and wage a mob war against all the
        other mafia families which could tear the Corleone family apart.`, 
        image: godfatherImage,
-       vip_only: true
+       vip_only: true,
+       is_bookmarked: false
       }),
     createProduct({ 
       name: 'Star Wars: Original Trilogy', 
@@ -199,7 +202,8 @@ const seed = async()=> {
       to free the galaxy from the clutches of the Galactic Empire, as well as Luke Skywalker's quest to become a 
       Jedi and face Sith Lord Darth Vader and his master Darth Sidious.`,
       image: starwarsImage,
-      vip_only: true
+      vip_only: true,
+      is_bookmarked: false
     }),
     createProduct({ 
       name: 'The Land Before Time', 
@@ -209,7 +213,8 @@ const seed = async()=> {
       young dinosaurs, each one a different species, and they encounter several obstacles and the evil predator 
       Sharptooth as they learn to work together in order to survive`,
       image: landbeforetimeImage,
-      vip_only: false
+      vip_only: false,
+      is_bookmarked: false
     }),
     createProduct({ 
       name: 'Top Gun',
@@ -221,7 +226,8 @@ const seed = async()=> {
       Can Maverick prove his worth to Charlie, the flying school's no-nonsense astrophysics instructor? Will he be 
       able to suppress his wild nature to win the prestigious Top Gun Trophy?`,
       image: topgunImage,
-      vip_only: false
+      vip_only: false,
+      is_bookmarked: false
     }),
     createProduct({ 
       name: 'Scarface',
@@ -234,7 +240,8 @@ const seed = async()=> {
       it all however, including Frank's empire and his mistress Elvira Hancock. Once at the top however, Tony's 
       outrageous actions make him a target and everything comes crumbling down.`,
       image: scarfaceImage,
-      vip_only: false
+      vip_only: false,
+      is_bookmarked: false
     }),
   ]);
 
@@ -260,8 +267,8 @@ const seed = async()=> {
     createReviews({ text: 'Excellent movie.', product_id: seedData[1].id, rating: 5 }),
     createReviews({ text: 'Great movies.', product_id: seedData[2].id, rating: 3 }),
     createReviews({ text: 'Definitely a good one.', product_id: seedData[3].id, rating: 4 }),
-    createReviews({ text: 'Watched it twice.', product_id: seedData[4].id, rating: 2 }),
-    createReviews({ text: 'You gotta watch this one.', product_id: seedData[5].id, rating: 1 })
+    createReviews({ text: 'Watched it twice.', product_id: seedData[4].id, rating: 3 }),
+    createReviews({ text: 'You gotta watch this one.', product_id: seedData[5].id, rating: 3 })
   ]);
   
   let orders = await fetchOrders(ethyl.id);

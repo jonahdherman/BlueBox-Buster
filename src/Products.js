@@ -5,7 +5,7 @@ import VipProducts from './VipProducts';
 import NonVipProducts from './NonVipProducts';
 
 const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, createWishListItem, updateWishListItem, tags, tag_lines }) => {
-
+console.log(products)
   const navigate = useNavigate();
   const { term } = useParams();
 
@@ -19,6 +19,7 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
           <CreateProduct createProduct={createProduct} />
         ) : null
       }
+      
       { 
         auth.is_vip || auth.is_admin ? 
         <VipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines }/> 
