@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom"; 
 import ProductImageEditor from "./ProductImageEditor";
 
-const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines }) => {
+
+const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, createWishListItem, updateWishListItem, auth, updateProduct, term, tags, tag_lines }) => {
 
     const yesVip = products.filter(product => product.vip_only === true);
     const [bookmark, setBookmark] = useState(true);
@@ -70,6 +71,12 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth
                                                 cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                                             ) : null
                                         }
+                                        {
+                                            auth.id ? (
+                                                wishListItem ? <button onClick={() => updateWishListItem(wishListItem)}>Add Another</button> : <button onClick={() => createWishListItem(product)}>Add</button>
+                                            ) : null
+                                        }
+                                        
                                         {auth.is_admin ? (
                                             <div>
                                                 <Link to={`/products/${product.id}/edit`}>Edit</Link><br />
