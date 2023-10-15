@@ -265,7 +265,7 @@ const App = ()=> {
             </nav>
             <main> 
               <Routes>
-                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={ auth } />}/>
+                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={ auth } updateProduct={ updateProduct } />}/>
 
                 <Route path='/products/search/:term' element={
                   <Products

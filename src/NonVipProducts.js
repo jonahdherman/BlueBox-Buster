@@ -5,7 +5,7 @@ import ProductImageEditor from "./ProductImageEditor";
 const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines }) => {
 
     const nonVip = products.filter(product => product.vip_only === false)
-    const [checked, setChecked] = useState(false);
+    const [bookmark, setBookmark] = useState(true);
 
     const assignVIP = (product) => {
         const vipProduct = { ...product, vip_only: true }
@@ -13,10 +13,11 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
     }
     
     const handleChange = () => { 
+        //setBookmark(!bookmark)
+        console.log(bookmark)
     
-    console.log('The checkbox was toggled'); 
     
-    }; 
+      }; 
 
     return (
         <div>
@@ -32,10 +33,10 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                             return (
                                 <li key={product.id}>
                                     {
-                                        auth.id ?
-                                        <h5><input type='checkbox' onChange={ handleChange } />Bookmark Item</h5> 
-                                        : null
-                                    }
+                                           auth.id ?
+                                            <div><button disabled={ true } onClick={ handleChange } >Bookmark Item</button></div> 
+                                            : null
+                                        }
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
