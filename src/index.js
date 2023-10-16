@@ -290,23 +290,6 @@ const App = ()=> {
         auth.id ? (
           <>
 
-//             <nav className="navigationWrapper">
-//               <div class="logoWrapper">
-//                 <span class="box">BlueBox</span>
-//                 <span class="buster">Buster</span>
-//               </div>
-//               <img src='https://gclipart.com/wp-content/uploads/2017/03/Blank-movie-ticket-clipart.jpg' className='logo' />
-//               <Link to='/products' className="navigation">Products ({ products.length })</Link>
-//               <Link to='/orders' className="navigation">Orders ({ orders.filter(order => !order.is_cart).length })</Link>
-//               <Link to='/cart' className="navigation">Cart ({ cartCount })</Link>
-//               <Link to='/tags' className="navigation">Tags ({ tags.length })</Link>
-//               <Link to='/wishlist' className="navigation">Wish List ({wishListCount})</Link>
-//               <Link to='/addresses' className="navigation">Addresses ({ addresses.length })</Link>
-//               {
-//                 auth.is_admin ? 
-//                 <div>
-//                 <Link to='/users' className="navigation">Users ({users.length})</Link>
-//                 <Link to='/orders/all' className="navigation">All Orders ({allOrders.length})</Link>
 
             <nav>
               <div className='navItem'><Link to='/'>BBB</Link></div>
@@ -314,6 +297,7 @@ const App = ()=> {
               <div className='navItem'><Link to='/tags'>Tags ({ tags.length })</Link></div>
               <div className='navItem'><Link to='/cart'>Cart ({ cartCount })</Link></div>
               <div className='navItem'><Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link></div>
+              <Link to='/addresses' className="navigation">Addresses ({ addresses.length })</Link>
               <div className='navItem'>
                 <div>
                   { auth.avatar ? <img src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
