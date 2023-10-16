@@ -16,6 +16,8 @@ import Reviews from './Reviews'
 import UpdateUser from './UpdateUser';
 import Tags from './Tags';
 import EditTags from './EditTags';
+import AdminMenu from './AdminMenu';
+import UserMenu from './UserMenu';
 import { all } from 'axios';
 
 
@@ -33,6 +35,8 @@ const App = ()=> {
   const [wishListItems, setWishListItems] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
+  const [dropdownUser, setDropdownUser] = useState(false);
+  const [dropdownAdmin, serDropdownAdmin] = useState(false);
   //const [wishList, setWishList] = useState([]);
   const el = useRef();
 
@@ -186,7 +190,7 @@ const App = ()=> {
   };
 
   const createWishListItem = async(wishListItems) => {
-    await api.createWishList({wishListItems, setWishListItems});
+    await api.createWishListItem({wishListItems, setWishListItems});
   }
   
   const removeFromWishList = async(lineItem) => {
@@ -232,6 +236,22 @@ const App = ()=> {
     api.logout(setAuth);
   }
 
+  const handleMouseEnter = () => {
+    setDropdownUser(true);
+  };
+
+  const handleMouseLeave = () => {
+    setDropdownUser(false);
+  };
+
+  const handleMouseEnterAdmin = () => {
+    serDropdownAdmin(true);
+  };
+
+  const handleMouseLeaveAdmin = () => {
+    serDropdownAdmin(false);
+  };
+
   return (
     <div>
       <div ref={ el } style={{ height: '300px'}}/>
@@ -240,28 +260,34 @@ const App = ()=> {
         auth.id ? (
           <>
             <nav>
-              <Link to='/products'>Products ({ products.length })</Link>
-              <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
-              <Link to='/cart'>Cart ({ cartCount })</Link>
-              <Link to='/tags'>Tags ({ tags.length })</Link>
-              <Link to='/wishlist'>Wish List ({wishListCount})</Link>
-
+              <div className='navItem'><Link to='/products'>Products ({ products.length })</Link></div>
+              <div className='navItem'><Link to='/tags'>Tags ({ tags.length })</Link></div>
+              <div className='navItem'><Link to='/cart'>Cart ({ cartCount })</Link></div>
+              <div className='navItem'><Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link></div>
+              <div className='navItem'>
+                <div>
+                  { auth.avatar ? <img src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
+                </div>
+                <div onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}>
+                  Welcome { auth.username }!
+                  { auth.is_vip === true ? 'VIP!' : ''  }
+                  { dropdownUser && <UserMenu logout={ logout } wishListCount={ wishListCount }/> }
+                </div>
+              </div>
               {
                 auth.is_admin ? 
-                <div>
-                <Link to='/users'>Users ({users.length})</Link>
-                <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
+                <div className='navItem'>
+                <div 
+                  onMouseEnter={handleMouseEnterAdmin}
+                  onMouseLeave={handleMouseLeaveAdmin}
+                >
+                  Admin Menu
+                   { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders}/> }
                 </div>
-                : ''
+                </div>
+                : null
               }
-              
-              <span>
-                Welcome { auth.username }!
-                {
-                 auth.is_vip === true ? 'VIP!' : '' 
-                }
-                <button onClick={ logout }>Logout</button>
-              </span>
             </nav>
             <main> 
               <Routes>
@@ -278,6 +304,10 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishListItems = {wishListItems}
+                  createWishListItem = {createWishListItem}
+                  updateWishList = {updateWishListItem}
+                  removeFromWishList = {removeFromWishList}
                 />
                 } />
                 <Route path='/products' element={
@@ -291,6 +321,10 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishListItems = {wishListItems}
+                  createWishListItem = {createWishListItem}
+                  updateWishList = {updateWishListItem}
+                  removeFromWishList = {removeFromWishList}
                 />
                 } />
                 <Route path='/tags' element={ 
@@ -335,7 +369,7 @@ const App = ()=> {
                   <WishList
                   wishList = {list}
                   wishListItems = {wishListItems}
-                  createWishListItems = {createWishListItem}
+                  createWishListItem = {createWishListItem}
                   products = {products}
                   updateWishList = {updateWishListItem}
                   removeFromWishList = {removeFromWishList}
@@ -370,6 +404,10 @@ const App = ()=> {
                   auth = { auth }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishListItems = {wishListItems}
+                  createWishListItem = {createWishListItem}
+                  updateWishList = {updateWishListItem}
+                  removeFromWishList = {removeFromWishList}
                 />
               } />
             </Routes>

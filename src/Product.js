@@ -31,6 +31,7 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct }) => {
                 }
             <div id='product'>
                 <h2>{product.name}</h2>
+                { product.image ? <img src={product.image} /> : null }
                 <h4>{`$${(product.price / 100).toFixed(2)}`}</h4>
                 <h4>Description: {product.description}</h4>
                 <h4>Reviews</h4>
