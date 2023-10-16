@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import CreateReviews from './CreateReviews';
 
-const Product = ({ products, reviews, createReviews, auth, updateProduct }) => {
-    const [bookmark, setBookmark] = useState(true);
+const Product = ({ products, reviews, createReviews, auth }) => {
+    const [bookmark, setBookmark] = useState(false);
     const { id } = useParams();
     const product = products.find(product => product.id === id);
     if (!product) {
@@ -11,12 +11,10 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct }) => {
     }
     const handleChange = () => { 
       setBookmark(!bookmark)
-      const newBook = {
-          bookmark
+      const bookmarkedProduct = {
+      
       }
-      console.log(newBook)
-    
-    
+      console.log(bookmarkedProduct)
     }; 
   
 

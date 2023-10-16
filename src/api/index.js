@@ -16,6 +16,7 @@ const fetchProducts = async(setProducts)=> {
 const fetchReviews = async(setReviews)=> {
   const response = await axios.get('/api/reviews');
   setReviews(response.data);
+  console.log(response.data)
 };
 
 const fetchWishListItems = async(setWishListItems)=> {
@@ -36,6 +37,12 @@ const fetchOrders = async(setOrders)=> {
 const fetchAllOrders = async(setAllOrders)=> {
   const response = await axios.get('/api/orders/all', getHeaders());
   setAllOrders(response.data);
+};
+
+const fetchBookmarks = async(setBookmarks)=> {
+  const response = await axios.get('/api/bookmarks', getHeaders());
+  setBookmarks(response.data);
+  console.log(response.data)
 };
 
 const fetchUsers = async(setUsers)=> {
@@ -214,6 +221,7 @@ const api = {
   fetchAllWishListItems,
   fetchAllOrders,
   fetchUsers,
+  fetchBookmarks,
   updateUser,
   fetchLineItems,
   fetchAllLineItems,

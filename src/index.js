@@ -37,6 +37,7 @@ const App = ()=> {
   const [tag_lines, setTag_lines] = useState([]);
   const [dropdownUser, setDropdownUser] = useState(false);
   const [dropdownAdmin, serDropdownAdmin] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
   //const [wishList, setWishList] = useState([]);
   const el = useRef();
 
@@ -140,6 +141,15 @@ const App = ()=> {
       mapTypeControl: false,
     });
   }, []);
+  
+  useEffect(()=> {
+    if(auth.id){
+      const fetchData = async()=> {
+        await api.fetchBookmarks(setBookmarks);
+      };
+      fetchData();
+    }
+  }, [auth]);
 
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
@@ -235,6 +245,9 @@ const App = ()=> {
   const logout = ()=> {
     api.logout(setAuth);
   }
+  
+  console.log(bookmarks)
+  console.log(reviews)
 
   const handleMouseEnter = () => {
     setDropdownUser(true);
@@ -291,7 +304,7 @@ const App = ()=> {
             </nav>
             <main> 
               <Routes>
-                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={ auth } updateProduct={ updateProduct } />}/>
+                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={ auth } />}/>
 
                 <Route path='/products/search/:term' element={
                   <Products
