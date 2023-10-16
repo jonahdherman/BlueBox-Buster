@@ -52,9 +52,16 @@ const {
 } = require('./wishlist');
 
 const {
+
+  createAddress,
+  fetchAddresses
+} = require('./address');
+  
+const {
   createBookmark,
   fetchBookmarks
 } = require('./bookmarks');
+
 
 const loadImage = (filePath) => {
   return new Promise((resolve, reject)=>{
@@ -74,6 +81,7 @@ const loadImage = (filePath) => {
 const seed = async()=> {
   const SQL = `
 
+    DROP TABLE IF EXISTS addresses;
     DROP TABLE IF EXISTS bookmarks;
     DROP TABLE IF EXISTS wishList_items;  
     DROP TABLE IF EXISTS wishlists;
@@ -103,6 +111,13 @@ const seed = async()=> {
       description TEXT NOT NULL,
       image TEXT,
       vip_only BOOLEAN DEFAULT false NOT NULL
+    );
+
+    CREATE TABLE addresses(
+      id UUID PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT now(),
+      data JSON DEFAULT '{}',
+      user_id UUID REFERENCES users(id) NOT NULL
     );
 
     CREATE TABLE orders(
@@ -175,6 +190,9 @@ const seed = async()=> {
     createUser({ username: 'lucy', password: 'l_password', is_admin: false, is_vip: false}),
     createUser({ username: 'ethyl', password: '1234', is_admin: true, is_vip: true})
   ]);
+
+  await createAddress({ user_id: moe.id, data: { formatted_address: 'earth'}});
+  await createAddress({ user_id: moe.id, data: { formatted_address: 'mars'}});
 
   const godfatherImage = await loadImage('/images/godfather.png');
   const starwarsImage = await loadImage('/images/starwars.png');
@@ -803,6 +821,8 @@ module.exports = {
   fetchBookmarks,
   createReviews,
   createUser,
+  fetchAddresses,
+  createAddress,
   updateUser,
   fetchLineItems,
   fetchAllLineItems,
