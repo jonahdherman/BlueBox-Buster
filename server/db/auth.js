@@ -8,7 +8,7 @@ const findUserByToken = async(token) => {
   try {
     const payload = await jwt.verify(token, process.env.JWT);
     const SQL = `
-      SELECT id, username, is_admin, is_vip
+      SELECT id, username, is_admin, is_vip, avatar
       FROM users
       WHERE id = $1
     `;

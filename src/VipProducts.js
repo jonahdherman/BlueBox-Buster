@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ProductImageEditor from "./ProductImageEditor";
 
 
-const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, createWishListItem, updateWishListItem, auth, updateProduct, term, tags, tag_lines }) => {
+const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, createWishListItem, updateWishListItem, wishListItems, removeFromWishList, auth, updateProduct, term, tags, tag_lines }) => {
 
     const yesVip = products.filter(product => product.vip_only === true);
     const [bookmark, setBookmark] = useState(true);
@@ -32,6 +32,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, crea
                                 const productLines = tag_lines.filter(tag_line => tag_line.product_id === product.id);
                                 const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                                 const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+                                const wishListItem = wishListItems.find(wishListItem => wishListItem.product_id === product.id);
                                 const cutOff = product.description.toString().slice(0, 250)
                                 return (
                                     <li key={product.id}>
@@ -73,7 +74,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, crea
                                         }
                                         {
                                             auth.id ? (
-                                                wishListItem ? <button onClick={() => updateWishListItem(wishListItem)}>Add Another</button> : <button onClick={() => createWishListItem(product)}>Add</button>
+                                                wishListItem ? <button onClick={() => updateWishListItem(wishListItem)}>Remove From Wishlist</button> : <button onClick={() => createWishListItem(product)}>Add to Wishlist</button>
                                             ) : null
                                         }
                                         

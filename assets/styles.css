@@ -1,5 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: verdana;
+  background-color: rgb(12, 45, 78);
+  color: whitesmoke;
+}
+
+a {
+  color: whitesmoke;
+}
+
+img {
+  max-height: 300px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  border-radius: 50%;
+  max-height: 50px;
+  max-width: 50px;
+}
+
+.dropdown {
+  position: absolute;
 }
 
 form {
@@ -9,4 +44,9 @@ form {
 
 form > * {
   margin: 0.5rem;
+  width: 50%;
+}
+
+form > button {
+  width: 100px;
 }
