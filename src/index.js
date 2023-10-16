@@ -17,6 +17,8 @@ import UpdateUser from './UpdateUser';
 import Tags from './Tags';
 import EditTags from './EditTags';
 import { all } from 'axios';
+import Addresses from './Addresses';
+import { Loader } from "@googlemaps/js-api-loader"
 
 
 
@@ -33,6 +35,7 @@ const App = ()=> {
   const [wishListItems, setWishListItems] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
+  const [addresses, setAddresses] = useState([]);
   //const [wishList, setWishList] = useState([]);
   const el = useRef();
 
@@ -130,15 +133,26 @@ const App = ()=> {
   }, [auth]);
 
   useEffect(()=> {
-    const map = new google.maps.Map(el.current, {
-      center: { lat: 40.749933, lng: -73.98633 },
-      zoom: 13,
-      mapTypeControl: false,
-    });
+    const setup = async()=> {
+      const loader = new Loader({
+        apiKey: window.GOOGLE_API_KEY,
+      });
+     await loader.load();
+     const { Map } = await google.maps.importLibrary("places");
+      const map = new google.maps.Map(el.current, {
+        center: { lat: 40.749933, lng: -73.98633 },
+        zoom: 13,
+        mapTypeControl: false,
+      });
+    }
+    setup();
   }, []);
-
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
+  };
+
+  const createAddress = async(address)=> {
+    await api.createAddress({ address, setAddresses });
   };
 
   const createProduct = async(product)=> {
@@ -239,18 +253,23 @@ const App = ()=> {
       {
         auth.id ? (
           <>
-            <nav>
-              <Link to='/products'>Products ({ products.length })</Link>
-              <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
-              <Link to='/cart'>Cart ({ cartCount })</Link>
-              <Link to='/tags'>Tags ({ tags.length })</Link>
-              <Link to='/wishlist'>Wish List ({wishListCount})</Link>
-
+            <nav className="navigationWrapper">
+              <div class="logoWrapper">
+                <span class="box">BlueBox</span>
+                <span class="buster">Buster</span>
+              </div>
+              <img src='https://gclipart.com/wp-content/uploads/2017/03/Blank-movie-ticket-clipart.jpg' className='logo' />
+              <Link to='/products' className="navigation">Products ({ products.length })</Link>
+              <Link to='/orders' className="navigation">Orders ({ orders.filter(order => !order.is_cart).length })</Link>
+              <Link to='/cart' className="navigation">Cart ({ cartCount })</Link>
+              <Link to='/tags' className="navigation">Tags ({ tags.length })</Link>
+              <Link to='/wishlist' className="navigation">Wish List ({wishListCount})</Link>
+              <Link to='/addresses' className="navigation">Addresses ({ addresses.length })</Link>
               {
                 auth.is_admin ? 
                 <div>
-                <Link to='/users'>Users ({users.length})</Link>
-                <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
+                <Link to='/users' className="navigation">Users ({users.length})</Link>
+                <Link to='/orders/all' className="navigation">All Orders ({allOrders.length})</Link>
                 </div>
                 : ''
               }
@@ -265,7 +284,9 @@ const App = ()=> {
             </nav>
             <main> 
               <Routes>
+              
                 <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } />}/>
+                
 
                 <Route path='/products/search/:term' element={
                   <Products
@@ -340,6 +361,13 @@ const App = ()=> {
                   updateWishList = {updateWishListItem}
                   removeFromWishList = {removeFromWishList}
                   />
+                } />
+
+                <Route path='/addresses' element={ 
+                  <Addresses 
+                  createAddress={ createAddress } 
+                  addresses={ addresses } 
+                />
                 } />
               </Routes>
 

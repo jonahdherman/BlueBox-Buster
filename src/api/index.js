@@ -38,6 +38,12 @@ const fetchAllOrders = async(setAllOrders)=> {
   setAllOrders(response.data);
 };
 
+const fetchAddresses = async(setAddresses)=> {
+  const response = await axios.get('/api/addresses', getHeaders());
+  setAddresses(response.data);
+};
+
+
 const fetchUsers = async(setUsers)=> {
   const response = await axios.get('/api/users', getHeaders());
   setUsers(response.data);
@@ -83,6 +89,12 @@ const createProduct = async({ product, products, setProducts })=> {
   const response = await axios.post('/api/products', product, getHeaders());
   setProducts([...products, response.data]);
 };
+
+const createAddress = async({ address, setAddresses })=> {
+  const response = await axios.post('/api/addresses', address, getHeaders());
+  await fetchAddresses(setAddresses)
+};
+
 
 const createReviews = async({ review, reviews, setReviews })=> {
   const response = await axios.post('/api/reviews', review, getHeaders());
@@ -218,7 +230,9 @@ const api = {
   fetchLineItems,
   fetchAllLineItems,
   fetchReviews,
+  fetchAddresses,
   createLineItem,
+  createAddress,
   createWishListItem,
   createProduct,
   createReviews,
