@@ -112,6 +112,15 @@ const App = ()=> {
     }
   }, [auth]);
 
+  useEffect(() => {
+    if(auth.id){
+      const fetchData = async() => {
+        await api.fetchAddresses(setAddresses);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
   useEffect(()=> {
     if(auth.is_admin){
       const fetchData = async()=> {
@@ -289,14 +298,27 @@ const App = ()=> {
       {
         auth.id ? (
           <>
-
-
             <nav>
-              <div className='navItem'><Link to='/'>BBB</Link></div>
-              <div className='navItem'><Link to='/products'>Products ({ products.length })</Link></div>
-              <div className='navItem'><Link to='/tags'>Tags ({ tags.length })</Link></div>
-              <div className='navItem'><Link to='/cart'>Cart ({ cartCount })</Link></div>
-              <div className='navItem'><Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link></div>
+              <div className='navItem'>
+      
+                <Link to='/'>BBB</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/film48.png'/>
+                <Link to='/products'>Products ({ products.length })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/tag48.png'/>
+                <Link to='/tags'>Tags ({ tags.length })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/cart48.png'/>
+                <Link to='/cart'>Cart ({ cartCount })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/order48.png'/>
+                <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
+              </div>
               <Link to='/addresses' className="navigation">Addresses ({ addresses.length })</Link>
               <div className='navItem'>
                 <div>
@@ -312,10 +334,14 @@ const App = ()=> {
               {
                 auth.is_admin ? 
                 <div className='navItem'>
+                  <div>
+                    <img src='assets/admin48.png'/>
+                  </div>
                 <div 
                   onMouseEnter={handleMouseEnterAdmin}
                   onMouseLeave={handleMouseLeaveAdmin}
                 >
+                  
                   Admin Menu
                    { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders}/> }
                 </div>
@@ -327,7 +353,7 @@ const App = ()=> {
             <main> 
               <Routes>
               
-                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } />}/>
+                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={auth}/>}/>
                 
                 <Route path='/' element={ <Home /> }/>
                 <Route path='/products/:id' element={
