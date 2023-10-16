@@ -663,8 +663,8 @@ const seed = async()=> {
     createTag({ name: 'Parody'})
   ]);
 
-  const [vhs_tag, godfather_tag1, godfather_tag2, starwars_tag, lbt_tag, lbt_tag2] = await Promise.all([
-    createTag_line({ product_id: seedData[0].id, tag_id: seedTags[0].id}),
+  const seedTagLines = await Promise.all([
+    createTag_line({ product_id: seedData[0].id, tag_id: seedTags[5].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[3].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[1].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[15].id}),
