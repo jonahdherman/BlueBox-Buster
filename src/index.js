@@ -16,6 +16,9 @@ import Reviews from './Reviews'
 import UpdateUser from './UpdateUser';
 import Tags from './Tags';
 import EditTags from './EditTags';
+import AdminMenu from './AdminMenu';
+import UserMenu from './UserMenu';
+import Home from './Home';
 import { all } from 'axios';
 import Addresses from './Addresses';
 import { Loader } from "@googlemaps/js-api-loader"
@@ -36,6 +39,10 @@ const App = ()=> {
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const [dropdownUser, setDropdownUser] = useState(false);
+  const [dropdownAdmin, serDropdownAdmin] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
+
   //const [wishList, setWishList] = useState([]);
   const el = useRef();
 
@@ -147,6 +154,16 @@ const App = ()=> {
     }
     setup();
   }, []);
+  
+  useEffect(()=> {
+    if(auth.id){
+      const fetchData = async()=> {
+        await api.fetchBookmarks(setBookmarks);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
   };
@@ -200,7 +217,7 @@ const App = ()=> {
   };
 
   const createWishListItem = async(wishListItems) => {
-    await api.createWishList({wishListItems, setWishListItems});
+    await api.createWishListItem({wishListItems, setWishListItems});
   }
   
   const removeFromWishList = async(lineItem) => {
@@ -245,6 +262,25 @@ const App = ()=> {
   const logout = ()=> {
     api.logout(setAuth);
   }
+  
+  console.log(bookmarks)
+  console.log(reviews)
+
+  const handleMouseEnter = () => {
+    setDropdownUser(true);
+  };
+
+  const handleMouseLeave = () => {
+    setDropdownUser(false);
+  };
+
+  const handleMouseEnterAdmin = () => {
+    serDropdownAdmin(true);
+  };
+
+  const handleMouseLeaveAdmin = () => {
+    serDropdownAdmin(false);
+  };
 
   return (
     <div>
@@ -253,40 +289,71 @@ const App = ()=> {
       {
         auth.id ? (
           <>
-            <nav className="navigationWrapper">
-              <div class="logoWrapper">
-                <span class="box">BlueBox</span>
-                <span class="buster">Buster</span>
+
+//             <nav className="navigationWrapper">
+//               <div class="logoWrapper">
+//                 <span class="box">BlueBox</span>
+//                 <span class="buster">Buster</span>
+//               </div>
+//               <img src='https://gclipart.com/wp-content/uploads/2017/03/Blank-movie-ticket-clipart.jpg' className='logo' />
+//               <Link to='/products' className="navigation">Products ({ products.length })</Link>
+//               <Link to='/orders' className="navigation">Orders ({ orders.filter(order => !order.is_cart).length })</Link>
+//               <Link to='/cart' className="navigation">Cart ({ cartCount })</Link>
+//               <Link to='/tags' className="navigation">Tags ({ tags.length })</Link>
+//               <Link to='/wishlist' className="navigation">Wish List ({wishListCount})</Link>
+//               <Link to='/addresses' className="navigation">Addresses ({ addresses.length })</Link>
+//               {
+//                 auth.is_admin ? 
+//                 <div>
+//                 <Link to='/users' className="navigation">Users ({users.length})</Link>
+//                 <Link to='/orders/all' className="navigation">All Orders ({allOrders.length})</Link>
+
+            <nav>
+              <div className='navItem'><Link to='/'>BBB</Link></div>
+              <div className='navItem'><Link to='/products'>Products ({ products.length })</Link></div>
+              <div className='navItem'><Link to='/tags'>Tags ({ tags.length })</Link></div>
+              <div className='navItem'><Link to='/cart'>Cart ({ cartCount })</Link></div>
+              <div className='navItem'><Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link></div>
+              <div className='navItem'>
+                <div>
+                  { auth.avatar ? <img src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
+                </div>
+                <div onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}>
+                  Welcome { auth.username }!
+                  { auth.is_vip === true ? 'VIP!' : ''  }
+                  { dropdownUser && <UserMenu logout={ logout } wishListCount={ wishListCount }/> }
+                </div>
               </div>
-              <img src='https://gclipart.com/wp-content/uploads/2017/03/Blank-movie-ticket-clipart.jpg' className='logo' />
-              <Link to='/products' className="navigation">Products ({ products.length })</Link>
-              <Link to='/orders' className="navigation">Orders ({ orders.filter(order => !order.is_cart).length })</Link>
-              <Link to='/cart' className="navigation">Cart ({ cartCount })</Link>
-              <Link to='/tags' className="navigation">Tags ({ tags.length })</Link>
-              <Link to='/wishlist' className="navigation">Wish List ({wishListCount})</Link>
-              <Link to='/addresses' className="navigation">Addresses ({ addresses.length })</Link>
               {
                 auth.is_admin ? 
-                <div>
-                <Link to='/users' className="navigation">Users ({users.length})</Link>
-                <Link to='/orders/all' className="navigation">All Orders ({allOrders.length})</Link>
+                <div className='navItem'>
+                <div 
+                  onMouseEnter={handleMouseEnterAdmin}
+                  onMouseLeave={handleMouseLeaveAdmin}
+                >
+                  Admin Menu
+                   { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders}/> }
                 </div>
-                : ''
+
+                </div>
+                : null
               }
-              
-              <span>
-                Welcome { auth.username }!
-                {
-                 auth.is_vip === true ? 'VIP!' : '' 
-                }
-                <button onClick={ logout }>Logout</button>
-              </span>
             </nav>
             <main> 
               <Routes>
               
                 <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } />}/>
                 
+                <Route path='/' element={ <Home /> }/>
+                <Route path='/products/:id' element={
+                  <Product 
+                  products={ products } 
+                  reviews={ reviews } 
+                  createReviews={ createReviews } 
+                  auth={ auth } 
+                  />
+                }/>
 
                 <Route path='/products/search/:term' element={
                   <Products
@@ -299,6 +366,10 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishListItems = {wishListItems}
+                  createWishListItem = {createWishListItem}
+                  updateWishList = {updateWishListItem}
+                  removeFromWishList = {removeFromWishList}
                 />
                 } />
                 <Route path='/products' element={
@@ -312,6 +383,10 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishListItems = {wishListItems}
+                  createWishListItem = {createWishListItem}
+                  updateWishList = {updateWishListItem}
+                  removeFromWishList = {removeFromWishList}
                 />
                 } />
                 <Route path='/tags' element={ 
@@ -356,7 +431,7 @@ const App = ()=> {
                   <WishList
                   wishList = {list}
                   wishListItems = {wishListItems}
-                  createWishListItems = {createWishListItem}
+                  createWishListItem = {createWishListItem}
                   products = {products}
                   updateWishList = {updateWishListItem}
                   removeFromWishList = {removeFromWishList}
@@ -398,6 +473,10 @@ const App = ()=> {
                   auth = { auth }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishListItems = {wishListItems}
+                  createWishListItem = {createWishListItem}
+                  updateWishList = {updateWishListItem}
+                  removeFromWishList = {removeFromWishList}
                 />
               } />
             </Routes>
