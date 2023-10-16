@@ -18,6 +18,7 @@ import Tags from './Tags';
 import EditTags from './EditTags';
 import AdminMenu from './AdminMenu';
 import UserMenu from './UserMenu';
+import Home from './Home';
 import { all } from 'axios';
 
 
@@ -273,6 +274,7 @@ const App = ()=> {
         auth.id ? (
           <>
             <nav>
+              <div className='navItem'><Link to='/'>BBB</Link></div>
               <div className='navItem'><Link to='/products'>Products ({ products.length })</Link></div>
               <div className='navItem'><Link to='/tags'>Tags ({ tags.length })</Link></div>
               <div className='navItem'><Link to='/cart'>Cart ({ cartCount })</Link></div>
@@ -304,8 +306,15 @@ const App = ()=> {
             </nav>
             <main> 
               <Routes>
-                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={ auth } />}/>
-
+                <Route path='/' element={ <Home /> }/>
+                <Route path='/products/:id' element={
+                  <Product 
+                  products={ products } 
+                  reviews={ reviews } 
+                  createReviews={ createReviews } 
+                  auth={ auth } 
+                  />
+                }/>
                 <Route path='/products/search/:term' element={
                   <Products
                   auth = { auth }
