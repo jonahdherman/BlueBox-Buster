@@ -155,11 +155,13 @@ const seed = async()=> {
 
     CREATE TABLE tags(
       id UUID PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT now(),
       name VARCHAR(100) UNIQUE NOT NULL
     );
     
     CREATE TABLE tag_lines(
       id UUID PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT now(),
       product_id UUID REFERENCES products(id) NOT NULL,
       tag_id UUID REFERENCES tags(id) NOT NULL
     );
