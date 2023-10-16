@@ -34,7 +34,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                 <li key={product.id}>
                                     {
                                            auth.id ?
-                                            <div><button disabled={ true } onClick={ handleChange } >Bookmark Item</button></div> 
+                                            <div><button disabled={ false } onClick={ handleChange } >Bookmark Item</button></div> 
                                             : null
                                         }
                                     {
