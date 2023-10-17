@@ -229,7 +229,6 @@ const api = {
   createLineItem,
   addWishList,
   createAddress,
-  createWishListItem,
   createProduct,
   createReviews,
   updateLineItem,

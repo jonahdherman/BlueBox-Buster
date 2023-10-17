@@ -36,15 +36,9 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                             const productLines = tag_lines.filter(tag_line => tag_line.product_id === product.id);
                             const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
-                            const wishListItem = wishListItems.find(wishListItem => wishListItem.product_id === product.id);
                             const cutOff = product.description.toString().slice(0, 250)
                             return (
                                 <div key={product.id} className="productsCard">
-                                    {
-                                        auth.id ?
-                                            <div><button disabled={false} onClick={handleChange} >Bookmark Item</button></div>
-                                            : null
-                                    }
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
@@ -69,12 +63,6 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                     {
                                         auth.id ? (
                                             cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
-                                        ) : null
-                                    }
-
-                                    {
-                                        auth.id ? (
-                                            wishListItem ? <button onClick={() => updateWishListItem(wishListItem)}>Remove From Wishlist</button> : <button onClick={() => createWishListItem(product)}>Add to Wishlist</button>
                                         ) : null
                                     }
 

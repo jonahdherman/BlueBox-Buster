@@ -288,10 +288,9 @@ const App = ()=> {
           <>
             <nav>
 
-              // <Link to='/wishlist'>Wish List</Link>
+              {/* <Link to='/wishlist'>Wish List</Link> */}
 
               <div className='navItem'>
-      
                 <Link to='/'>BBB</Link>
               </div>
               <div className='navItem'>
@@ -319,7 +318,7 @@ const App = ()=> {
                   onMouseLeave={handleMouseLeave}>
                   Welcome { auth.username }!
                   { auth.is_vip === true ? 'VIP!' : ''  }
-                  { dropdownUser && <UserMenu logout={ logout } wishListCount={ wishListCount } auth={ auth }/> }
+                  { dropdownUser && <UserMenu logout={ logout } auth={ auth }/> }
                 </div>
               </div>
 
@@ -369,10 +368,6 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
-                  wishListItems = {wishListItems}
-                  createWishListItem = {createWishListItem}
-                  updateWishList = {updateWishListItem}
-                  removeFromWishList = {removeFromWishList}
                 />
                 } />
                 <Route path='/products' element={
@@ -389,10 +384,6 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
-                  wishListItems = {wishListItems}
-                  createWishListItem = {createWishListItem}
-                  updateWishList = {updateWishListItem}
-                  removeFromWishList = {removeFromWishList}
                 />
                 } />
                 <Route path='/tags' element={ 
