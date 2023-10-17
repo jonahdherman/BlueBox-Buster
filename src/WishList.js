@@ -1,5 +1,6 @@
 import React from "react";
 import Products from './Products';
+import Link from 'react-router-dom';
 
 
 const WishList = ({products, wishLists, addWishList, removeWishList}) => {
@@ -8,7 +9,7 @@ const WishList = ({products, wishLists, addWishList, removeWishList}) => {
         return (
             <div>
                 <h1>Wish List</h1>
-                <ul>Your Wish List is Empty! Add a Product!</ul>
+                <ul>Your Wish List is Empty! Add a Product</ul>
             </div>
         )
     }
