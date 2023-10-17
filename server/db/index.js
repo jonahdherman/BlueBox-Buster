@@ -10,7 +10,7 @@ const {
 const {
   fetchProducts,
   createProduct,
-  updateProduct
+  updateProduct 
 } = require('./products');
 
 const {
@@ -45,11 +45,9 @@ const {
 } = require('./cart');
 
 const {
-  fetchWishListItems,
-  fetchAllWishListItems,
-  createWishListItem,
-  updateWishListItem,
-  deleteWishListItem
+  createWishList,
+  fetchWishList,
+  removeWishList
 } = require('./wishlist');
 
 const {
@@ -80,11 +78,9 @@ const loadImage = (filePath) => {
 
 const seed = async()=> {
   const SQL = `
-
+    DROP TABLE IF EXISTS wishlist_items;
     DROP TABLE IF EXISTS addresses;
     DROP TABLE IF EXISTS bookmarks;
-    DROP TABLE IF EXISTS wishList_items;  
-    DROP TABLE IF EXISTS wishlists;
     DROP TABLE IF EXISTS tag_lines;
     DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS line_items;
@@ -102,7 +98,7 @@ const seed = async()=> {
       is_vip BOOLEAN DEFAULT false NOT NULL,
       avatar TEXT
     );
-
+ 
     CREATE TABLE products(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
@@ -152,20 +148,12 @@ const seed = async()=> {
       rating SMALLINT
     );
 
-    CREATE TABLE wishlists(
+    CREATE TABLE wishlist_items(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
-      is_wishList BOOLEAN NOT NULL DEFAULT true,
-      user_id UUID REFERENCES users(id) NOT NULL
-    );
-
-    CREATE TABLE wishList_items(
-      id UUID PRIMARY KEY,
-      created_at TIMESTAMP DEFAULT now(),
+      user_id UUID REFERENCES users(id) NOT NULL,
       product_id UUID REFERENCES products(id) NOT NULL,
-      wishList_id UUID REFERENCES wishLists(id) NOT NULL,
-      quantity INTEGER DEFAULT 1,
-      CONSTRAINT product_and_wishList_key UNIQUE(product_id, wishList_id)
+      CONSTRAINT product_and_user_key UNIQUE(product_id, user_id)
     );
 
     CREATE TABLE tags(
@@ -795,6 +783,12 @@ const seed = async()=> {
     createBookmark({ user_id: moe.id, product_id: seedData[4].id })
   ]);
   
+ const seedWishList = await Promise.all([
+    createWishList({user_id: ethyl.id, product_id: seedData[2].id}),
+    createWishList({user_id: ethyl.id, product_id: seedData[1].id}),
+    createWishList({user_id: moe.id, product_id: seedData[1].id})
+  ]);
+
   let orders = await fetchOrders(ethyl.id);
   let cart = orders.find(order => order.is_cart);
   let lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[1].id});
@@ -831,11 +825,9 @@ module.exports = {
   updateLineItem,
   deleteLineItem,
   updateOrder,
-  fetchWishListItems,
-  fetchAllWishListItems,
-  createWishListItem,
-  updateWishListItem,
-  deleteWishListItem,
+  fetchWishList,
+  createWishList,
+  removeWishList,
   authenticate,
   findUserByToken,
   seed,

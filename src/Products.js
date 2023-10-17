@@ -3,8 +3,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 import VipProducts from './VipProducts';
 import NonVipProducts from './NonVipProducts';
+import WishList from './WishList';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, createWishListItem, updateWishListItem, wishListItems, removeFromWishList, tags, tag_lines }) => {
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, wishLists, addWishList, removeWishList, tags, tag_lines }) => {
+
 
   const navigate = useNavigate();
   const { term } = useParams();
@@ -28,10 +30,9 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
               updateProduct={updateProduct}
               term={term} tags={tags}
               tag_lines={tag_lines}
-              wishListItems={wishListItems}
-              createWishListItem={createWishListItem}
-              updateWishList={updateWishListItem}
-              removeFromWishList={removeFromWishList}
+              wishLists={wishLists}
+              addWishList = {addWishList}
+              removeWishList = {removeWishList}
             />
           </div>
           : null
@@ -46,10 +47,9 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
         updateProduct={updateProduct}
         term={term} tags={tags}
         tag_lines={tag_lines}
-        wishListItems={wishListItems}
-        createWishListItem={createWishListItem}
-        updateWishList={updateWishListItem}
-        removeFromWishList={removeFromWishList}
+        wishLists={wishLists}
+        addWishList = {addWishList}
+        removeWishList = {removeWishList}
       />
       {
         auth.is_admin ? (

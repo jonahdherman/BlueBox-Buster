@@ -34,20 +34,15 @@ const App = ()=> {
   const [users, setUsers] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
-  const [wishList, setWishList] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [wishListItems, setWishListItems] = useState([]);
+  const [wishLists, setWishLists] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
   const [addresses, setAddresses] = useState([]);
   const [dropdownUser, setDropdownUser] = useState(false);
   const [dropdownAdmin, serDropdownAdmin] = useState(false);
   const [bookmarks, setBookmarks] = useState([]);
-
-  //const [wishList, setWishList] = useState([]);
   const el = useRef();
-
-
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -107,7 +102,7 @@ const App = ()=> {
   useEffect(() => {
     if(auth.id){
       const fetchData = async() => {
-        await api.fetchWishListItems(setWishListItems);
+        await api.fetchWishList(setWishLists);
       };
       fetchData();
     }
@@ -222,24 +217,20 @@ const App = ()=> {
     await api.decreaseQuantity({ lineItem, lineItems, setLineItems });
   }
 
-  const updateWishListItem = async(wishList) => {
-    await api.updateWishListItem({wishList, setWishList});
-  };
-
-  const createWishListItem = async(wishListItems) => {
-    await api.createWishListItem({wishListItems, setWishListItems});
+  const addWishList = async(wishList) => {
+    await api.addWishList({wishList, setWishLists, wishLists})
   }
-  
-  const removeFromWishList = async(lineItem) => {
-    await api.removeFromWishList({lineItem, lineItems, setLineItems});
-  };
+
+  const removeWishList = async(wishList) => {
+    await api.removeWishList({wishList, setWishLists, wishLists})
+
+  }
   
   const createReviews = async(review)=> {
     await api.createReviews({review, reviews, setReviews});
   };
   
   const cart = orders.find(order => order.is_cart) || {};
-  //console.log(cart);
 
   const cartItems = lineItems.filter(lineItem => lineItem.order_id === cart.id);
 
@@ -247,15 +238,9 @@ const App = ()=> {
     return acc += item.quantity;
   }, 0);
 
-  const list = products.find(product => product.is_list) || {};
-  //console.log(products);
-  
-  // const wishListItems = lineItems.filter(lineItem => lineItem.order_id === list.id);
-  // //console.log(wishListItems);
-
-  const wishListCount = wishListItems.reduce((acc, item) => {
-    return acc += item.quantity;
-  }, 0);
+  // const wishListCount = wishLists.reduce((acc, item) => {
+  //   return acc += item.quantity;
+  // }, 0);
 
   const registerUser = async(credentials) => {
     await api.register({ credentials, setAuth});
@@ -302,6 +287,9 @@ const App = ()=> {
         auth.id ? (
           <>
             <nav>
+
+              // <Link to='/wishlist'>Wish List</Link>
+
               <div className='navItem'>
       
                 <Link to='/'>BBB</Link>
@@ -334,6 +322,7 @@ const App = ()=> {
                   { dropdownUser && <UserMenu logout={ logout } wishListCount={ wishListCount } auth={ auth }/> }
                 </div>
               </div>
+
               {
                 auth.is_admin ? 
                 <div className='navItem'>
@@ -393,6 +382,9 @@ const App = ()=> {
                   cartItems = { cartItems }
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
                   createProduct = { createProduct }
                   updateProduct={ updateProduct }
                   tags = { tags }
@@ -443,12 +435,10 @@ const App = ()=> {
                 } />
                 <Route path='/wishlist' element={ 
                   <WishList
-                  wishList = {list}
-                  wishListItems = {wishListItems}
-                  createWishListItem = {createWishListItem}
+                  wishLists = {wishLists}
+                  addWishList = {addWishList}
                   products = {products}
-                  updateWishList = {updateWishListItem}
-                  removeFromWishList = {removeFromWishList}
+                  removeWishList = {removeWishList}
                   />
                 } />
 
@@ -478,13 +468,12 @@ const App = ()=> {
                   cartItems = { cartItems }
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
                   auth = { auth }
                   tags = { tags }
                   tag_lines = { tag_lines }
-                  wishListItems = {wishListItems}
-                  createWishListItem = {createWishListItem}
-                  updateWishList = {updateWishListItem}
-                  removeFromWishList = {removeFromWishList}
                 />
               } />
             </Routes>

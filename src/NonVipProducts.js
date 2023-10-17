@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProductImageEditor from "./ProductImageEditor";
+import WishList from './WishList';
 import NonVipPagination from "./NonVipPagination";
 
-const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines, createWishListItem, updateWishListItem, wishListItems, removeFromWishList }) => {
+const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines, wishLists, addWishList, removeWishList }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(9);
 
@@ -23,7 +24,6 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
 
     const handleChange = () => {
         //setBookmark(!bookmark)
-        console.log(bookmark)
     };
 
     return (
@@ -71,6 +71,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                             cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                                         ) : null
                                     }
+
                                     {
                                         auth.id ? (
                                             wishListItem ? <button onClick={() => updateWishListItem(wishListItem)}>Remove From Wishlist</button> : <button onClick={() => createWishListItem(product)}>Add to Wishlist</button>
@@ -86,7 +87,6 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                     )
                                         : null
                                     }
-
                                 </div>
                             );
                         })
