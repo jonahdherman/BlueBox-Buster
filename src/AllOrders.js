@@ -12,6 +12,7 @@ const AllOrders = ({ allOrders, products, allLineItems }) => {
                     allOrders.filter(order => !order.is_cart).map(order => {
                         const orderLineItems = allLineItems.filter(lineItem => lineItem.order_id === order.id);
                         let totalPrice = 0;
+                        console.log(orderLineItems)
                         orderLineItems.forEach(lineItem => {
                             const product = products.find(product => product.id === lineItem.product_id);
                             totalPrice += product.price * lineItem.quantity;
@@ -21,10 +22,12 @@ const AllOrders = ({ allOrders, products, allLineItems }) => {
                         }, 0);
                         return (
                             <li key={order.id}>
-                                ({new Date(order.created_at).toLocaleString()})
+                                Order ID: {order.id}
                                 <br />
                                 User ID: {order.user_id}
                                 <br/>
+                                Date placed: ({new Date(order.created_at).toLocaleString()})
+                                <br />
                                 Order Total: ${(totalPrice / 100).toFixed(2)} ({orderCount} items)
                                 <ul>
                                     {

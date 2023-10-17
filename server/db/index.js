@@ -16,7 +16,8 @@ const {
 const {
   fetchUsers,
   createUser,
-  updateUser
+  updateUser,
+  updateSelf
 } = require('./users');
 
 const {
@@ -52,7 +53,6 @@ const {
 } = require('./wishlist');
 
 const {
-
   createAddress,
   fetchAddresses
 } = require('./address');
@@ -682,7 +682,7 @@ const seed = async()=> {
   ]);
 
   const seedTagLines = await Promise.all([
-    createTag_line({ product_id: seedData[0].id, tag_id: seedTags[5].id}),
+    createTag_line({ product_id: seedData[0].id, tag_id: seedTags[4].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[3].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[1].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[15].id}),
@@ -824,6 +824,7 @@ module.exports = {
   fetchAddresses,
   createAddress,
   updateUser,
+  updateSelf,
   fetchLineItems,
   fetchAllLineItems,
   createLineItem,

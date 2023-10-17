@@ -28,15 +28,27 @@ const createUser = async(user)=> {
     const SQL = `
     UPDATE users 
     SET username=$1, is_vip=$2, is_admin=$3, avatar=$4
-    WHERE id=$4
+    WHERE id=$5
     RETURNING *
   `;
-  const response = await client.query(SQL, [ user.username, user.is_vip, user.is_admin, user.id, user.avatar ]);
+  const response = await client.query(SQL, [ user.username, user.is_vip, user.is_admin, user.avatar, user.id ]);
+  return response.rows[0];
+  }
+
+  const updateSelf = async(user) => {
+    const SQL = `
+    UPDATE users 
+    SET username=$1, avatar=$2
+    WHERE id=$3
+    RETURNING *
+  `;
+  const response = await client.query(SQL, [ user.username, user.avatar, user.id ]);
   return response.rows[0];
   }
 
 module.exports = {
   fetchUsers,
   createUser,
-  updateUser
+  updateUser,
+  updateSelf
 };
