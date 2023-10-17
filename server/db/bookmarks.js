@@ -19,7 +19,16 @@ const fetchBookmarks = async(userId)=> {
   return response.rows;
 };
 
+const removeBookmarks = async(bookmark)=> {
+  const SQL = `
+    DELETE from bookmarks
+    WHERE id = $1 AND user_id = $2
+  `;
+  await client.query(SQL, [bookmark.id, bookmark.user_id]);
+};
+
 module.exports = {
   createBookmark,
-  fetchBookmarks
+  fetchBookmarks,
+  removeBookmarks
 };

@@ -103,6 +103,16 @@ const createReviews = async({ review, reviews, setReviews })=> {
   setReviews([...reviews, response.data]);
 };
 
+const createBookmark = async({ bookmark, bookmarks, setBookmarks })=> {
+  const response = await axios.post('/api/bookmarks', bookmark, getHeaders());
+  setBookmarks([...bookmarks, response.data]);
+};
+
+const removeBookmark = async({ bookmark, bookmarks, setBookmarks})=> {
+  const response = await axios.delete(`/api/bookmarks/${bookmark.id}`, getHeaders());
+  setBookmarks(bookmarks.filter(_bookmark => _bookmark.id !== bookmark.id));
+};
+
 const createTag = async({ tag, tags, setTags})=> {
   const response = await axios.post('/api/tags', tag, getHeaders());
   setTags([...tags, response.data].sort((a, b) => a.name.localeCompare(b.name)));
@@ -243,7 +253,9 @@ const api = {
   fetchTag_lines,
   createTag,
   createTag_line,
-  deleteTag_line
+  deleteTag_line,
+  createBookmark,
+  removeBookmark
 };
 
 export default api;

@@ -230,6 +230,14 @@ const App = ()=> {
     await api.createReviews({review, reviews, setReviews});
   };
   
+  const createBookmark = async(bookmark)=> {
+    await api.createBookmark({ bookmark, bookmarks, setBookmarks });
+  };
+  
+  const removeBookmark = async(bookmark)=> {
+    await api.removeBookmark({ bookmark, bookmarks, setBookmarks });
+  };
+  
   const cart = orders.find(order => order.is_cart) || {};
 
   const cartItems = lineItems.filter(lineItem => lineItem.order_id === cart.id);
@@ -258,7 +266,6 @@ const App = ()=> {
     api.logout(setAuth);
   }
   
-
   const handleMouseEnter = () => {
     setDropdownUser(true);
   };
@@ -354,6 +361,9 @@ const App = ()=> {
                   reviews={ reviews } 
                   createReviews={ createReviews } 
                   auth={ auth } 
+                  bookmarks={ bookmarks }
+                  createBookmark={ createBookmark }
+                  removeBookmark={ removeBookmark }
                   />
                 }/>
 
@@ -368,6 +378,12 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
+                  bookmarks = { bookmarks }
+                  createBookmark={ createBookmark }
+                  removeBookmark={ removeBookmark }
                 />
                 } />
                 <Route path='/products' element={
@@ -384,6 +400,13 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
+                  bookmarks = { bookmarks }
+                  createBookmark={ createBookmark }
+                  removeBookmark={ removeBookmark }
+
                 />
                 } />
                 <Route path='/tags' element={ 
@@ -465,6 +488,10 @@ const App = ()=> {
                   auth = { auth }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
+                  bookmarks={ bookmarks }
                 />
               } />
             </Routes>
