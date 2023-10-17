@@ -27,7 +27,8 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
               updateLineItem={updateLineItem}
               auth={auth}
               updateProduct={updateProduct}
-              term={term} tags={tags}
+              term={term} 
+              tags={tags}
               tag_lines={tag_lines}
               wishLists={wishLists}
               addWishList={addWishList}
@@ -47,7 +48,8 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
         updateLineItem={updateLineItem}
         auth={auth}
         updateProduct={updateProduct}
-        term={term} tags={tags}
+        term={term} 
+        tags={tags}
         tag_lines={tag_lines}
         wishLists={wishLists}
         addWishList={addWishList}
