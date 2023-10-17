@@ -53,7 +53,8 @@ const {
 
 const {
   createBookmark,
-  fetchBookmarks
+  fetchBookmarks,
+  removeBookmarks
 } = require('./bookmarks');
 
 const loadImage = (filePath) => {
@@ -801,6 +802,8 @@ module.exports = {
   fetchUsers,
   fetchReviews,
   fetchBookmarks,
+  createBookmark,
+  removeBookmarks,
   createReviews,
   createUser,
   updateUser,

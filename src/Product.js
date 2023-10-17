@@ -2,31 +2,21 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import CreateReviews from './CreateReviews';
 
-const Product = ({ products, reviews, createReviews, auth }) => {
-    const [bookmark, setBookmark] = useState(false);
+const Product = ({ products, reviews, createReviews, auth, bookmarks, createBookmark, removeBookmark }) => {
     const { id } = useParams();
+    const bookmark = bookmarks.find(bookmark => bookmark.product_id === id );
     const product = products.find(product => product.id === id);
     if (!product) {
         return null
     }
-    const handleChange = () => { 
-      setBookmark(!bookmark)
-      const bookmarkedProduct = {
-      
-      }
-      console.log(bookmarkedProduct)
-    }; 
-  
 
     return (
         <div>
             <Link to='/products' className="back"> Back</Link>
             <h1>Product Info</h1>
-                {
-                  auth.id ?
-                  <div><button onClick={ handleChange } >Bookmark Item</button></div> 
-                  : null
-                }
+            {
+              bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
+            }
             <div id='product'>
                 <h2>{product.name}</h2>
                 { product.image ? <img src={product.image} /> : null }

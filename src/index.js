@@ -212,6 +212,14 @@ const App = ()=> {
     await api.createReviews({review, reviews, setReviews});
   };
   
+  const createBookmark = async(bookmark)=> {
+    await api.createBookmark({ bookmark, bookmarks, setBookmarks });
+  };
+  
+  const removeBookmark = async(bookmark)=> {
+    await api.removeBookmark({ bookmark, bookmarks, setBookmarks });
+  };
+  
   const cart = orders.find(order => order.is_cart) || {};
   //console.log(cart);
 
@@ -247,9 +255,6 @@ const App = ()=> {
     api.logout(setAuth);
   }
   
-  console.log(bookmarks)
-  console.log(reviews)
-
   const handleMouseEnter = () => {
     setDropdownUser(true);
   };
@@ -313,6 +318,9 @@ const App = ()=> {
                   reviews={ reviews } 
                   createReviews={ createReviews } 
                   auth={ auth } 
+                  bookmarks={ bookmarks }
+                  createBookmark={ createBookmark }
+                  removeBookmark={ removeBookmark }
                   />
                 }/>
                 <Route path='/products/search/:term' element={
@@ -330,6 +338,10 @@ const App = ()=> {
                   createWishListItem = {createWishListItem}
                   updateWishList = {updateWishListItem}
                   removeFromWishList = {removeFromWishList}
+                  bookmarks = { bookmarks }
+                  users = { users }
+                  createBookmark={ createBookmark }
+                  removeBookmark={ removeBookmark }
                 />
                 } />
                 <Route path='/products' element={
@@ -347,6 +359,10 @@ const App = ()=> {
                   createWishListItem = {createWishListItem}
                   updateWishList = {updateWishListItem}
                   removeFromWishList = {removeFromWishList}
+                  bookmarks = { bookmarks }
+                  users = { users }
+                  createBookmark={ createBookmark }
+                  removeBookmark={ removeBookmark }
                 />
                 } />
                 <Route path='/tags' element={ 
@@ -430,6 +446,7 @@ const App = ()=> {
                   createWishListItem = {createWishListItem}
                   updateWishList = {updateWishListItem}
                   removeFromWishList = {removeFromWishList}
+                  bookmarks={ bookmarks }
                 />
               } />
             </Routes>

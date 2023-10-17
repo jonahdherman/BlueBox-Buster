@@ -16,7 +16,6 @@ const fetchProducts = async(setProducts)=> {
 const fetchReviews = async(setReviews)=> {
   const response = await axios.get('/api/reviews');
   setReviews(response.data);
-  console.log(response.data)
 };
 
 const fetchWishListItems = async(setWishListItems)=> {
@@ -42,7 +41,6 @@ const fetchAllOrders = async(setAllOrders)=> {
 const fetchBookmarks = async(setBookmarks)=> {
   const response = await axios.get('/api/bookmarks', getHeaders());
   setBookmarks(response.data);
-  console.log(response.data)
 };
 
 const fetchUsers = async(setUsers)=> {
@@ -94,6 +92,16 @@ const createProduct = async({ product, products, setProducts })=> {
 const createReviews = async({ review, reviews, setReviews })=> {
   const response = await axios.post('/api/reviews', review, getHeaders());
   setReviews([...reviews, response.data]);
+};
+
+const createBookmark = async({ bookmark, bookmarks, setBookmarks })=> {
+  const response = await axios.post('/api/bookmarks', bookmark, getHeaders());
+  setBookmarks([...bookmarks, response.data]);
+};
+
+const removeBookmark = async({ bookmark, bookmarks, setBookmarks})=> {
+  const response = await axios.delete(`/api/bookmarks/${bookmark.id}`, getHeaders());
+  setBookmarks(bookmarks.filter(_bookmark => _bookmark.id !== bookmark.id));
 };
 
 const createTag = async({ tag, tags, setTags})=> {
@@ -243,7 +251,9 @@ const api = {
   fetchTag_lines,
   createTag,
   createTag_line,
-  deleteTag_line
+  deleteTag_line,
+  createBookmark,
+  removeBookmark
 };
 
 export default api;

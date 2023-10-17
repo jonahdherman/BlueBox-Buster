@@ -3,8 +3,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 import VipProducts from './VipProducts';
 import NonVipProducts from './NonVipProducts';
+import Bookmarks from './Bookmarks';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, createWishListItem, updateWishListItem, wishListItems, removeFromWishList, tags, tag_lines }) => {
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, createWishListItem, updateWishListItem, wishListItems, removeFromWishList, tags, tag_lines, bookmarks, createBookmark, removeBookmark }) => {
 
   const navigate = useNavigate();
   const { term } = useParams();
@@ -35,6 +36,9 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
           createWishListItem = {createWishListItem} 
           updateWishList = {updateWishListItem} 
           removeFromWishList = {removeFromWishList}
+          bookmarks = { bookmarks }
+          createBookmark={ createBookmark }
+          removeBookmark={ removeBookmark }
         /> 
         : null 
       }
@@ -52,6 +56,9 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
           createWishListItem = {createWishListItem} 
           updateWishList = {updateWishListItem} 
           removeFromWishList = {removeFromWishList}
+          bookmarks = { bookmarks }
+          createBookmark={ createBookmark }
+          removeBookmark={ removeBookmark }
         />
     </div>
   );

@@ -3,22 +3,16 @@ import { Link } from "react-router-dom";
 import ProductImageEditor from "./ProductImageEditor";
 
 
-const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, createWishListItem, updateWishListItem, wishListItems, removeFromWishList, auth, updateProduct, term, tags, tag_lines }) => {
-
+const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, createWishListItem, updateWishListItem, wishListItems, removeFromWishList, auth, updateProduct, term, tags, tag_lines, bookmarks, createBookmark, removeBookmark }) => {
+  
+    
     const yesVip = products.filter(product => product.vip_only === true);
-    const [bookmark, setBookmark] = useState(true);
     
     const removeVIP = (product)=> {
         const vipProduct = {...product, vip_only: false}
         updateProduct(vipProduct);
       }
       
-      const handleChange = () => { 
-        //setBookmark(!bookmark)
-        console.log(bookmark)
-    
-    
-      }; 
 
     return (
         <div>
@@ -33,14 +27,14 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, crea
                                 const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                                 const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
                                 const wishListItem = wishListItems.find(wishListItem => wishListItem.product_id === product.id);
+                                const bookmark = bookmarks.find(bookmark => bookmark.product_id === product.id );
                                 const cutOff = product.description.toString().slice(0, 250)
                                 return (
                                     <li key={product.id}>
                                         {
-                                           auth.id ?
-                                            <div><button disabled={ false } onClick={ handleChange } >Bookmark Item</button></div> 
-                                            : null
+                                          bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
                                         }
+                                        <br />
                                         {
                                             product.image ? <img src={product.image} /> : null
                                         }
