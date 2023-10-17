@@ -3,20 +3,18 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 import VipProducts from './VipProducts';
 import NonVipProducts from './NonVipProducts';
-import Bookmarks from './Bookmarks';
 
 const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, wishLists, addWishList, removeWishList, tags, tag_lines, bookmarks, createBookmark, removeBookmark }) => {
-
   const navigate = useNavigate();
   const { term } = useParams();
 
   return (
     <div>
       <h2>Products</h2>
-      <input placeholder='search for products' value={term || ''} onChange={ev =>
-        navigate(ev.target.value ? `/products/search/${ev.target.value}` : '/products')} />
-
-      {
+      <input placeholder='search for products' value = { term || ''} onChange = { ev => 
+        navigate(ev.target.value ? `/products/search/${ev.target.value}` : '/products')}/>
+      
+      { 
         auth.is_vip || auth.is_admin ?
           <div>
             <h2>VIP Exclusives!</h2>
@@ -58,12 +56,13 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
         createBookmark={createBookmark}
         removeBookmark={removeBookmark}
       />
+
       {
         auth.is_admin ? (
           <CreateProduct createProduct={createProduct} />
         ) : null
       }
-
+    
     </div>
   );
 };
