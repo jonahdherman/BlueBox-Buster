@@ -46,6 +46,7 @@ const Settings = ({auth, updateSelf, addresses, createAddress}) => {
                 error ? JSON.stringify(error, null, 2) : null
             }
             <form onSubmit={save}>
+                <h2>Change Username?</h2>
                 <input
                     value={username}
                     placeholder='username'

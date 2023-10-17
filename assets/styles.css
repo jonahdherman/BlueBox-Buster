@@ -38,6 +38,11 @@ nav {
   justify-content: center;
 }
 
+.allUsers {
+  display: flex;
+  align-items: center;
+}
+
 .avatar {
   border-radius: 50%;
   max-height: 50px;
