@@ -125,3 +125,27 @@ form > * {
 form > button {
   width: 100px;
 }
+
+/* All Products page */
+.productsPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.productsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.productsCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid whitesmoke;
+  width: calc(100% / 3);
+  border-radius: 1rem;
+}

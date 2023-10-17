@@ -322,6 +322,7 @@ const App = ()=> {
                 <img src='assets/order48.png'/>
                 <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               </div>
+
               <div className='navItem'>
                 <div>
                   { auth.avatar ? <img className='avatar' src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
