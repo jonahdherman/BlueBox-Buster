@@ -75,6 +75,10 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                     )
                                         : null
                                     }
+                                    {
+                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
+                                        <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
+                                    }
                                 </div>
                             );
                         })
