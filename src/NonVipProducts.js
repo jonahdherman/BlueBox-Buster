@@ -40,11 +40,6 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                             return (
                                 <div key={product.id} className="productsCard">
                                     {
-                                        auth.id ?
-                                            <div><button disabled={false} onClick={handleChange} >Bookmark Item</button></div>
-                                            : null
-                                    }
-                                    {
                                         product.image ? <img src={product.image} /> : null
                                     }
                                     <h3>{product.name}</h3>
@@ -68,12 +63,6 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                     {
                                         auth.id ? (
                                             cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
-                                        ) : null
-                                    }
-
-                                    {
-                                        auth.id ? (
-                                            wishListItem ? <button onClick={() => updateWishListItem(wishListItem)}>Remove From Wishlist</button> : <button onClick={() => createWishListItem(product)}>Add to Wishlist</button>
                                         ) : null
                                     }
 

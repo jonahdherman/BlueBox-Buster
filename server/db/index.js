@@ -78,7 +78,9 @@ const loadImage = (filePath) => {
 
 const seed = async()=> {
   const SQL = `
+    
     DROP TABLE IF EXISTS wishlist_items;
+    DROP TABLE IF EXISTS wishlists;
     DROP TABLE IF EXISTS addresses;
     DROP TABLE IF EXISTS bookmarks;
     DROP TABLE IF EXISTS tag_lines;
@@ -137,7 +139,6 @@ const seed = async()=> {
       created_at TIMESTAMP DEFAULT now(),
       product_id UUID REFERENCES products(id) NOT NULL,
       user_id UUID REFERENCES users(id) NOT NULL
-      
     );
     
     CREATE TABLE reviews(
