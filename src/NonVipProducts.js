@@ -46,7 +46,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                             : null
                                     }
                                     {
-                                        product.image ? <div><img src={product.image} /></div> : null
+                                        product.image ? <img src={product.image} /> : null
                                     }
                                     <h3>{product.name}</h3>
                                     <h4>{`$${(product.price / 100).toFixed(2)}`}</h4>
