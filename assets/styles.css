@@ -3,9 +3,9 @@
 }
 
 body {
-  font-family: verdana;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: rgb(12, 45, 78);
-  color: whitesmoke;
+  color: aliceblue;
 }
 
 a {
@@ -14,17 +14,34 @@ a {
 
 img {
   max-height: 300px;
+  max-width: 90%;
 }
 
 nav {
   display: flex;
   justify-content: space-between;
+  background-color: rgb(143, 161, 173);
+  font-family: 'Fjalla One';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+  padding: 1rem;
+  /* position: fixed; */
+  top: 0;
+  right: 0;
+  left: 0;
 }
 
 .navItem {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.allUsers {
+  display: flex;
+  align-items: center;
 }
 
 .avatar {
@@ -47,6 +64,99 @@ form > * {
   width: 50%;
 }
 
+.tag {
+  color: white;
+}
+
+.logoWrapper {
+  display: flex;
+}
+
+.box {
+  font-weight: bold;
+  background-color: white;
+  color: rgb(39, 94, 234);
+  border-radius: 5px;
+  border-style: outset;
+  border-width: 5px;
+  z-index: 1;
+}
+
+.buster {
+  padding-left: 5px;
+  font-size: 22px;
+  font-weight: 100;
+  color: white;
+  z-index: 1;
+}
+
+.logo {
+  height: 100px;
+}
+
+.navigation {
+  display: flex;
+  flex-direction:row;
+  color: white;
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.navigation:hover {
+  color: yellow;
+}
+
+.navigationWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  background-color: #3050b1;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.25);
+  color: white;
+  text-transform: uppercase;
+  overflow: hidden;
+  width: auto;
+}
+
 form > button {
   width: 100px;
+}
+
+/* All Products page */
+.pagination {
+  display: flex;
+}
+
+.pagination>.active {
+  background-color: rgb(25, 28, 30);
+  color: whitesmoke;
+}
+
+.productsPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.productsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.productsCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid whitesmoke;
+  width: calc((100% / 3) - .6rem) ;
+  margin: .3rem;
+  border-radius: 1rem;
 }

@@ -20,6 +20,9 @@ import AdminMenu from './AdminMenu';
 import UserMenu from './UserMenu';
 import Home from './Home';
 import { all } from 'axios';
+import User from './User';
+import Settings from './Settings';
+import { Loader } from "@googlemaps/js-api-loader"
 
 
 
@@ -31,18 +34,15 @@ const App = ()=> {
   const [users, setUsers] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allLineItems, setAllLineItems] = useState([]);
-  const [wishList, setWishList] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [wishListItems, setWishListItems] = useState([]);
+  const [wishLists, setWishLists] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
+  const [addresses, setAddresses] = useState([]);
   const [dropdownUser, setDropdownUser] = useState(false);
   const [dropdownAdmin, serDropdownAdmin] = useState(false);
   const [bookmarks, setBookmarks] = useState([]);
-  //const [wishList, setWishList] = useState([]);
   const el = useRef();
-
-
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -102,7 +102,16 @@ const App = ()=> {
   useEffect(() => {
     if(auth.id){
       const fetchData = async() => {
-        await api.fetchWishListItems(setWishListItems);
+        await api.fetchWishList(setWishLists);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if(auth.id){
+      const fetchData = async() => {
+        await api.fetchAddresses(setAddresses);
       };
       fetchData();
     }
@@ -136,11 +145,19 @@ const App = ()=> {
   }, [auth]);
 
   useEffect(()=> {
-    const map = new google.maps.Map(el.current, {
-      center: { lat: 40.749933, lng: -73.98633 },
-      zoom: 13,
-      mapTypeControl: false,
-    });
+    const setup = async()=> {
+      const loader = new Loader({
+        apiKey: window.GOOGLE_API_KEY,
+      });
+     await loader.load();
+     const { Map } = await google.maps.importLibrary("places");
+      const map = new google.maps.Map(el.current, {
+        center: { lat: 40.749933, lng: -73.98633 },
+        zoom: 13,
+        mapTypeControl: false,
+      });
+    }
+    setup();
   }, []);
   
   useEffect(()=> {
@@ -154,6 +171,10 @@ const App = ()=> {
 
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
+  };
+
+  const createAddress = async(address)=> {
+    await api.createAddress({ address, addresses, setAddresses });
   };
 
   const createProduct = async(product)=> {
@@ -196,17 +217,14 @@ const App = ()=> {
     await api.decreaseQuantity({ lineItem, lineItems, setLineItems });
   }
 
-  const updateWishListItem = async(wishList) => {
-    await api.updateWishListItem({wishList, setWishList});
-  };
-
-  const createWishListItem = async(wishListItems) => {
-    await api.createWishListItem({wishListItems, setWishListItems});
+  const addWishList = async(wishList) => {
+    await api.addWishList({wishList, setWishLists, wishLists})
   }
-  
-  const removeFromWishList = async(lineItem) => {
-    await api.removeFromWishList({lineItem, lineItems, setLineItems});
-  };
+
+  const removeWishList = async(wishList) => {
+    await api.removeWishList({wishList, setWishLists, wishLists})
+
+  }
   
   const createReviews = async(review)=> {
     await api.createReviews({review, reviews, setReviews});
@@ -221,21 +239,10 @@ const App = ()=> {
   };
   
   const cart = orders.find(order => order.is_cart) || {};
-  //console.log(cart);
 
   const cartItems = lineItems.filter(lineItem => lineItem.order_id === cart.id);
 
   const cartCount = cartItems.reduce((acc, item)=> {
-    return acc += item.quantity;
-  }, 0);
-
-  const list = products.find(product => product.is_list) || {};
-  //console.log(products);
-  
-  // const wishListItems = lineItems.filter(lineItem => lineItem.order_id === list.id);
-  // //console.log(wishListItems);
-
-  const wishListCount = wishListItems.reduce((acc, item) => {
     return acc += item.quantity;
   }, 0);
 
@@ -245,6 +252,10 @@ const App = ()=> {
 
   const updateUser = async(updatedUser) => {
      await api.updateUser({ updatedUser, setUsers, users});
+  }
+
+  const updateSelf = async(updatedSelf) => {
+    await api.updateSelf({ updatedSelf, auth, setAuth })
   }
 
   const login = async(credentials)=> {
@@ -279,38 +290,70 @@ const App = ()=> {
         auth.id ? (
           <>
             <nav>
-              <div className='navItem'><Link to='/'>BBB</Link></div>
-              <div className='navItem'><Link to='/products'>Products ({ products.length })</Link></div>
-              <div className='navItem'><Link to='/tags'>Tags ({ tags.length })</Link></div>
-              <div className='navItem'><Link to='/cart'>Cart ({ cartCount })</Link></div>
-              <div className='navItem'><Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link></div>
+
+              {/* <Link to='/wishlist'>Wish List</Link> */}
+
+              <div className='navItem'>
+                <Link to='/'>BBB</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/film48.png'/>
+                <Link to='/products'>Products ({ products.length })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/tag48.png'/>
+                <Link to='/tags'>Tags ({ tags.length })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/cart48.png'/>
+                <Link to='/cart'>Cart ({ cartCount })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/order48.png'/>
+                <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/wishlist48.png'/>
+                <Link to='/wishlist'>Wish List ({wishLists.length})</Link>
+              </div>
+
               <div className='navItem'>
                 <div>
-                  { auth.avatar ? <img src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
+                  { auth.avatar ? <img className='avatar' src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
                 </div>
                 <div onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}>
                   Welcome { auth.username }!
                   { auth.is_vip === true ? 'VIP!' : ''  }
-                  { dropdownUser && <UserMenu logout={ logout } wishListCount={ wishListCount }/> }
+                  { dropdownUser && <UserMenu logout={ logout } auth={ auth }/> }
                 </div>
               </div>
+
               {
                 auth.is_admin ? 
                 <div className='navItem'>
+                  <div>
+                    <img src='assets/admin48.png'/>
+                  </div>
                 <div 
                   onMouseEnter={handleMouseEnterAdmin}
                   onMouseLeave={handleMouseLeaveAdmin}
                 >
+                  
                   Admin Menu
                    { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders}/> }
                 </div>
+
                 </div>
                 : null
               }
             </nav>
             <main> 
               <Routes>
+                <Route path='/users/:id' element={ <User auth={ auth } addresses={ addresses } /> } />
+                <Route path='/settings/:id' element={ <Settings auth={ auth } updateSelf={ updateSelf } createAddress={ createAddress } addresses={ addresses }/> }/>
+                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={auth}/>}/>
+                
                 <Route path='/' element={ <Home /> }/>
                 <Route path='/products/:id' element={
                   <Product 
@@ -323,6 +366,7 @@ const App = ()=> {
                   removeBookmark={ removeBookmark }
                   />
                 }/>
+
                 <Route path='/products/search/:term' element={
                   <Products
                   auth = { auth }
@@ -334,12 +378,10 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
-                  wishListItems = {wishListItems}
-                  createWishListItem = {createWishListItem}
-                  updateWishList = {updateWishListItem}
-                  removeFromWishList = {removeFromWishList}
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
                   bookmarks = { bookmarks }
-                  users = { users }
                   createBookmark={ createBookmark }
                   removeBookmark={ removeBookmark }
                 />
@@ -351,18 +393,20 @@ const App = ()=> {
                   cartItems = { cartItems }
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
                   createProduct = { createProduct }
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
-                  wishListItems = {wishListItems}
-                  createWishListItem = {createWishListItem}
-                  updateWishList = {updateWishListItem}
-                  removeFromWishList = {removeFromWishList}
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
                   bookmarks = { bookmarks }
-                  users = { users }
                   createBookmark={ createBookmark }
                   removeBookmark={ removeBookmark }
+
                 />
                 } />
                 <Route path='/tags' element={ 
@@ -405,14 +449,13 @@ const App = ()=> {
                 } />
                 <Route path='/wishlist' element={ 
                   <WishList
-                  wishList = {list}
-                  wishListItems = {wishListItems}
-                  createWishListItem = {createWishListItem}
+                  wishLists = {wishLists}
+                  addWishList = {addWishList}
                   products = {products}
-                  updateWishList = {updateWishListItem}
-                  removeFromWishList = {removeFromWishList}
+                  removeWishList = {removeWishList}
                   />
                 } />
+
               </Routes>
 
               { auth.is_admin ? (
@@ -439,13 +482,15 @@ const App = ()=> {
                   cartItems = { cartItems }
                   createLineItem = { createLineItem }
                   updateLineItem = { updateLineItem }
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
                   auth = { auth }
                   tags = { tags }
                   tag_lines = { tag_lines }
-                  wishListItems = {wishListItems}
-                  createWishListItem = {createWishListItem}
-                  updateWishList = {updateWishListItem}
-                  removeFromWishList = {removeFromWishList}
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
                   bookmarks={ bookmarks }
                 />
               } />

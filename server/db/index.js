@@ -10,13 +10,14 @@ const {
 const {
   fetchProducts,
   createProduct,
-  updateProduct
+  updateProduct 
 } = require('./products');
 
 const {
   fetchUsers,
   createUser,
-  updateUser
+  updateUser,
+  updateSelf
 } = require('./users');
 
 const {
@@ -44,18 +45,22 @@ const {
 } = require('./cart');
 
 const {
-  fetchWishListItems,
-  fetchAllWishListItems,
-  createWishListItem,
-  updateWishListItem,
-  deleteWishListItem
+  createWishList,
+  fetchWishList,
+  removeWishList
 } = require('./wishlist');
 
+const {
+  createAddress,
+  fetchAddresses
+} = require('./address');
+  
 const {
   createBookmark,
   fetchBookmarks,
   removeBookmarks
 } = require('./bookmarks');
+
 
 const loadImage = (filePath) => {
   return new Promise((resolve, reject)=>{
@@ -74,10 +79,11 @@ const loadImage = (filePath) => {
 
 const seed = async()=> {
   const SQL = `
-
-    DROP TABLE IF EXISTS bookmarks;
-    DROP TABLE IF EXISTS wishList_items;  
+    
+    DROP TABLE IF EXISTS wishlist_items;
     DROP TABLE IF EXISTS wishlists;
+    DROP TABLE IF EXISTS addresses;
+    DROP TABLE IF EXISTS bookmarks;
     DROP TABLE IF EXISTS tag_lines;
     DROP TABLE IF EXISTS reviews;
     DROP TABLE IF EXISTS line_items;
@@ -95,7 +101,7 @@ const seed = async()=> {
       is_vip BOOLEAN DEFAULT false NOT NULL,
       avatar TEXT
     );
-
+ 
     CREATE TABLE products(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
@@ -104,6 +110,13 @@ const seed = async()=> {
       description TEXT NOT NULL,
       image TEXT,
       vip_only BOOLEAN DEFAULT false NOT NULL
+    );
+
+    CREATE TABLE addresses(
+      id UUID PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT now(),
+      data JSON DEFAULT '{}',
+      user_id UUID REFERENCES users(id) NOT NULL
     );
 
     CREATE TABLE orders(
@@ -126,8 +139,7 @@ const seed = async()=> {
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
       product_id UUID REFERENCES products(id) NOT NULL,
-      user_id UUID REFERENCES users(id) NOT NULL,
-      CONSTRAINT product_and_user_key UNIQUE(product_id, user_id)
+      user_id UUID REFERENCES users(id) NOT NULL
     );
     
     CREATE TABLE reviews(
@@ -138,20 +150,12 @@ const seed = async()=> {
       rating SMALLINT
     );
 
-    CREATE TABLE wishlists(
+    CREATE TABLE wishlist_items(
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
-      is_wishList BOOLEAN NOT NULL DEFAULT true,
-      user_id UUID REFERENCES users(id) NOT NULL
-    );
-
-    CREATE TABLE wishList_items(
-      id UUID PRIMARY KEY,
-      created_at TIMESTAMP DEFAULT now(),
+      user_id UUID REFERENCES users(id) NOT NULL,
       product_id UUID REFERENCES products(id) NOT NULL,
-      wishList_id UUID REFERENCES wishLists(id) NOT NULL,
-      quantity INTEGER DEFAULT 1,
-      CONSTRAINT product_and_wishList_key UNIQUE(product_id, wishList_id)
+      CONSTRAINT product_and_user_key UNIQUE(product_id, user_id)
     );
 
     CREATE TABLE tags(
@@ -171,10 +175,11 @@ const seed = async()=> {
   `;
   await client.query(SQL);
 
-  const [moe, lucy, ethyl] = await Promise.all([
+  const [moe, lucy, ethyl, matt] = await Promise.all([
     createUser({ username: 'moe', password: 'm_password', is_admin: false, is_vip: true}),
     createUser({ username: 'lucy', password: 'l_password', is_admin: false, is_vip: false}),
-    createUser({ username: 'ethyl', password: '1234', is_admin: true, is_vip: true})
+    createUser({ username: 'ethyl', password: '1234', is_admin: true, is_vip: true}),
+    createUser({ username: 'matt', password: 'matt', is_admin: true, is_vip: true})
   ]);
 
   const godfatherImage = await loadImage('/images/godfather.png');
@@ -664,8 +669,8 @@ const seed = async()=> {
     createTag({ name: 'Parody'})
   ]);
 
-  const [vhs_tag, godfather_tag1, godfather_tag2, starwars_tag, lbt_tag, lbt_tag2] = await Promise.all([
-    createTag_line({ product_id: seedData[0].id, tag_id: seedTags[0].id}),
+  const seedTagLines = await Promise.all([
+    createTag_line({ product_id: seedData[0].id, tag_id: seedTags[4].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[3].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[1].id}),
     createTag_line({ product_id: seedData[1].id, tag_id: seedTags[15].id}),
@@ -778,6 +783,12 @@ const seed = async()=> {
     createBookmark({ user_id: moe.id, product_id: seedData[4].id })
   ]);
   
+ const seedWishList = await Promise.all([
+    createWishList({user_id: ethyl.id, product_id: seedData[2].id}),
+    createWishList({user_id: ethyl.id, product_id: seedData[1].id}),
+    createWishList({user_id: moe.id, product_id: seedData[1].id})
+  ]);
+
   let orders = await fetchOrders(ethyl.id);
   let cart = orders.find(order => order.is_cart);
   let lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[1].id});
@@ -806,18 +817,19 @@ module.exports = {
   removeBookmarks,
   createReviews,
   createUser,
+  fetchAddresses,
+  createAddress,
   updateUser,
+  updateSelf,
   fetchLineItems,
   fetchAllLineItems,
   createLineItem,
   updateLineItem,
   deleteLineItem,
   updateOrder,
-  fetchWishListItems,
-  fetchAllWishListItems,
-  createWishListItem,
-  updateWishListItem,
-  deleteWishListItem,
+  fetchWishList,
+  createWishList,
+  removeWishList,
   authenticate,
   findUserByToken,
   seed,

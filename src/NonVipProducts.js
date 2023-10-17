@@ -1,83 +1,99 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProductImageEditor from "./ProductImageEditor";
+import WishList from './WishList';
+import NonVipPagination from "./NonVipPagination";
 
-const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines, createWishListItem, updateWishListItem, wishListItems, removeFromWishList, bookmarks, createBookmark, removeBookmark }) => {
-  
+
+const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines, wishLists, addWishList, removeWishList, bookmarks, createBookmark, removeBookmark }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productsPerPage, setProductsPerPage] = useState(9);
+
     const nonVip = products.filter(product => product.vip_only === false)
+
+    const totalPages = Math.ceil(nonVip.length / productsPerPage);
+    const lastProductIndex = currentPage * productsPerPage;
+    const firstProductIndex = lastProductIndex - productsPerPage;
+    const currentProducts = nonVip.slice(firstProductIndex, lastProductIndex);
 
     const assignVIP = (product) => {
         const vipProduct = { ...product, vip_only: true }
         updateProduct(vipProduct);
     }
 
+
     return (
-        <div>
-            <ul>
+        <div className="productsPage">
+            <div className="productsContainer">
                 {
-                    nonVip
+                    currentProducts
                         .filter(product => !term || product.name.toLowerCase().includes(term.toLowerCase()))
                         .map(product => {
                             const productLines = tag_lines.filter(tag_line => tag_line.product_id === product.id);
                             const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
-                            const wishListItem = wishListItems.find(wishListItem => wishListItem.product_id === product.id);
-                            const bookmark = bookmarks.find(bookmark => bookmark.product_id === product.id );
+
                             const cutOff = product.description.toString().slice(0, 250)
+                            const bookmark = bookmarks.find(bookmark => bookmark.product_id === product.id );
                             return (
-                                <li key={product.id}>
+                                <div key={product.id} className="productsCard">
+                                    <h3>{product.name}</h3>
                                     {
                                         bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
                                     }
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
-                                    <br />
-                                    {`${product.name}`}
-                                    {`: $${(product.price / 100).toFixed(2)}`}
-                                    <p>tags</p>
-                                    { auth.is_admin ? <Link to={'/tags/edit'}>Edit tags</Link> : null }
-                                    { productTags.length ?
-                                            <ul>
-                                                {
-                                                    productTags.map(tag => {
-                                                        return (
-                                                            <li key={tag.id}>{tag.name}</li>
-                                                        );
-                                                    })
-                                                }
-                                            </ul> : <p>None</p>
-                                    }
+                                    
+                                    <h4>{`$${(product.price / 100).toFixed(2)}`}</h4>
+                                    {productTags.length ?
+                                        <ul>
+                                            {
+                                                productTags.map(tag => {
+                                                    return (
+                                                        <li key={tag.id}>{tag.name}</li>
+                                                    );
+                                                })
+                                            }
+                                        </ul>
+                                        : <p>None</p>}
 
-                                    {`${cutOff}...`}
-                                    <Link to={`/products/${product.id}`}>
-                                        {`Read More`}
-                                    </Link>
-                                    <br />
+                                    <p>{`${cutOff}...`}<Link to={`/products/${product.id}`}>{`Read More`}</Link></p>
+
                                     {
                                         auth.id ? (
                                             cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                                         ) : null
                                     }
-                                    {
-                                            auth.id ? (
-                                                wishListItem ? <button onClick={() => updateWishListItem(wishListItem)}>Remove From Wishlist</button> : <button onClick={() => createWishListItem(product)}>Add to Wishlist</button>
-                                            ) : null
+
+                                    {auth.is_admin ? (
+                                        <div>
+                                            <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
+                                            <button onClick={() => assignVIP(product)}>Remove VIP only</button>
+                                            <Link to={'/tags/edit'}> Edit tags</Link>
+                                            <ProductImageEditor product={product} updateProduct={updateProduct} />
+                                        </div>
+                                    )
+                                        : null
                                     }
                                     {
-                                        auth.is_admin ? (
-                                            <div>
-                                                <Link to={`/products/${product.id}/edit`}>Edit</Link><br />
-                                                <button onClick={() => assignVIP(product)}>Assign VIP only</button>
-                                                <ProductImageEditor product={product} updateProduct={updateProduct} />
-                                            </div>
-                                        ) : null
+
+                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
+                                        <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
+
                                     }
-                                </li>
+                                </div>
                             );
                         })
                 }
-            </ul>
+            </div>
+            <NonVipPagination
+                totalProducts={nonVip.length}
+                productsPerPage={productsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+                totalPages={totalPages}
+            />
         </div>
     );
 }

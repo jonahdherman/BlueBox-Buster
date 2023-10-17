@@ -18,15 +18,20 @@ const fetchReviews = async(setReviews)=> {
   setReviews(response.data);
 };
 
-const fetchWishListItems = async(setWishListItems)=> {
-  const response = await axios.get('/api/wishListItems', getHeaders());
-  setWishListItems(response.data);
+const fetchWishList = async(setWishLists)=> {
+  const response = await axios.get('/api/wishlist_items', getHeaders());
+  setWishLists(response.data);
 };
 
-const fetchAllWishListItems = async(setAllWishListItems) => {
-  const response = await axios.get('/api/wishListItems/all', getHeaders());
-  setAllWishListItems(response.data);
-}
+const addWishList = async({wishList, setWishLists, wishLists}) => {
+  const response = await axios.post('/api/wishlist_items', wishList, getHeaders());
+  setWishLists([...wishLists, response.data]);
+};
+
+const removeWishList = async({wishList, setWishLists, wishLists}) => {
+  const response = await axios.delete(`/api/wishlist_items/${wishList.id}`, getHeaders());
+  setWishLists(wishLists.filter(_wishlist => _wishlist.id !== wishList.id));
+};
 
 const fetchOrders = async(setOrders)=> {
   const response = await axios.get('/api/orders', getHeaders());
@@ -37,6 +42,13 @@ const fetchAllOrders = async(setAllOrders)=> {
   const response = await axios.get('/api/orders/all', getHeaders());
   setAllOrders(response.data);
 };
+
+
+const fetchAddresses = async(setAddresses)=> {
+  const response = await axios.get('/api/addresses', getHeaders());
+  setAddresses(response.data);
+};
+
 
 const fetchBookmarks = async(setBookmarks)=> {
   const response = await axios.get('/api/bookmarks', getHeaders());
@@ -76,17 +88,14 @@ const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
   setLineItems([...lineItems, response.data]);
 };
 
-const createWishListItem = async({product, wishList, wishListItems, setWishListItems}) => {
-  const response = await axios.post('/api/wishListItems', {
-    wishlist_id: wishList.id,
-    product_id: product.id
-  }, getHeaders());
-  setWishListItems([...wishListItems, response.data]);
-}
-
 const createProduct = async({ product, products, setProducts })=> {
   const response = await axios.post('/api/products', product, getHeaders());
   setProducts([...products, response.data]);
+};
+
+const createAddress = async({ address, setAddresses })=> {
+  const response = await axios.post('/api/addresses', address, getHeaders());
+  await fetchAddresses(setAddresses);
 };
 
 const createReviews = async({ review, reviews, setReviews })=> {
@@ -138,14 +147,6 @@ const updateOrder = async({ order, setOrders })=> {
   setOrders(response.data);
 };
 
-const updateWishListItem = async({ wishListItem, wishList, wishListItems, setWishListItems })=> {
-  const response = await axios.put(`/api/wishListItems/${wishListItem.id}`, {
-    quantity: wishListItem.quantity + 1,
-    order_id: wishList.id
-  }, getHeaders());
-  setWishListItems(wishListItems.map( wishListItem => wishListItem.id == response.data.id ? response.data: wishListItem));
-};
-
 const increaseQuantity = async ({lineItem, lineItems, setLineItems}) => {
   const response = await axios.put(`/api/lineItems/${lineItem.id}`, {
     ...lineItem,
@@ -174,11 +175,6 @@ const removeFromCart = async({ lineItem, lineItems, setLineItems })=> {
   setLineItems(lineItems.filter( _lineItem => _lineItem.id !== lineItem.id));
 };
 
-const removeFromWishList = async({wishListItem, wishListItems, setWishListItems}) => {
-  const response = await axios.delete(`/api/wishListItems/${wishListItem.id}`, getHeaders());
-  setWishListItems(wishListItems.filter( _wishListItem => _wishListItem.id !== wishListItem.id));
-};
-
 const attemptLoginWithToken = async(setAuth)=> {
   const token = window.localStorage.getItem('token');
   if(token){
@@ -197,6 +193,11 @@ const attemptLoginWithToken = async(setAuth)=> {
 const updateUser = async({ updatedUser, setUsers, users }) => {
   const response = await axios.put(`/api/users/${updatedUser.id}`, updatedUser, getHeaders());
   setUsers(users.map(user => user.id === updatedUser.id ? response.data : user));
+}
+
+const updateSelf = async({ updatedSelf, auth, setAuth}) => {
+  const response = await axios.put(`/api/users/settings/${auth.id}`, updatedSelf, getHeaders());
+  setAuth(response.data);
 }
 
 const register = async({ credentials, setAuth }) => {
@@ -223,10 +224,10 @@ const api = {
   login,
   logout,
   register,
+  updateSelf,
   fetchProducts,
   fetchOrders,
-  fetchWishListItems,
-  fetchAllWishListItems,
+  fetchWishList,
   fetchAllOrders,
   fetchUsers,
   fetchBookmarks,
@@ -234,16 +235,17 @@ const api = {
   fetchLineItems,
   fetchAllLineItems,
   fetchReviews,
+  fetchAddresses,
   createLineItem,
-  createWishListItem,
+  addWishList,
+  createAddress,
   createProduct,
   createReviews,
   updateLineItem,
   updateOrder,
-  updateWishListItem,
   updateProduct,
   removeFromCart,
-  removeFromWishList,
+  removeWishList,
   attemptLoginWithToken,
   increaseQuantity,
   decreaseQuantity,
