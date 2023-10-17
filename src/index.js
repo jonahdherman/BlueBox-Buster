@@ -400,9 +400,6 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
-                  wishLists = { wishLists }
-                  addWishList = { addWishList }
-                  removeWishList = { removeWishList }
                   bookmarks = { bookmarks }
                   createBookmark={ createBookmark }
                   removeBookmark={ removeBookmark }
@@ -488,9 +485,6 @@ const App = ()=> {
                   auth = { auth }
                   tags = { tags }
                   tag_lines = { tag_lines }
-                  wishLists = { wishLists }
-                  addWishList = { addWishList }
-                  removeWishList = { removeWishList }
                   bookmarks={ bookmarks }
                 />
               } />
