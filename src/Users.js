@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import UpdateUser from './UpdateUser';
 
 const Users = ({ users }) => {
-    console.log(users);
     return (
         <div>
             <h1>All Users ({users.length})</h1>
