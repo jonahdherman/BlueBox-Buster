@@ -352,7 +352,6 @@ const App = ()=> {
                 <Route path='/users/:id' element={ <User auth={ auth } addresses={ addresses } /> } />
                 <Route path='/settings/:id' element={ <Settings auth={ auth } updateSelf={ updateSelf } createAddress={ createAddress } addresses={ addresses }/> }/>
                 
-                
                 <Route path='/' element={ <Home /> }/>
                 <Route path='/products/:id' element={
                   <Product 
@@ -363,7 +362,7 @@ const App = ()=> {
                   bookmarks={ bookmarks }
                   createBookmark={ createBookmark }
                   removeBookmark={ removeBookmark }
-                  wishLists={wishLists} 
+                  wishLists={wishLists}
                   addWishList={addWishList}
                   removeWishList={removeWishList}
                   />
