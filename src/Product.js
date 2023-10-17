@@ -4,6 +4,7 @@ import CreateReviews from './CreateReviews';
 import WishList from './WishList'
 
 const Product = ({ products, reviews, createReviews, auth, updateProduct, addWishList, removeWishList, wishLists, bookmarks, createBookmark, removeBookmark }) => {
+
     const { id } = useParams();
     const bookmark = bookmarks.find(bookmark => bookmark.product_id === id );
     const product = products.find(product => product.id === id);
