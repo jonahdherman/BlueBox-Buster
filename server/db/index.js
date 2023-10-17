@@ -136,8 +136,8 @@ const seed = async()=> {
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
       product_id UUID REFERENCES products(id) NOT NULL,
-      user_id UUID REFERENCES users(id) NOT NULL,
-      CONSTRAINT product_and_user_key UNIQUE(product_id, user_id)
+      user_id UUID REFERENCES users(id) NOT NULL
+      
     );
     
     CREATE TABLE reviews(

@@ -36,7 +36,6 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                             const productLines = tag_lines.filter(tag_line => tag_line.product_id === product.id);
                             const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
-                            const wishListItem = wishListItems.find(wishListItem => wishListItem.product_id === product.id);
                             const cutOff = product.description.toString().slice(0, 250)
                             return (
                                 <div key={product.id} className="productsCard">
