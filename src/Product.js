@@ -3,26 +3,22 @@ import { useParams, Link } from "react-router-dom";
 import CreateReviews from './CreateReviews';
 import WishList from './WishList'
 
+const Product = ({ products, reviews, createReviews, auth, updateProduct, addWishList, removeWishList, wishLists, bookmarks, createBookmark, removeBookmark }) => {
 
-const Product = ({ products, reviews, createReviews, auth, updateProduct, addWishList, removeWishList, wishLists }) => {
     const { id } = useParams();
+    const bookmark = bookmarks.find(bookmark => bookmark.product_id === id );
     const product = products.find(product => product.id === id);
     if (!product) {
         return null
     }
-    const handleChange = () => { 
-      setBookmark(!bookmark)
-      const bookmarkedProduct = {
-      
-      }
-      console.log(bookmarkedProduct)
-    }; 
-  
 
     return (
         <div>
             <Link to='/products' className="back"> Back</Link>
             <h1>Product Info</h1>
+            {
+              bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
+            }
                 {
                   auth.id ?
                   <div><button onClick={ handleChange } >Bookmark Item</button></div> 

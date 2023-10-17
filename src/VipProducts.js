@@ -5,17 +5,15 @@ import WishList from './WishList';
 import VipPagination from "./VipPagination";
 
 
-const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wishLists, addWishList, removeWishList, auth, updateProduct, term, tags, tag_lines }) => {
+
+const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wishLists, addWishList, removeWishList, auth, updateProduct, term, tags, tag_lines, bookmarks, createBookmark, removeBookmark }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(1);
     const yesVip = products.filter(product => product.vip_only === true);
-
     const totalPages = Math.ceil(yesVip.length / productsPerPage);
     const lastProductIndex = currentPage * productsPerPage;
     const firstProductIndex = lastProductIndex - productsPerPage;
     const currentProducts = yesVip.slice(firstProductIndex, lastProductIndex);
-
-    const [bookmark, setBookmark] = useState(true);
 
     const removeVIP = (product)=> {
         const vipProduct = {...product, vip_only: false}
@@ -32,10 +30,14 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                             const productLines = tag_lines.filter(tag_line => tag_line.product_id === product.id);
                             const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+                            const bookmark = bookmarks.find(bookmark => bookmark.product_id === product.id );
                             const cutOff = product.description.toString().slice(0, 250)
                             return (
                                 <div key={product.id} className="productsCard">
                                     <h3>{product.name}</h3>
+                                        {
+                                          bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
+                                        }
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }

@@ -4,7 +4,8 @@ import ProductImageEditor from "./ProductImageEditor";
 import WishList from './WishList';
 import NonVipPagination from "./NonVipPagination";
 
-const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines, wishLists, addWishList, removeWishList }) => {
+
+const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines, wishLists, addWishList, removeWishList, bookmarks, createBookmark, removeBookmark }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(9);
 
@@ -20,11 +21,6 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
         updateProduct(vipProduct);
     }
 
-    const [bookmark, setBookmark] = useState(true);
-
-    const handleChange = () => {
-        //setBookmark(!bookmark)
-    };
 
     return (
         <div className="productsPage">
@@ -36,10 +32,15 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                             const productLines = tag_lines.filter(tag_line => tag_line.product_id === product.id);
                             const productTags = productLines.map(line => tags.find(tag => tag.id === line.tag_id));
                             const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+
                             const cutOff = product.description.toString().slice(0, 250)
+                            const bookmark = bookmarks.find(bookmark => bookmark.product_id === product.id );
                             return (
                                 <div key={product.id} className="productsCard">
                                     <h3>{product.name}</h3>
+                                    {
+                                        bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
+                                    }
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
@@ -76,8 +77,10 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                         : null
                                     }
                                     {
+
                                         wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
                                         <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
+
                                     }
                                 </div>
                             );

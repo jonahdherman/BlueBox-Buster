@@ -57,7 +57,8 @@ const {
   
 const {
   createBookmark,
-  fetchBookmarks
+  fetchBookmarks,
+  removeBookmarks
 } = require('./bookmarks');
 
 
@@ -812,6 +813,8 @@ module.exports = {
   fetchUsers,
   fetchReviews,
   fetchBookmarks,
+  createBookmark,
+  removeBookmarks,
   createReviews,
   createUser,
   fetchAddresses,
