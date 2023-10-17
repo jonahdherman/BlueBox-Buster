@@ -174,14 +174,12 @@ const seed = async()=> {
   `;
   await client.query(SQL);
 
-  const [moe, lucy, ethyl] = await Promise.all([
+  const [moe, lucy, ethyl, matt] = await Promise.all([
     createUser({ username: 'moe', password: 'm_password', is_admin: false, is_vip: true}),
     createUser({ username: 'lucy', password: 'l_password', is_admin: false, is_vip: false}),
-    createUser({ username: 'ethyl', password: '1234', is_admin: true, is_vip: true})
+    createUser({ username: 'ethyl', password: '1234', is_admin: true, is_vip: true}),
+    createUser({ username: 'matt', password: 'matt', is_admin: true, is_vip: true})
   ]);
-
-  await createAddress({ user_id: moe.id, data: { formatted_address: 'earth'}});
-  await createAddress({ user_id: moe.id, data: { formatted_address: 'mars'}});
 
   const godfatherImage = await loadImage('/images/godfather.png');
   const starwarsImage = await loadImage('/images/starwars.png');
