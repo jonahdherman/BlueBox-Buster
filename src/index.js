@@ -147,7 +147,7 @@ const App = ()=> {
   useEffect(()=> {
     const setup = async()=> {
       const loader = new Loader({
-        apiKey: window.GOOGLE_API_KEY,
+        apiKey: window.GOOGLE_API,
       });
      await loader.load();
      const { Map } = await google.maps.importLibrary("places");
@@ -281,6 +281,7 @@ const App = ()=> {
   const handleMouseLeaveAdmin = () => {
     serDropdownAdmin(false);
   };
+
   return (
     <div>
       <div ref={ el } style={{ height: '300px'}}/>
