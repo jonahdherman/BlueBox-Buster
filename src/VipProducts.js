@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; 
 import ProductImageEditor from "./ProductImageEditor";
+import WishList from './WishList';
 
 
-const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, createWishListItem, updateWishListItem, auth, updateProduct, term, tags, tag_lines }) => {
-
+const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wishLists, addWishList, removeWishList, auth, updateProduct, term, tags, tag_lines }) => {
+    // if(!wishLists.length) {
+    //     return null;
+    //   }
     const yesVip = products.filter(product => product.vip_only === true);
     const [bookmark, setBookmark] = useState(true);
-    
+
     const removeVIP = (product)=> {
         const vipProduct = {...product, vip_only: false}
         updateProduct(vipProduct);
@@ -15,8 +18,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, crea
       
       const handleChange = () => { 
         //setBookmark(!bookmark)
-        console.log(bookmark)
-    
+        //console.log(bookmark)
     
       }; 
 
@@ -71,11 +73,9 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, crea
                                                 cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                                             ) : null
                                         }
-                                        {
-                                            auth.id ? (
-                                                wishListItem ? <button onClick={() => updateWishListItem(wishListItem)}>Add Another</button> : <button onClick={() => createWishListItem(product)}>Add</button>
-                                            ) : null
-                                        }
+                                        {/* {
+                                            auth.id ? (<WishList product = { product } wishList = {wishLists.find(wishlist => wishlist.product_id === product.id)} addWishList= {addWishList} removeWishList={removeWishList}/>): null
+                                        } */}
                                         
                                         {auth.is_admin ? (
                                             <div>
@@ -86,8 +86,20 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, crea
                                         )
                                             : null
                                         }
+                                        {/* {
+                                            auth.id ? <WishList product = {product} wishLists = 
+                                            {wishLists.find(wishlist => wishlist.product_id === product.id)}
+                                            addWishList = {addWishList} removeWishList={removeWishList}/>: null
+                                        } */}
+                                        {
+                                            wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
+                                            <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
+                                        }
+                                        
                                     </li>
+                                    
                                 );
+                                
                             })
                     }
                 </ul>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import CreateReviews from './CreateReviews';
+import WishList from './WishList'
 
-const Product = ({ products, reviews, createReviews, auth, updateProduct }) => {
+const Product = ({ products, reviews, createReviews, auth, updateProduct, addWishList, removeWishList, wishLists }) => {
     const [bookmark, setBookmark] = useState(true);
     const { id } = useParams();
     const product = products.find(product => product.id === id);
@@ -28,6 +29,9 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct }) => {
                   auth.id ?
                   <div><button onClick={ handleChange } >Bookmark Item</button></div> 
                   : null
+                }
+                {
+                  auth.id ? <WishList product = { product } wishList = {wishLists.find(wish => wish.product_id === product.id)} addWishList= {addWishList} removeWishList={removeWishList} />: null
                 }
             <div id='product'>
                 <h2>{product.name}</h2>

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProductImageEditor from "./ProductImageEditor";
+import WishList from './WishList';
 
-const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, auth, updateProduct, term, tags, tag_lines }) => {
-
+const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, wishLists, addWishList, removeWishList, auth, updateProduct, term, tags, tag_lines }) => {
+    // if(!wishLists.length) {
+    //     return null;
+    //   }
     const nonVip = products.filter(product => product.vip_only === false)
     const [bookmark, setBookmark] = useState(true);
 
@@ -14,7 +17,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
     
     const handleChange = () => { 
         //setBookmark(!bookmark)
-        console.log(bookmark)
+        //console.log(bookmark)
     
     
       }; 
@@ -67,7 +70,12 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                             cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
                                         ) : null
                                     }
+
+                                    {/* {
+                                        auth.id ? <WishList product = { product } wishList = {wishLists.find(wishlist => wishlist.product_id === product.id)} addWishList= {addWishList} removeWishList={removeWishList}/>: null
+                                    } */}
                                     {
+
                                         auth.is_admin ? (
                                             <div>
                                                 <Link to={`/products/${product.id}/edit`}>Edit</Link><br />
@@ -75,6 +83,11 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                                 <ProductImageEditor product={product} updateProduct={updateProduct} />
                                             </div>
                                         ) : null
+                                    }
+                                    {
+                                            auth.id && wishLists.length ? <WishList product = {product} wishLists = 
+                                            {wishLists.find(wishlist => wishlist.product_id === product.id)}
+                                            addWishList = {addWishList} removeWishList={removeWishList}/>: null
                                     }
                                 </li>
                             );

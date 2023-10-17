@@ -3,9 +3,11 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import CreateProduct from './CreateProduct';
 import VipProducts from './VipProducts';
 import NonVipProducts from './NonVipProducts';
+import WishList from './WishList';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, createWishListItem, updateWishListItem, tags, tag_lines }) => {
-console.log(products)
+
+
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, wishLists, addWishList, removeWishList, tags, tag_lines }) => {
   const navigate = useNavigate();
   const { term } = useParams();
 
@@ -19,14 +21,22 @@ console.log(products)
           <CreateProduct createProduct={createProduct} />
         ) : null
       }
-      
+      {/* {
+        auth.is_vip || auth.is_admin ? 
+        <WishList products={products} wishListItems={wishListItems} createWishListItem={createWishListItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines }/> 
+        : null 
+      } */}
+
       { 
         auth.is_vip || auth.is_admin ? 
-        <VipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines }/> 
+        <VipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines } wishLists={wishLists} addWishList = {addWishList} removeWishList = {removeWishList}/> 
         : null 
       }
       { auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2> }
-      <NonVipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines }/>
+      <NonVipProducts products={products} cartItems={cartItems} createLineItem={createLineItem} updateLineItem={updateLineItem} auth={auth} updateProduct={updateProduct} term={term} tags={ tags } tag_lines={ tag_lines } wishLists={wishLists} addWishList = {addWishList} removeWishList = {removeWishList}/>
+
+      
+    
     </div>
   );
 };
