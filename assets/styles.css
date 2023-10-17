@@ -127,6 +127,15 @@ form > button {
 }
 
 /* All Products page */
+.pagination {
+  display: flex;
+}
+
+.pagination>.active {
+  background-color: rgb(25, 28, 30);
+  color: whitesmoke;
+}
+
 .productsPage {
   display: flex;
   flex-direction: column;
