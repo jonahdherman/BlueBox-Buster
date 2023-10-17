@@ -30,11 +30,11 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
               term={term} tags={tags}
               tag_lines={tag_lines}
               wishLists={wishLists}
-              addWishList = {addWishList}
-              removeWishList = {removeWishList}
-              bookmarks = { bookmarks }
-              createBookmark={ createBookmark }
-              removeBookmark={ removeBookmark }
+              addWishList={addWishList}
+              removeWishList={removeWishList}
+              bookmarks={bookmarks}
+              createBookmark={createBookmark}
+              removeBookmark={removeBookmark}
             />
           </div>
           : null
@@ -50,11 +50,11 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
         term={term} tags={tags}
         tag_lines={tag_lines}
         wishLists={wishLists}
-        addWishList = {addWishList}
-        removeWishList = {removeWishList}
-        bookmarks = { bookmarks }
-        createBookmark={ createBookmark }
-        removeBookmark={ removeBookmark }
+        addWishList={addWishList}
+        removeWishList={removeWishList}
+        bookmarks={bookmarks}
+        createBookmark={createBookmark}
+        removeBookmark={removeBookmark}
       />
       {
         auth.is_admin ? (
