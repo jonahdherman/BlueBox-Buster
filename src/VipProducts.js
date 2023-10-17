@@ -10,6 +10,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, crea
 
     const yesVip = products.filter(product => product.vip_only === true);
 
+    const totalPages = Math.ceil(yesVip.length / productsPerPage);
     const lastProductIndex = currentPage * productsPerPage;
     const firstProductIndex = lastProductIndex - productsPerPage;
     const currentProducts = yesVip.slice(firstProductIndex, lastProductIndex);
@@ -99,6 +100,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, crea
                 productsPerPage={productsPerPage}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
+                totalPages={totalPages}
             />
         </div>
     );

@@ -9,6 +9,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
 
     const nonVip = products.filter(product => product.vip_only === false)
 
+    const totalPages = Math.ceil(nonVip.length / productsPerPage);
     const lastProductIndex = currentPage * productsPerPage;
     const firstProductIndex = lastProductIndex - productsPerPage;
     const currentProducts = nonVip.slice(firstProductIndex, lastProductIndex);
@@ -79,7 +80,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                     {auth.is_admin ? (
                                         <div>
                                             <Link to={`/products/${product.id}/edit`}>Edit</Link><br />
-                                            <button onClick={() => removeVIP(product)}>Remove VIP only</button>
+                                            <button onClick={() => assignVIP(product)}>Remove VIP only</button>
                                             <ProductImageEditor product={product} updateProduct={updateProduct} />
                                         </div>
                                     )
@@ -96,6 +97,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                 productsPerPage={productsPerPage}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
+                totalPages={totalPages}
             />
         </div>
     );
