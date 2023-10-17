@@ -35,13 +35,11 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                             const cutOff = product.description.toString().slice(0, 250)
                             return (
                                 <div key={product.id} className="productsCard">
+                                    <h3>{product.name}</h3>
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
-                                    <h3>{product.name}</h3>
                                     <h4>{`$${(product.price / 100).toFixed(2)}`}</h4>
-
-                                    <p>{auth.is_admin ? <Link to={'/tags/edit'}> Edit tags</Link> : null}</p>
                                     {productTags.length ?
                                         <ul>
                                             {
@@ -52,7 +50,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                                 })
                                             }
                                         </ul>
-                                        : <p>None</p>}
+                                        : <p>No</p>}
 
                                     <p>{`${cutOff}...`}<Link to={`/products/${product.id}`}>{`Read More`}</Link></p>
 
@@ -64,8 +62,9 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                     
                                     {auth.is_admin ? (
                                         <div>
-                                            <Link to={`/products/${product.id}/edit`}>Edit</Link><br />
+                                            <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
                                             <button onClick={() => removeVIP(product)}>Remove VIP only</button>
+                                            <Link to={'/tags/edit'}>Edit tags</Link>
                                             <ProductImageEditor product={product} updateProduct={updateProduct} />
                                         </div>
                                     )
