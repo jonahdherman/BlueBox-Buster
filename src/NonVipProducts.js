@@ -69,7 +69,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                     {auth.is_admin ? (
                                         <div>
                                             <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
-                                            <button onClick={() => assignVIP(product)}>Remove VIP only</button>
+                                            <button onClick={() => assignVIP(product)}>Add to VIP only</button>
                                             <Link to={'/tags/edit'}> Edit tags</Link>
                                             <ProductImageEditor product={product} updateProduct={updateProduct} />
                                         </div>
@@ -77,10 +77,8 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                         : null
                                     }
                                     {
-
                                         wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
                                         <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
-
                                     }
                                 </div>
                             );
