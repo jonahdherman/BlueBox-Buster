@@ -6,7 +6,7 @@ const Addresses = ({ addresses, createAddress })=> {
   useEffect(()=> {
     const setup = async()=> {
       const loader = new Loader({
-        apiKey: window.GOOGLE_API_KEY,
+        apiKey: window.GOOGLE_API,
       });
      await loader.load();
      const { Autocomplete } = await google.maps.importLibrary("places");
