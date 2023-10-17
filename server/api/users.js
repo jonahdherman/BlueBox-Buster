@@ -1,7 +1,8 @@
 const {
     fetchUsers,
     createUser,
-    updateUser
+    updateUser,
+    updateSelf
   } = require('../db');
   
   const express = require('express');
@@ -28,7 +29,16 @@ const {
 
   app.put('/:id', isLoggedIn, isAdmin, async(req, res, next)=> {
     try {
-        res.send(await updateUser(req.body));
+        res.send(await updateUser({ id: req.params.id, ...req.body}));
+    }
+    catch(ex){
+      next(ex);
+    }
+  });
+
+  app.put('/settings/:id', isLoggedIn, async(req, res, next)=> {
+    try {
+        res.send(await updateSelf({ id: req.params.id, ...req.body}));
     }
     catch(ex){
       next(ex);

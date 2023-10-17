@@ -20,7 +20,8 @@ import AdminMenu from './AdminMenu';
 import UserMenu from './UserMenu';
 import Home from './Home';
 import { all } from 'axios';
-import Addresses from './Addresses';
+import User from './User';
+import Settings from './Settings';
 import { Loader } from "@googlemaps/js-api-loader"
 
 
@@ -178,7 +179,7 @@ const App = ()=> {
   };
 
   const createAddress = async(address)=> {
-    await api.createAddress({ address, setAddresses });
+    await api.createAddress({ address, addresses, setAddresses });
   };
 
   const createProduct = async(product)=> {
@@ -264,6 +265,10 @@ const App = ()=> {
      await api.updateUser({ updatedUser, setUsers, users});
   }
 
+  const updateSelf = async(updatedSelf) => {
+    await api.updateSelf({ updatedSelf, auth, setAuth })
+  }
+
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
   }
@@ -272,8 +277,6 @@ const App = ()=> {
     api.logout(setAuth);
   }
   
-  console.log(bookmarks)
-  console.log(reviews)
 
   const handleMouseEnter = () => {
     setDropdownUser(true);
@@ -319,16 +322,15 @@ const App = ()=> {
                 <img src='assets/order48.png'/>
                 <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               </div>
-              <Link to='/addresses' className="navigation">Addresses ({ addresses.length })</Link>
               <div className='navItem'>
                 <div>
-                  { auth.avatar ? <img src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
+                  { auth.avatar ? <img className='avatar' src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
                 </div>
                 <div onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}>
                   Welcome { auth.username }!
                   { auth.is_vip === true ? 'VIP!' : ''  }
-                  { dropdownUser && <UserMenu logout={ logout } wishListCount={ wishListCount }/> }
+                  { dropdownUser && <UserMenu logout={ logout } wishListCount={ wishListCount } auth={ auth }/> }
                 </div>
               </div>
               {
@@ -352,7 +354,8 @@ const App = ()=> {
             </nav>
             <main> 
               <Routes>
-              
+                <Route path='/users/:id' element={ <User auth={ auth } addresses={ addresses } /> } />
+                <Route path='/settings/:id' element={ <Settings auth={ auth } updateSelf={ updateSelf } createAddress={ createAddress } addresses={ addresses }/> }/>
                 <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={auth}/>}/>
                 
                 <Route path='/' element={ <Home /> }/>
@@ -448,12 +451,6 @@ const App = ()=> {
                   />
                 } />
 
-                <Route path='/addresses' element={ 
-                  <Addresses 
-                  createAddress={ createAddress } 
-                  addresses={ addresses } 
-                />
-                } />
               </Routes>
 
               { auth.is_admin ? (

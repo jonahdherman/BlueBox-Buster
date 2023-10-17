@@ -32,6 +32,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "url-parse": "^1.5.10",
+    "useref": "^1.4.4",
     "uuid": "^9.0.1"
   },
   "description": ""
