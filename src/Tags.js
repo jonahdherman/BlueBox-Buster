@@ -13,7 +13,7 @@ const Tags = ({ tags, tag_lines, auth, products, createTag }) => {
                     tags.map((tag) => {
                         return (
                             <li key={tag.id}>
-                                <Link to={`/tags/${tag.id}`}>
+                                <Link to={`/tags/${tag.id}`} className="tag">
                                     {tag.name}
                                 </Link>
                                 <TagDetails 

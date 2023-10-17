@@ -16,7 +16,13 @@ import Reviews from './Reviews'
 import UpdateUser from './UpdateUser';
 import Tags from './Tags';
 import EditTags from './EditTags';
+import AdminMenu from './AdminMenu';
+import UserMenu from './UserMenu';
+import Home from './Home';
 import { all } from 'axios';
+import User from './User';
+import Settings from './Settings';
+import { Loader } from "@googlemaps/js-api-loader"
 
 
 
@@ -32,9 +38,11 @@ const App = ()=> {
   const [wishLists, setWishLists] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+  const [dropdownUser, setDropdownUser] = useState(false);
+  const [dropdownAdmin, serDropdownAdmin] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
   const el = useRef();
-
-
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -100,6 +108,15 @@ const App = ()=> {
     }
   }, [auth]);
 
+  useEffect(() => {
+    if(auth.id){
+      const fetchData = async() => {
+        await api.fetchAddresses(setAddresses);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
   useEffect(()=> {
     if(auth.is_admin){
       const fetchData = async()=> {
@@ -128,15 +145,36 @@ const App = ()=> {
   }, [auth]);
 
   useEffect(()=> {
-    const map = new google.maps.Map(el.current, {
-      center: { lat: 40.749933, lng: -73.98633 },
-      zoom: 13,
-      mapTypeControl: false,
-    });
+    const setup = async()=> {
+      const loader = new Loader({
+        apiKey: window.GOOGLE_API_KEY,
+      });
+     await loader.load();
+     const { Map } = await google.maps.importLibrary("places");
+      const map = new google.maps.Map(el.current, {
+        center: { lat: 40.749933, lng: -73.98633 },
+        zoom: 13,
+        mapTypeControl: false,
+      });
+    }
+    setup();
   }, []);
+  
+  useEffect(()=> {
+    if(auth.id){
+      const fetchData = async()=> {
+        await api.fetchBookmarks(setBookmarks);
+      };
+      fetchData();
+    }
+  }, [auth]);
 
   const createLineItem = async(product)=> {
     await api.createLineItem({ product, cart, lineItems, setLineItems});
+  };
+
+  const createAddress = async(address)=> {
+    await api.createAddress({ address, addresses, setAddresses });
   };
 
   const createProduct = async(product)=> {
@@ -185,6 +223,7 @@ const App = ()=> {
 
   const removeWishList = async(wishList) => {
     await api.removeWishList({wishList, setWishLists, wishLists})
+
   }
   
   const createReviews = async(review)=> {
@@ -211,6 +250,10 @@ const App = ()=> {
      await api.updateUser({ updatedUser, setUsers, users});
   }
 
+  const updateSelf = async(updatedSelf) => {
+    await api.updateSelf({ updatedSelf, auth, setAuth })
+  }
+
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
   }
@@ -218,6 +261,23 @@ const App = ()=> {
   const logout = ()=> {
     api.logout(setAuth);
   }
+  
+
+  const handleMouseEnter = () => {
+    setDropdownUser(true);
+  };
+
+  const handleMouseLeave = () => {
+    setDropdownUser(false);
+  };
+
+  const handleMouseEnterAdmin = () => {
+    serDropdownAdmin(true);
+  };
+
+  const handleMouseLeaveAdmin = () => {
+    serDropdownAdmin(false);
+  };
 
   return (
     <div>
@@ -227,32 +287,76 @@ const App = ()=> {
         auth.id ? (
           <>
             <nav>
-              <Link to='/products'>Products ({ products.length })</Link>
-              <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
-              <Link to='/cart'>Cart ({ cartCount })</Link>
-              <Link to='/tags'>Tags ({ tags.length })</Link>
-              <Link to='/wishlist'>Wish List</Link>
+
+              // <Link to='/wishlist'>Wish List</Link>
+
+              <div className='navItem'>
+      
+                <Link to='/'>BBB</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/film48.png'/>
+                <Link to='/products'>Products ({ products.length })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/tag48.png'/>
+                <Link to='/tags'>Tags ({ tags.length })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/cart48.png'/>
+                <Link to='/cart'>Cart ({ cartCount })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/order48.png'/>
+                <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
+              </div>
+
+              <div className='navItem'>
+                <div>
+                  { auth.avatar ? <img className='avatar' src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
+                </div>
+                <div onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}>
+                  Welcome { auth.username }!
+                  { auth.is_vip === true ? 'VIP!' : ''  }
+                  { dropdownUser && <UserMenu logout={ logout } wishListCount={ wishListCount } auth={ auth }/> }
+                </div>
+              </div>
 
               {
                 auth.is_admin ? 
-                <div>
-                <Link to='/users'>Users ({users.length})</Link>
-                <Link to='/orders/all'>All Orders ({allOrders.length})</Link>
+                <div className='navItem'>
+                  <div>
+                    <img src='assets/admin48.png'/>
+                  </div>
+                <div 
+                  onMouseEnter={handleMouseEnterAdmin}
+                  onMouseLeave={handleMouseLeaveAdmin}
+                >
+                  
+                  Admin Menu
+                   { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders}/> }
                 </div>
-                : ''
+
+                </div>
+                : null
               }
-              
-              <span>
-                Welcome { auth.username }!
-                {
-                 auth.is_vip === true ? 'VIP!' : '' 
-                }
-                <button onClick={ logout }>Logout</button>
-              </span>
             </nav>
             <main> 
               <Routes>
-                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={ auth } updateProduct={ updateProduct } />}/>
+                <Route path='/users/:id' element={ <User auth={ auth } addresses={ addresses } /> } />
+                <Route path='/settings/:id' element={ <Settings auth={ auth } updateSelf={ updateSelf } createAddress={ createAddress } addresses={ addresses }/> }/>
+                <Route path='/products/:id' element={<Product products={ products } reviews={ reviews } createReviews={ createReviews } auth={auth}/>}/>
+                
+                <Route path='/' element={ <Home /> }/>
+                <Route path='/products/:id' element={
+                  <Product 
+                  products={ products } 
+                  reviews={ reviews } 
+                  createReviews={ createReviews } 
+                  auth={ auth } 
+                  />
+                }/>
 
                 <Route path='/products/search/:term' element={
                   <Products
@@ -265,6 +369,10 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishListItems = {wishListItems}
+                  createWishListItem = {createWishListItem}
+                  updateWishList = {updateWishListItem}
+                  removeFromWishList = {removeFromWishList}
                 />
                 } />
                 <Route path='/products' element={
@@ -281,6 +389,10 @@ const App = ()=> {
                   updateProduct={ updateProduct }
                   tags = { tags }
                   tag_lines = { tag_lines }
+                  wishListItems = {wishListItems}
+                  createWishListItem = {createWishListItem}
+                  updateWishList = {updateWishListItem}
+                  removeFromWishList = {removeFromWishList}
                 />
                 } />
                 <Route path='/tags' element={ 
@@ -329,6 +441,7 @@ const App = ()=> {
                   removeWishList = {removeWishList}
                   />
                 } />
+
               </Routes>
 
               { auth.is_admin ? (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const UpdateUser = ({ users, updateUser }) => {
     const { id } = useParams();
@@ -19,7 +19,7 @@ const UpdateUser = ({ users, updateUser }) => {
         }
     }, [users]);
 
-    const save = (event) => {
+    const save = async(event) => {
         event.preventDefault();
         const updatedUser = {
             ...user,
@@ -28,7 +28,7 @@ const UpdateUser = ({ users, updateUser }) => {
             is_admin: admin
         }
         try {
-            updateUser(updatedUser);
+            await updateUser(updatedUser);
             setError('Successfully update user');
         } catch (err) {
             setError(err)
@@ -40,6 +40,7 @@ const UpdateUser = ({ users, updateUser }) => {
     }
     return (
         <div>
+            <Link to='/users'>Back to Users</Link>
             <h1>Update User: {user.username}</h1>
             {
                 error ? JSON.stringify(error, null, 2) : null

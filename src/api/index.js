@@ -43,6 +43,18 @@ const fetchAllOrders = async(setAllOrders)=> {
   setAllOrders(response.data);
 };
 
+
+const fetchAddresses = async(setAddresses)=> {
+  const response = await axios.get('/api/addresses', getHeaders());
+  setAddresses(response.data);
+};
+
+
+const fetchBookmarks = async(setBookmarks)=> {
+  const response = await axios.get('/api/bookmarks', getHeaders());
+  setBookmarks(response.data);
+};
+
 const fetchUsers = async(setUsers)=> {
   const response = await axios.get('/api/users', getHeaders());
   setUsers(response.data);
@@ -79,6 +91,11 @@ const createLineItem = async({ product, cart, lineItems, setLineItems })=> {
 const createProduct = async({ product, products, setProducts })=> {
   const response = await axios.post('/api/products', product, getHeaders());
   setProducts([...products, response.data]);
+};
+
+const createAddress = async({ address, setAddresses })=> {
+  const response = await axios.post('/api/addresses', address, getHeaders());
+  await fetchAddresses(setAddresses);
 };
 
 const createReviews = async({ review, reviews, setReviews })=> {
@@ -168,6 +185,11 @@ const updateUser = async({ updatedUser, setUsers, users }) => {
   setUsers(users.map(user => user.id === updatedUser.id ? response.data : user));
 }
 
+const updateSelf = async({ updatedSelf, auth, setAuth}) => {
+  const response = await axios.put(`/api/users/settings/${auth.id}`, updatedSelf, getHeaders());
+  setAuth(response.data);
+}
+
 const register = async({ credentials, setAuth }) => {
   const response = await axios.post('/api/users', credentials);
   console.log(response);
@@ -192,17 +214,22 @@ const api = {
   login,
   logout,
   register,
+  updateSelf,
   fetchProducts,
   fetchOrders,
   fetchWishList,
   fetchAllOrders,
   fetchUsers,
+  fetchBookmarks,
   updateUser,
   fetchLineItems,
   fetchAllLineItems,
   fetchReviews,
+  fetchAddresses,
   createLineItem,
   addWishList,
+  createAddress,
+  createWishListItem,
   createProduct,
   createReviews,
   updateLineItem,

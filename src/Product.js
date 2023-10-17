@@ -3,8 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import CreateReviews from './CreateReviews';
 import WishList from './WishList'
 
+
 const Product = ({ products, reviews, createReviews, auth, updateProduct, addWishList, removeWishList, wishLists }) => {
-    const [bookmark, setBookmark] = useState(true);
     const { id } = useParams();
     const product = products.find(product => product.id === id);
     if (!product) {
@@ -12,12 +12,10 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct, addWis
     }
     const handleChange = () => { 
       setBookmark(!bookmark)
-      const newBook = {
-          bookmark
+      const bookmarkedProduct = {
+      
       }
-      console.log(newBook)
-    
-    
+      console.log(bookmarkedProduct)
     }; 
   
 
@@ -35,6 +33,7 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct, addWis
                 }
             <div id='product'>
                 <h2>{product.name}</h2>
+                { product.image ? <img src={product.image} /> : null }
                 <h4>{`$${(product.price / 100).toFixed(2)}`}</h4>
                 <h4>Description: {product.description}</h4>
                 <h4>Reviews</h4>
