@@ -238,10 +238,6 @@ const App = ()=> {
     return acc += item.quantity;
   }, 0);
 
-  // const wishListCount = wishLists.reduce((acc, item) => {
-  //   return acc += item.quantity;
-  // }, 0);
-
   const registerUser = async(credentials) => {
     await api.register({ credentials, setAuth});
   }
@@ -308,6 +304,10 @@ const App = ()=> {
               <div className='navItem'>
                 <img src='assets/order48.png'/>
                 <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
+              </div>
+              <div className='navItem'>
+                <img src='assets/wishlist48.png'/>
+                <Link to='/wishlist'>Wish List ({wishLists.length})</Link>
               </div>
 
               <div className='navItem'>

@@ -1,13 +1,33 @@
 import React from "react";
+import Products from './Products';
 
 
-const WishList = ({product, wishLists, addWishList, removeWishList}) => {
+const WishList = ({products, wishLists, addWishList, removeWishList}) => {
+    
+    if(!wishLists.length) {
+        return (
+            <div>
+                <h1>Wish List</h1>
+                <ul>Your Wish List is Empty! Add a Product!</ul>
+            </div>
+        )
+    }
     return (
       <div>
+        <h1>Wish List</h1>
+        <ul>
         {
-          wishLists ? <button onClick={() => removeWishList(wishLists)}>Remove from Wish List</button> : 
-          <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
+          wishLists.map( wishList => {
+            const product = products.find(product => product.id === wishList.product_id) || {};
+                return (
+                    <li key={ wishList.id }>
+                        { product.name } ({ wishList.quantity } x ${ (product.price / 100).toFixed(2) })
+                        <button onClick={ ()=> removeWishList(wishList)}>Remove From Wish List</button>
+                    </li>
+              );    
+          })
         }
+      </ul>
       </div>
     )
 }
