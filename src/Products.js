@@ -4,7 +4,7 @@ import CreateProduct from './CreateProduct';
 import VipProducts from './VipProducts';
 import NonVipProducts from './NonVipProducts';
 
-const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, wishLists, addWishList, removeWishList, tags, tag_lines }) => {
+const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, createProduct, updateProduct, wishLists, addWishList, removeWishList, tags, tag_lines, bookmarks, createBookmark, removeBookmark }) => {
   const navigate = useNavigate();
   const { term } = useParams();
 
