@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Login = ({ login }) => {
+const Login = ({ login, githubLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,6 +15,7 @@ const Login = ({ login }) => {
       setError(ex.response.data.message);
     }
   }
+  
   return (
     <div>
       <h1>Login</h1>
@@ -36,6 +37,7 @@ const Login = ({ login }) => {
         }
         <button disabled={!username || !password}>Login</button>
       </form>
+      <button onClick={githubLogin}>Sign In With Github</button>
     </div>
   );
 }

@@ -118,13 +118,11 @@ const App = ()=> {
   }, [auth]);
 
   useEffect(()=> {
-    if(auth.is_admin){
       const fetchData = async()=> {
         await api.fetchUsers(setUsers);
       };
       fetchData();
-    }
-  }, [auth]);
+  }, []);
 
   useEffect(()=> {
     if(auth.is_admin){
@@ -260,6 +258,10 @@ const App = ()=> {
 
   const login = async(credentials)=> {
     await api.login({ credentials, setAuth });
+  }
+
+  const githubLogin = async()=>{
+    await api.handleGithubLogin({ users, setAuth });
   }
 
   const logout = ()=> {
@@ -472,7 +474,7 @@ const App = ()=> {
             </>
         ):(
           <div>
-            <Login login={ login }/>
+            <Login login={ login } githubLogin={ githubLogin }/>
             <Register registerUser={ registerUser }/>
             <Routes>
               <Route path='/products' element= {
