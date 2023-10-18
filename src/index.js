@@ -183,8 +183,7 @@ const App = ()=> {
   };
 
   const createAddress = async(address)=> {
-    console.log(addresses);
-    await api.createAddress({address, addresses, setAddresses});
+    await api.createAddress({address, setAddresses});
   };
 
   const createProduct = async(product)=> {
