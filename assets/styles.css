@@ -51,6 +51,13 @@ nav {
   height: 35px;
 }
 
+/* DO NOT REMOVE THIS down arrow! */
+.navItem>*:not(img) {
+  border: 1px solid orange;
+  padding: 1rem 0 1rem 0;
+}
+/* up arrow */
+
 .dropdown {
   position: absolute;
   background-color: whitesmoke;

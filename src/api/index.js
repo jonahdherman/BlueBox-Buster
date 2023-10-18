@@ -208,7 +208,6 @@ const updateSelf = async({ updatedSelf, auth, setAuth}) => {
 }
 
 const register = async({ credentials, setAuth }) => {
-  console.log(credentials);
   const response = await axios.post('/api/users', credentials);
   console.log(response);
   if (response.data.id && response.data.username === credentials.username) {
