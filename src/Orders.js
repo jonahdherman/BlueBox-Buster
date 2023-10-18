@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Orders = ({ orders, products, lineItems }) => {
+const Orders = ({ orders, products, lineItems, addresses }) => {
   if(!products.length) {
     return null;
   }
@@ -36,6 +36,18 @@ const Orders = ({ orders, products, lineItems }) => {
                     })
                   }
                 </ul>
+              </li>
+            );
+          })
+        }
+      </ul>
+      <h2>Addresses</h2>
+      <ul>
+        {
+          addresses.map( address => {
+            return (
+              <li key={ address.id }>
+                { address.data.formatted_address }
               </li>
             );
           })
