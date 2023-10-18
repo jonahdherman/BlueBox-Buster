@@ -315,11 +315,6 @@ const App = ()=> {
                 <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               </div>
               <div className='navItem'>
-                <img src='assets/wishlist48.png'/>
-                <Link to='/wishlist'>Wish List ({wishLists.length})</Link>
-              </div>
-
-              <div className='navItem'>
                 <div>
                   { auth.avatar ? <img className='avatar' src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
                 </div>
@@ -327,7 +322,7 @@ const App = ()=> {
                   onMouseLeave={handleMouseLeave}>
                   Welcome { auth.username }!
                   { auth.is_vip === true ? 'VIP!' : ''  }
-                  { dropdownUser && <UserMenu logout={ logout } auth={ auth }/> }
+                  { dropdownUser && <UserMenu logout={ logout } auth={ auth } wishLists={wishLists}/> }
                 </div>
               </div>
 
@@ -355,7 +350,7 @@ const App = ()=> {
                 <Route path='/users/:id' element={ <User auth={ auth } addresses={ addresses } /> } />
                 <Route path='/settings/:id' element={ <Settings auth={ auth } updateSelf={ updateSelf } createAddress={ createAddress } addresses={ addresses }/> }/>
                 
-                <Route path='/' element={ <Home /> }/>
+                <Route path='/' element={ <Home auth={ auth }/> }/>
                 <Route path='/products/:id' element={
                   <Product 
                   products={ products } 
