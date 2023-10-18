@@ -457,10 +457,10 @@ const App = ()=> {
                 } />
                 <Route path='/wishlist' element={ 
                   <WishList
-                  wishLists = {wishLists}
-                  addWishList = {addWishList}
-                  products = {products}
-                  removeWishList = {removeWishList}
+                    wishLists = {wishLists}
+                    addWishList = {addWishList}
+                    products = {products}
+                    removeWishList = {removeWishList}
                   />
                 } />
 
