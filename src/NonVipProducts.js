@@ -38,19 +38,28 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                             const bookmark = bookmarks.find(bookmark => bookmark.product_id === product.id );
                             return (
                                 <div key={product.id} className="productsCard">
+                                    <div id='productButtons'>
+                                        {
+                                          bookmark ? <img id='bookmarkIcon' src='/assets/bkmrkF.png' title={'Remove Bookmark'} onClick={ ()=> removeBookmark(bookmark)}/> 
+                                          : <img id='bookmarkIcon' src='/assets/bkmrkE.png' title={'Add Bookmark'} onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})} />
+                                        }
+                                        {
+                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <img id='wishListIcon' src='/assets/removeWishList.png' title={'Remove from Wishlist'} onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}/> : 
+                                        <img id='wishListIcon' src='/assets/addWishList.png' title={'Add to Wishlist'} onClick={() => addWishList({product_id: product.id})}/>
+                                        }
+                                        {
+                                        auth.id ? (
+                                            cartItem ? <img id='cartIcon' src='/assets/addAnotherToCart.png' title={'Add Another to Cart'} onClick={() => updateLineItem(cartItem)}/> 
+                                            : <img id='cartIcon' src='/assets/addToCart.png' title={'Add to Cart'} onClick={() => createLineItem(product)}/>
+                                        ) : null
+                                        }
+                                        {
+                                        auth.is_admin ? <img id='ticketIcon' src='/assets/ticketAdd.png' title={'Make VIP Exclusive'} onClick={() => assignVIP(product)}/> : null    
+                                        }
+                                    </div>
+                                    
                                     <h3>{product.name}</h3>
-                                    {
-                                        bookmark ? 
-                                        <div>
-                                        <h4>Bookmarked!</h4>
-                                        <button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button>
-                                        </div> 
-                                        : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
-                                    }
-                                    {
-                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
-                                        <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
-                                    }
+                                    
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
@@ -70,18 +79,11 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
 
                                     <p>{`${cutOff}...`}<Link to={`/products/${product.id}`} className='readMore'>{`Read More`}</Link></p>
 
-                                    {
-                                        auth.id ? (
-                                            cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another to Cart</button> : <button onClick={() => createLineItem(product)}>Add to Cart</button>
-                                        ) : null
-                                    }
-
                                     {auth.is_admin ? (
                                        <div className="adminOptions">
                                             <p>Admin Options</p>
                                             <div>
                                                 <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
-                                                <button onClick={() => assignVIP(product)}>Add to VIP only</button><br/>
                                                 <Link to={'/tags/edit'}> Edit tags</Link>
                                                 <ProductImageEditor product={product} updateProduct={updateProduct} />
                                             </div>
