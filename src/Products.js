@@ -9,15 +9,13 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
   const { term } = useParams();
 
   return (
-    <div>
+    <div className='allProductsPage'>
       <h2>Products</h2>
       <input placeholder='search for products' value = { term || ''} onChange = { ev => 
         navigate(ev.target.value ? `/products/search/${ev.target.value}` : '/products')}/>
-      
+      <div className='productBlocks'>
       { 
         auth.is_vip || auth.is_admin ?
-          <div>
-            <h2>VIP Exclusives!</h2>
             <VipProducts
               products={products}
               cartItems={cartItems}
@@ -35,10 +33,8 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
               createBookmark={createBookmark}
               removeBookmark={removeBookmark}
             />
-          </div>
           : null
       }
-      {auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2>}
       <NonVipProducts
         products={products}
         cartItems={cartItems}
@@ -59,9 +55,12 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
 
       {
         auth.is_admin ? (
+          <div className='productForm'>
           <CreateProduct createProduct={createProduct} />
+          </div>
         ) : null
       }
+      </div>
     
     </div>
   );

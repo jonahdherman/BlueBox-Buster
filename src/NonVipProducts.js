@@ -24,6 +24,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
 
     return (
         <div className="productsPage">
+            {auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2>}
             <div className="productsContainer">
                 {
                     currentProducts
@@ -39,7 +40,16 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                 <div key={product.id} className="productsCard">
                                     <h3>{product.name}</h3>
                                     {
-                                        bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
+                                        bookmark ? 
+                                        <div>
+                                        <h4>Bookmarked!</h4>
+                                        <button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button>
+                                        </div> 
+                                        : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
+                                    }
+                                    {
+                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
+                                        <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
                                     }
                                     {
                                         product.image ? <img src={product.image} /> : null
@@ -58,28 +68,28 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
                                         </ul>
                                         : <p>None</p>}
 
-                                    <p>{`${cutOff}...`}<Link to={`/products/${product.id}`}>{`Read More`}</Link></p>
+                                    <p>{`${cutOff}...`}<Link to={`/products/${product.id}`} className='readMore'>{`Read More`}</Link></p>
 
                                     {
                                         auth.id ? (
-                                            cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
+                                            cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another to Cart</button> : <button onClick={() => createLineItem(product)}>Add to Cart</button>
                                         ) : null
                                     }
 
                                     {auth.is_admin ? (
-                                        <div>
-                                            <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
-                                            <button onClick={() => assignVIP(product)}>Add to VIP only</button>
-                                            <Link to={'/tags/edit'}> Edit tags</Link>
-                                            <ProductImageEditor product={product} updateProduct={updateProduct} />
+                                       <div className="adminOptions">
+                                            <p>Admin Options</p>
+                                            <div>
+                                                <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
+                                                <button onClick={() => assignVIP(product)}>Add to VIP only</button><br/>
+                                                <Link to={'/tags/edit'}> Edit tags</Link>
+                                                <ProductImageEditor product={product} updateProduct={updateProduct} />
+                                            </div>
                                         </div>
                                     )
                                         : null
                                     }
-                                    {
-                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
-                                        <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
-                                    }
+                                    
                                 </div>
                             );
                         })

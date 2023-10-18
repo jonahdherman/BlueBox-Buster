@@ -39,7 +39,7 @@ const save = (event) => {
 
 return (
     <div>
-        <h2>Create New Product</h2>
+        <h2>Create New Product *Admin*</h2>
         <form onSubmit={save}>
             <input
                 placeholder="Enter Name"
