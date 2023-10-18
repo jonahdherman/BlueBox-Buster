@@ -455,6 +455,9 @@ const App = ()=> {
                     addWishList = {addWishList}
                     products = {products}
                     removeWishList = {removeWishList}
+                    cartItems = { cartItems }
+                    createLineItem = { createLineItem }
+                    updateLineItem = { updateLineItem }
                   />
                 } />
 

@@ -1,9 +1,6 @@
 import React from "react";
-import Products from './Products';
-import Link from 'react-router-dom';
 
-
-const WishList = ({products, wishLists, addWishList, removeWishList}) => {
+const WishList = ({products, wishLists, removeWishList, createLineItem, cartItems}) => {
     
     if(!wishLists.length) {
         return (
@@ -20,9 +17,14 @@ const WishList = ({products, wishLists, addWishList, removeWishList}) => {
         {
           wishLists.map( wishList => {
             const product = products.find(product => product.id === wishList.product_id) || {};
-                return (
+            const cartItem = cartItems.find(lineItem => lineItem.product_id === product.id);
+                    
+            return (
                     <li key={ wishList.id }>
-                        { product.name } ({ wishList.quantity } x ${ (product.price / 100).toFixed(2) })
+                        { product.name } ({ wishList.quantity } x ${ (product.price / 100).toFixed(2) }) : {" "}
+                        { cartItem ? "Already In Your Cart" : <button onClick={() => createLineItem(product)}>Add to Cart</button> }
+                        <br></br>
+                        <button>Priority?</button>
                         <button onClick={ ()=> removeWishList(wishList)}>Remove From Wish List</button>
                     </li>
               );    
