@@ -14,7 +14,7 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct, addWis
 
     return (
         <div>
-            <Link to='/products' className="back"> Back</Link>
+            <Link to='/products' className="back"> &#8592; Back</Link>
             <h1>Product Info</h1>
             {
               bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
@@ -23,15 +23,6 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct, addWis
               wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
               <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
             }
-              {
-                bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
-              }
-              {
-
-                wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
-                <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
-
-              }
             <div id='product'>
                 <h2>{product.name}</h2>
                 { product.image ? <img src={product.image} /> : null }

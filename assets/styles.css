@@ -1,11 +1,16 @@
 * {
   box-sizing: border-box;
+  background-image: "assets/BBBlogo.png";
 }
 
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: rgb(12, 45, 78);
   color: aliceblue;
+  background: url('/assets/BBBlogo.png'), rgb(12, 45, 78);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 a {
@@ -27,11 +32,7 @@ nav {
   font-weight: 500;
   font-display: swap;
   unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-  padding: 1rem;
-  /* position: fixed; */
-  top: 0;
-  right: 0;
-  left: 0;
+  padding: 0 2rem 0 2rem;
 }
 
 .navItem {
@@ -42,12 +43,47 @@ nav {
 
 .navItem>* {
   margin: .2rem;
+  text-decoration: none;
 }
 
 .navItem>img, .navItem>div>img {
   width: 35px;
   height: 35px;
 }
+
+.dropdown {
+  position: absolute;
+  background-color: whitesmoke;
+  margin-top: 1rem;
+  border-radius: .5rem;
+  border: 1px solid rgb(143, 161, 173);
+}
+
+.adminDrop {
+  right: 20px;
+}
+
+.dropdown>div>a {
+  color: rgb(143, 161, 173);
+  text-decoration: none;
+}
+
+.dropdown>div>button {
+  font-family: 'Fjalla One';
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+  border: none;
+  color: rgb(143, 161, 173);
+  background-color: whitesmoke;
+}
+
+.dropdown > *{
+  padding: 1rem 1.5rem;
+}
+
 
 .allUsers {
   display: flex;
@@ -60,8 +96,9 @@ nav {
   max-width: 35px;
 }
 
-.dropdown {
-  position: absolute;
+.homeLogo {
+  width: 75px;
+  height: 75px;
 }
 
 form {
@@ -71,66 +108,7 @@ form {
 
 form > * {
   margin: 0.5rem;
-  width: 50%;
-}
-
-.tag {
-  color: white;
-}
-
-.logoWrapper {
-  display: flex;
-}
-
-.box {
-  font-weight: bold;
-  background-color: white;
-  color: rgb(39, 94, 234);
-  border-radius: 5px;
-  border-style: outset;
-  border-width: 5px;
-  z-index: 1;
-}
-
-.buster {
-  padding-left: 5px;
-  font-size: 22px;
-  font-weight: 100;
-  color: white;
-  z-index: 1;
-}
-
-.logo {
-  height: 100px;
-}
-
-.navigation {
-  display: flex;
-  flex-direction:row;
-  color: white;
-  position: relative;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  transition: all 0.3s ease-in-out;
-}
-
-.navigation:hover {
-  color: yellow;
-}
-
-.navigationWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 40px;
-  background-color: #3050b1;
-  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.25);
-  color: white;
-  text-transform: uppercase;
-  overflow: hidden;
-  width: auto;
+  width: 500px;
 }
 
 form > button {
@@ -138,6 +116,10 @@ form > button {
 }
 
 /* All Products page */
+.allProductsPage {
+  margin: 1rem 2rem 1rem 2rem;
+}
+
 .pagination {
   display: flex;
 }
@@ -154,6 +136,15 @@ form > button {
   align-items: center;
 }
 
+.productBlocks>* {
+  margin-bottom: 7rem;
+}
+
+.productBlocks>.productForm {
+  display: flex;
+  justify-content: center;
+}
+
 .productsContainer {
   display: flex;
   flex-wrap: wrap;
@@ -164,9 +155,48 @@ form > button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  border: 2px solid whitesmoke;
-  width: calc((100% / 3) - .6rem) ;
-  margin: .3rem;
+  justify-content: flex-start;
+  border: 3px solid whitesmoke;
+  width: calc((100% / 3) - 1rem) ;
+  margin: .5rem;
+  padding: 0 1rem 1rem 1rem;
   border-radius: 1rem;
+  text-align: center;
+  background-color: rgba(143, 161, 173, 0.95);
+  box-shadow: 1px 1px 10px black;
+}
+
+.productsCard>ul {
+  list-style-type:circle;
+  text-align: left;
+}
+
+.readMore {
+  font-weight: bolder;
+}
+
+.adminOptions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminOptions> p {
+  margin-bottom: .2rem;
+  text-decoration: underline;
+}
+
+.adminOptions>div {
+  border: 1px solid whitesmoke;
+  border-radius: .5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem;
+}
+
+.adminOptions>div>* {
+  text-align: center;
 }

@@ -307,7 +307,7 @@ const App = ()=> {
               {/* <Link to='/wishlist'>Wish List</Link> */}
 
               <div className='navItem'>
-                <Link to='/'>BBB</Link>
+                <Link to='/'><img src='/assets/BBBlogoWhite.png' className='homeLogo'/></Link>
               </div>
               <div className='navItem'>
                 <img src='assets/film48.png'/>
@@ -326,29 +326,24 @@ const App = ()=> {
                 <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
               </div>
               <div className='navItem'>
-                <div>
                   { auth.avatar ? <img className='avatar' src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
-                </div>
                 <div onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}>
-                  Welcome { auth.username }!
-                  { auth.is_vip === true ? 'VIP!' : ''  }
+                  Welcome { auth.is_vip === true ? 'VIP,' : ',' } { auth.username }!
                   { dropdownUser && <UserMenu logout={ logout } auth={ auth } wishLists={wishLists}/> }
                 </div>
               </div>
-
+              
               {
                 auth.is_admin ? 
                 <div className='navItem'>
-                  <div>
-                    <img src='assets/admin48.png'/>
-                  </div>
+                <img src='assets/adminav48.png'/>
                 <div 
                   onMouseEnter={handleMouseEnterAdmin}
                   onMouseLeave={handleMouseLeaveAdmin}
                 >
-                  Admin Menu
-                   { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders} wishLists={wishLists}/> }
+                  Admin
+                    { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders} wishLists={wishLists}/> }
                 </div>
 
                 </div>

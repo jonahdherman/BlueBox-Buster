@@ -22,6 +22,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
 
     return (
         <div className="productsPage">
+            <h2>VIP Exclusives!</h2>
             <div className="productsContainer">
                 {
                     currentProducts
@@ -38,6 +39,10 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                         {
                                           bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
                                         }
+                                        {
+                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
+                                        <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
+                                    }
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
@@ -54,27 +59,26 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                         </ul>
                                         : <p>No</p>}
 
-                                    <p>{`${cutOff}...`}<Link to={`/products/${product.id}`}>{`Read More`}</Link></p>
+                                    <p>{`${cutOff}...`}<Link to={`/products/${product.id}`} className='readMore'>{`Read More`}</Link></p>
 
                                     {
                                         auth.id ? (
-                                            cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another</button> : <button onClick={() => createLineItem(product)}>Add</button>
+                                            cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another to Cart</button> : <button onClick={() => createLineItem(product)}>Add to Cart</button>
                                         ) : null
                                     }
                                     
                                     {auth.is_admin ? (
-                                        <div>
-                                            <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
-                                            <button onClick={() => removeVIP(product)}>Remove VIP only</button>
-                                            <Link to={'/tags/edit'}>Edit tags</Link>
-                                            <ProductImageEditor product={product} updateProduct={updateProduct} />
+                                        <div className="adminOptions">
+                                            <p>Admin Options</p>
+                                            <div>
+                                                <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
+                                                <button onClick={() => removeVIP(product)}>Remove VIP only</button><br/>
+                                                <Link to={'/tags/edit'}>Edit tags</Link>
+                                                <ProductImageEditor product={product} updateProduct={updateProduct} />
+                                            </div>
                                         </div>
                                     )
                                         : null
-                                    }
-                                    {
-                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
-                                        <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
                                     }
 
                                 </div>
