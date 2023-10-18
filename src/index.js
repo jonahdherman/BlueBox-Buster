@@ -22,6 +22,7 @@ import Home from './Home';
 import { all } from 'axios';
 import User from './User';
 import Settings from './Settings';
+import AllWishLists from './AllWishLists';
 import { Loader } from "@googlemaps/js-api-loader"
 
 
@@ -36,6 +37,7 @@ const App = ()=> {
   const [allLineItems, setAllLineItems] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [wishLists, setWishLists] = useState([]);
+  const [allWishLists, setAllWishLists] = useState([]);
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
   const [addresses, setAddresses] = useState([]);
@@ -142,6 +144,15 @@ const App = ()=> {
     }
   }, [auth]);
 
+  useEffect(() => {
+    if(auth.is_admin){
+      const fetchData = async() => {
+        await api.fetchAllWishLists(setAllWishLists);
+      };
+      fetchData();
+    }
+  }, [auth]);
+
   useEffect(()=> {
     const setup = async()=> {
       const loader = new Loader({
@@ -172,7 +183,8 @@ const App = ()=> {
   };
 
   const createAddress = async(address)=> {
-    await api.createAddress({ address, addresses, setAddresses });
+    console.log(addresses);
+    await api.createAddress({address, addresses, setAddresses});
   };
 
   const createProduct = async(product)=> {
@@ -336,9 +348,8 @@ const App = ()=> {
                   onMouseEnter={handleMouseEnterAdmin}
                   onMouseLeave={handleMouseLeaveAdmin}
                 >
-                  
                   Admin Menu
-                   { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders}/> }
+                   { dropdownAdmin && <AdminMenu users={users} allOrders={allOrders} wishLists={wishLists}/> }
                 </div>
 
                 </div>
@@ -460,6 +471,7 @@ const App = ()=> {
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
                   <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
                   <Route path={'/users/:id/edit'} element={<UpdateUser users={users} updateUser={ updateUser }/>}/>
+                  <Route path={'/wishlists'} element={ <AllWishLists allWishLists={allWishLists} users={users} products={products}/>}/>
                   <Route path={'/tags/edit/'} element={ <EditTags products={products} tag_lines={ tag_lines } tags={tags} createTag_line={ createTag_line } deleteTag_line={ deleteTag_line}/> } />
                 </Routes>
               ) : ''

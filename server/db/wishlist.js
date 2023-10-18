@@ -12,6 +12,14 @@ const fetchWishList = async(userId) => {
   return response.rows;
 };
 
+const fetchAllWishLists = async(userId) => {
+  const SQL = `
+    SELECT * FROM wishlist_items
+  `;
+  const response = await client.query(SQL, []);
+  return response.rows;
+};
+
 const createWishList = async(wishlist)=> {
   const SQL = `
   INSERT INTO wishlist_items (product_id, user_id, id) VALUES($1, $2, $3) RETURNING *
@@ -30,6 +38,7 @@ const removeWishList = async(wishlist)=> {
 
 module.exports = {
     fetchWishList,
+    fetchAllWishLists,
     createWishList,
     removeWishList,
   };
