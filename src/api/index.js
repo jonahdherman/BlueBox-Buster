@@ -100,7 +100,7 @@ const createProduct = async({ product, products, setProducts })=> {
   setProducts([...products, response.data]);
 };
 
-const createAddress = async({ address, addresses, setAddresses })=> {
+const createAddress = async({ address, setAddresses })=> {
   const response = await axios.post('/api/addresses', address, getHeaders());
   fetchAddresses(setAddresses);
 };

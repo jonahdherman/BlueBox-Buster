@@ -8,7 +8,6 @@ const Settings = ({auth, updateSelf, addresses, createAddress}) => {
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
 
-
     const el = useRef();
     useEffect(() => {
         el.current.addEventListener('change', (event) => {

@@ -3,6 +3,7 @@ import { Loader } from "@googlemaps/js-api-loader"
 
 const Addresses = ({ addresses, createAddress })=> {
   const el = useRef();
+
   useEffect(()=> {
     const setup = async()=> {
       const loader = new Loader({
