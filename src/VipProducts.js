@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProductImageEditor from "./ProductImageEditor";
-import WishList from './WishList';
 import VipPagination from "./VipPagination";
 
 

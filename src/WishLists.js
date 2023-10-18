@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const DeleteWishList = ({product, wishLists, addWishList, removeWishList}) => {
+const DeleteWishList = ({wishLists,removeWishList}) => {
     return (
       <div>
         {
