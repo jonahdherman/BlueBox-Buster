@@ -34,9 +34,25 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                             const cutOff = product.description.toString().slice(0, 250)
                             return (
                                 <div key={product.id} className="productsCard">
+                                    <div id='productButtons'>
                                         {
-                                          bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
+                                          bookmark ? <img id='bookmarkIcon' src='/assets/bkmrkF.png' title={'Remove Bookmark'} onClick={ ()=> removeBookmark(bookmark)}/> 
+                                          : <img id='bookmarkIcon' src='/assets/bkmrkE.png' title={'Add Bookmark'} onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})} />
                                         }
+                                        {
+                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <img id='wishListIcon' src='/assets/removeWishList.png' title={'Remove from Wishlist'} onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}/> : 
+                                        <img id='wishListIcon' src='/assets/addWishList.png' title={'Add to Wishlist'} onClick={() => addWishList({product_id: product.id})}/>
+                                        }
+                                        {
+                                        auth.id ? (
+                                            cartItem ? <img id='cartIcon' src='/assets/addAnotherToCart.png' title={'Add Another to Cart'} onClick={() => updateLineItem(cartItem)}/> 
+                                            : <img id='cartIcon' src='/assets/addToCart.png' title={'Add to Cart'} onClick={() => createLineItem(product)}/>
+                                        ) : null
+                                        }
+                                        {
+                                        auth.is_admin ? <img id='ticketIcon' src='/assets/ticketRemove.png' title={'Remove VIP Exclusive'} onClick={() => removeVIP(product)}/> : null    
+                                        }
+                                    </div>
                                         {
                                         wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
                                         <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
@@ -71,7 +87,6 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                             <p>Admin Options</p>
                                             <div>
                                                 <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
-                                                <button onClick={() => removeVIP(product)}>Remove VIP only</button><br/>
                                                 <Link to={'/tags/edit'}>Edit tags</Link>
                                                 <ProductImageEditor product={product} updateProduct={updateProduct} />
                                             </div>
