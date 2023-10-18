@@ -452,6 +452,7 @@ const App = ()=> {
                   orders = { orders }
                   products = { products }
                   lineItems = { lineItems }
+                  addresses={ addresses }
                 />
                 } />
                 <Route path='/wishlist' element={ 
