@@ -11,6 +11,8 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  margin: 0;
+  text-shadow: 1px 1px 5px black;
 }
 
 a {
@@ -32,7 +34,11 @@ nav {
   font-weight: 500;
   font-display: swap;
   unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-  padding: 0 2rem 0 2rem;
+  padding: 0 3rem 0 3rem;
+  margin: 0px;
+  box-shadow: 0px 0px 10px black;
+  border-top: 2px solid whitesmoke;
+  border-bottom: 2px solid whitesmoke;
 }
 
 .navItem {
@@ -62,8 +68,7 @@ nav {
   position: absolute;
   background-color: whitesmoke;
   margin-top: 1rem;
-  border-radius: .5rem;
-  border: 1px solid rgb(143, 161, 173);
+  box-shadow: 1px 3px 5px black;
 }
 
 .adminDrop {
@@ -85,12 +90,22 @@ nav {
   border: none;
   color: rgb(143, 161, 173);
   background-color: whitesmoke;
+  text-shadow: 1px 1px 5px rgb(189, 206, 210);
 }
 
 .dropdown > *{
   padding: 1rem 1.5rem;
+  text-shadow: 1px 1px 5px rgb(189, 206, 210);
 }
 
+.dropdown:first-child {
+  border-radius: 1rem 1rem 0 0;
+}
+
+.dropdown:last-child {
+  border-radius: 0 0 1rem 1rem;
+  border: 1px solid rgb(143, 161, 173);
+}
 
 .allUsers {
   display: flex;
@@ -169,7 +184,7 @@ form > button {
   padding: 0 1rem 1rem 1rem;
   border-radius: 1rem;
   text-align: center;
-  background-color: rgba(143, 161, 173, 0.95);
+  background-color: rgba(110, 128, 141, 0.95);
   box-shadow: 1px 1px 10px black;
 }
 

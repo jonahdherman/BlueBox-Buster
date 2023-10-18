@@ -35,7 +35,6 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                             const cutOff = product.description.toString().slice(0, 250)
                             return (
                                 <div key={product.id} className="productsCard">
-                                    <h3>{product.name}</h3>
                                         {
                                           bookmark ? <h4>Bookmarked!<button onClick={ ()=> removeBookmark(bookmark)}>Remove Bookmark</button></h4> : <button onClick={ ()=> createBookmark({product_id: product.id, user_id: auth.id})}>Add Bookmark</button>
                                         }
@@ -43,6 +42,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                         wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
                                         <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
                                     }
+                                    <h3>{product.name}</h3>
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
