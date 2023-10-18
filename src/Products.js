@@ -16,46 +16,46 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
       
       { 
         auth.is_vip || auth.is_admin ?
-        <div>
-          <h2>VIP Exclusives!</h2>
-        <VipProducts 
-          products={products} 
-          cartItems={cartItems} 
-          createLineItem={createLineItem} 
-          updateLineItem={updateLineItem} 
-          auth={auth} 
-          updateProduct={updateProduct} 
-          term={term} 
-          tags={ tags } 
-          tag_lines={ tag_lines } 
-          wishLists={wishLists}
-          addWishList = {addWishList} 
-          removeWishList = {removeWishList}
-          bookmarks={bookmarks}
-          createBookmark={createBookmark}
-          removeBookmark={removeBookmark}
-          />
-        </div> 
-        : null 
+          <div>
+            <h2>VIP Exclusives!</h2>
+            <VipProducts
+              products={products}
+              cartItems={cartItems}
+              createLineItem={createLineItem}
+              updateLineItem={updateLineItem}
+              auth={auth}
+              updateProduct={updateProduct}
+              term={term} 
+              tags={tags}
+              tag_lines={tag_lines}
+              wishLists={wishLists}
+              addWishList={addWishList}
+              removeWishList={removeWishList}
+              bookmarks={bookmarks}
+              createBookmark={createBookmark}
+              removeBookmark={removeBookmark}
+            />
+          </div>
+          : null
       }
-      { auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2> }
-      <NonVipProducts 
-          products={products} 
-          cartItems={cartItems} 
-          createLineItem={createLineItem} 
-          updateLineItem={updateLineItem} 
-          auth={auth} 
-          updateProduct={updateProduct} 
-          term={term} 
-          tags={ tags } 
-          tag_lines={ tag_lines } 
-          wishLists={wishLists}
-          addWishList = {addWishList} 
-          removeWishList = {removeWishList}
-          bookmarks={bookmarks}
-          createBookmark={createBookmark}
-          removeBookmark={removeBookmark}
-        />
+      {auth.is_vip || auth.is_admin ? <h2>Standard Products</h2> : <h2>All Products</h2>}
+      <NonVipProducts
+        products={products}
+        cartItems={cartItems}
+        createLineItem={createLineItem}
+        updateLineItem={updateLineItem}
+        auth={auth}
+        updateProduct={updateProduct}
+        term={term} 
+        tags={tags}
+        tag_lines={tag_lines}
+        wishLists={wishLists}
+        addWishList={addWishList}
+        removeWishList={removeWishList}
+        bookmarks={bookmarks}
+        createBookmark={createBookmark}
+        removeBookmark={removeBookmark}
+      />
 
       {
         auth.is_admin ? (

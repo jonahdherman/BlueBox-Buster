@@ -1,5 +1,6 @@
 const {
     fetchWishList,
+    fetchAllWishLists,
     createWishList,
     removeWishList,
   } = require('../db');
@@ -11,6 +12,15 @@ const {
   app.get('/', isLoggedIn, async(req, res, next)=> {
     try {
       res.send(await fetchWishList(req.user.id));
+    }  
+    catch(ex){
+      next(ex);
+    }
+  });
+
+  app.get('/all', isLoggedIn, isAdmin, async(req, res, next)=> {
+    try {
+      res.send(await fetchAllWishLists());
     }  
     catch(ex){
       next(ex);

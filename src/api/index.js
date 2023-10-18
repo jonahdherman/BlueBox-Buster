@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {gitAuth, provider} from '../FirebaseConfig';
+import { signInWithPopup } from 'firebase/auth';
 
 const getHeaders = ()=> {
   return {
@@ -21,6 +23,11 @@ const fetchReviews = async(setReviews)=> {
 const fetchWishList = async(setWishLists)=> {
   const response = await axios.get('/api/wishlist_items', getHeaders());
   setWishLists(response.data);
+};
+
+const fetchAllWishLists = async(setAllWishLists)=> {
+  const response = await axios.get('/api/wishlist_items/all', getHeaders());
+  setAllWishLists(response.data);
 };
 
 const addWishList = async({wishList, setWishLists, wishLists}) => {
@@ -93,9 +100,9 @@ const createProduct = async({ product, products, setProducts })=> {
   setProducts([...products, response.data]);
 };
 
-const createAddress = async({ address, setAddresses })=> {
+const createAddress = async({ address, addresses, setAddresses })=> {
   const response = await axios.post('/api/addresses', address, getHeaders());
-  await fetchAddresses(setAddresses);
+  fetchAddresses(setAddresses);
 };
 
 const createReviews = async({ review, reviews, setReviews })=> {
@@ -201,11 +208,41 @@ const updateSelf = async({ updatedSelf, auth, setAuth}) => {
 }
 
 const register = async({ credentials, setAuth }) => {
+  console.log(credentials);
   const response = await axios.post('/api/users', credentials);
   console.log(response);
   if (response.data.id && response.data.username === credentials.username) {
     login({credentials, setAuth});
   }
+}
+
+const handleGithubLogin = async({users, setAuth})=>{
+  let credentials = null;
+  await signInWithPopup(gitAuth, provider).then(async(result)=>{
+    credentials = users.find(user => user.username === result.user.reloadUserInfo.screenName);
+    if (!credentials) {
+      credentials = {
+        username: result.user.reloadUserInfo.screenName,
+        password: result._tokenResponse.localId,
+        is_admin: false,
+        is_vip: false,
+        avatar: result.user.reloadUserInfo.photoUrl
+      }
+      register({ credentials, setAuth});
+    } 
+    else {
+      credentials = {
+        username: result.user.reloadUserInfo.screenName,
+        password: result._tokenResponse.localId,
+        is_admin: false,
+        is_vip: false,
+        avatar: result.user.reloadUserInfo.photoUrl
+      }
+      login({ credentials, setAuth });
+    }
+  }).catch((err)=>{
+    console.log(err);
+  })
 }
 
 const login = async({ credentials, setAuth })=> {
@@ -222,12 +259,14 @@ const logout = (setAuth)=> {
 
 const api = {
   login,
+  handleGithubLogin,
   logout,
   register,
   updateSelf,
   fetchProducts,
   fetchOrders,
   fetchWishList,
+  fetchAllWishLists,
   fetchAllOrders,
   fetchUsers,
   fetchBookmarks,

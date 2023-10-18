@@ -22,6 +22,7 @@ nav {
   justify-content: space-between;
   background-color: rgb(143, 161, 173);
   font-family: 'Fjalla One';
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: 500;
   font-display: swap;
@@ -39,6 +40,15 @@ nav {
   justify-content: center;
 }
 
+.navItem>* {
+  margin: .2rem;
+}
+
+.navItem>img, .navItem>div>img {
+  width: 35px;
+  height: 35px;
+}
+
 .allUsers {
   display: flex;
   align-items: center;
@@ -46,8 +56,8 @@ nav {
 
 .avatar {
   border-radius: 50%;
-  max-height: 50px;
-  max-width: 50px;
+  max-height: 35px;
+  max-width: 35px;
 }
 
 .dropdown {

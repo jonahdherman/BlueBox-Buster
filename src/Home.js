@@ -1,10 +1,15 @@
 import React from "react";
 
-const Home = () => {
+const Home = ({ auth }) => {
     return(
         <div>
-            <h1>BLUEBOX-BUSSIN</h1>
-            <img src='https://media.tenor.com/JlYJdM77rZUAAAAC/duckass-twitch.gif' />
+            {
+                auth.is_admin ? 
+                <div> 
+                    <h1>BLUEBOX-BUSSIN</h1>
+                    <img src='https://media.tenor.com/JlYJdM77rZUAAAAC/duckass-twitch.gif' />
+                </div> : null
+            }
         </div>
     );
 }
