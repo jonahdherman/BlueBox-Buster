@@ -9,7 +9,7 @@ const {
   const app = express.Router();
   const { isLoggedIn, isAdmin, } = require('./middleware');
   
-  app.get('/', isLoggedIn, isAdmin, async(req, res, next)=> {
+  app.get('/', async(req, res, next)=> {
     try {
         res.send(await fetchUsers());
     }

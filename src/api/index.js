@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {gitAuth, provider} from '../FirebaseConfig';
+import { signInWithPopup } from 'firebase/auth';
 
 const getHeaders = ()=> {
   return {
@@ -201,11 +203,41 @@ const updateSelf = async({ updatedSelf, auth, setAuth}) => {
 }
 
 const register = async({ credentials, setAuth }) => {
+  console.log(credentials);
   const response = await axios.post('/api/users', credentials);
   console.log(response);
   if (response.data.id && response.data.username === credentials.username) {
     login({credentials, setAuth});
   }
+}
+
+const handleGithubLogin = async({users, setAuth})=>{
+  let credentials = null;
+  await signInWithPopup(gitAuth, provider).then(async(result)=>{
+    credentials = users.find(user => user.username === result.user.reloadUserInfo.screenName);
+    if (!credentials) {
+      credentials = {
+        username: result.user.reloadUserInfo.screenName,
+        password: result._tokenResponse.localId,
+        is_admin: false,
+        is_vip: false,
+        avatar: result.user.reloadUserInfo.photoUrl
+      }
+      register({ credentials, setAuth});
+    } 
+    else {
+      credentials = {
+        username: result.user.reloadUserInfo.screenName,
+        password: result._tokenResponse.localId,
+        is_admin: false,
+        is_vip: false,
+        avatar: result.user.reloadUserInfo.photoUrl
+      }
+      login({ credentials, setAuth });
+    }
+  }).catch((err)=>{
+    console.log(err);
+  })
 }
 
 const login = async({ credentials, setAuth })=> {
@@ -222,6 +254,7 @@ const logout = (setAuth)=> {
 
 const api = {
   login,
+  handleGithubLogin,
   logout,
   register,
   updateSelf,
