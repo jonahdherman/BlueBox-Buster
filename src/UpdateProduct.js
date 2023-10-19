@@ -40,8 +40,9 @@ const UpdateProduct = ({ products, updateProduct }) => {
     }
 
     return (
+        <div id='flexer'>
         <div classname="container">
-            <div className="mainPage edituser">
+            <div className="mainPage editproduct">
             <h2>Edit Product: {product.name}</h2>
             {
                 error ? JSON.stringify(error, null, 2) : null
@@ -72,6 +73,7 @@ const UpdateProduct = ({ products, updateProduct }) => {
             <div>
                 <Link to='/products'>Cancel</Link>
             </div>
+        </div>
         </div>
         </div>
     );

@@ -564,5 +564,26 @@ form > button {
 }
 
 .edituser>form>* {
+  margin: .5rem;
+}
+
+.editproduct> form {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.editproduct> form>* {
   margin: 1rem;
+}
+
+.editproduct>form>textarea {
+  width: 500px;
+}
+
+#flexer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
