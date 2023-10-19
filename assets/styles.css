@@ -377,6 +377,15 @@ form > button {
   margin: 1rem;
 }
 
+.cartAddress {
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.cartAddress>* {
+  margin: 1rem;
+}
+
 /* User Profile */
 .identifiers {
   display: flex;
