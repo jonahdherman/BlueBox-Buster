@@ -127,8 +127,8 @@ nav {
 }
 
 .homeLogo {
-  width: 75px;
-  height: 75px;
+  max-width: 75px;
+  max-height: 75px;
 }
 
 form > button {

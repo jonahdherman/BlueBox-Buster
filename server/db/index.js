@@ -224,7 +224,6 @@ const seed = async()=> {
   const captainamericaImage = await loadImage('/images/captainamerica.png');
 
   const seedAddresses = await Promise.all([
-    
     createAddress(
       {
         data: {
@@ -837,10 +836,11 @@ const seed = async()=> {
 
   let orders = await fetchOrders(ethyl.id);
   let cart = orders.find(order => order.is_cart);
-  let lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[1].id});
+  cart.address_id = seedAddresses[0].id;
+  let lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[1].id });
   lineItem.quantity++;
   await updateLineItem(lineItem);
-  lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[2].id});
+  lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[2].id });
   cart.is_cart = false;
   await updateOrder(cart);
 };
