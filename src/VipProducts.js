@@ -69,7 +69,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                                 })
                                             }
                                         </ul>
-                                        : <p>No</p>}
+                                        : null}
                                     </div>
                                     <p>{`${cutOff}... `}<Link to={`/products/${product.id}`} className='readMore'>{`Read More`}</Link></p>
                                     
