@@ -136,7 +136,7 @@ const ProductSearch = ({ products, cartItems, createLineItem, updateLineItem, au
                                         {
                                         auth.is_admin ? <img id='ticketIcon' src='/assets/ticketAdd.png' title={'Make VIP Exclusive'} onClick={() => assignVIP(product)}/> : null    
                                         }
-                                    </div> : null
+                                    </div> :null
                                 }
                                     
                                     <h2>{product.name}</h2>
