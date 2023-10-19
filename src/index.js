@@ -468,6 +468,7 @@ const App = ()=> {
                     cartCount={ cartCount }
                     cartItems={ cartItems }
                     addresses={ addresses }
+                    createAddress={ createAddress }
                 />
                 } />
                 <Route path='/orders' element={ 

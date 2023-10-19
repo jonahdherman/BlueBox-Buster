@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Loader } from "@googlemaps/js-api-loader";
 
-const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, cartCount, cartItems, increaseQuantity, decreaseQuantity, addresses })=> {
+const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, cartCount, cartItems, increaseQuantity, decreaseQuantity, addresses, createAddress })=> {
   const [shipping, setShipping] = useState('');
+  const el = useRef();
+
   let totalPrice = 0;
   cartItems.forEach(lineItem => {
     const product = products.find(product => product.id === lineItem.product_id)
@@ -12,6 +15,31 @@ const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, cartCoun
     const newOrder = {...cart, is_cart: false, address_id: shipping }
     updateOrder(newOrder);
   }
+
+  useEffect(()=> {
+    const setup = async()=> {
+      const loader = new Loader({
+        apiKey: window.GOOGLE_API,
+      });
+     await loader.load();
+     const { Autocomplete } = await google.maps.importLibrary("places");
+      const options = {
+        fields: [
+          'formatted_address',
+          'geometry'
+        ]
+      };
+      const autocomplete = new Autocomplete(el.current, options);
+      autocomplete.addListener('place_changed', async()=> {
+        const place = autocomplete.getPlace();
+        const address = { data: place };
+        console.log(address);
+        await createAddress(address); 
+        el.current.value = '';
+      });
+    }
+    setup();
+  }, []);
 
   return (
     <div className='container'>
@@ -36,8 +64,10 @@ const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, cartCoun
         </ul>
         <h2>Cart Total: ${(totalPrice / 100).toFixed(2)} ({cartCount} items)</h2>
         <hr/>
-        <div className='cartAddress'>
+        { addresses.length ? (
+          <div className='cartAddress'>
           <h3>Select A Shipping Address</h3>
+          
           <select
             value={shipping}
             onChange={event => setShipping(event.target.value)}
@@ -67,6 +97,12 @@ const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, cartCoun
             </button>: null
           }
         </div>
+          ) : (
+            <div className='cartAddress'>
+              <h3>No Addresses Found, Please add one!</h3>
+              <input ref={ el } />
+            </div>
+          )}
       </div>
     </div>
   );
