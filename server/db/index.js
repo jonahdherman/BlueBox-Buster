@@ -53,7 +53,8 @@ const {
 
 const {
   createAddress,
-  fetchAddresses
+  fetchAddresses,
+  fetchAllAddresses
 } = require('./address');
   
 const {
@@ -884,6 +885,7 @@ module.exports = {
   createReviews,
   createUser,
   fetchAddresses,
+  fetchAllAddresses,
   createAddress,
   updateUser,
   updateSelf,

@@ -1,6 +1,6 @@
-import React, { useRef ,useState, useEffect } from 'react';
+import React, { useRef , useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { Link, HashRouter, Routes, Route } from 'react-router-dom';
+import { Link, HashRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Products from './Products';
 import Orders from './Orders';
 import Cart from './Cart';
@@ -24,8 +24,8 @@ import User from './User';
 import Settings from './Settings';
 import AllWishLists from './AllWishLists';
 import ProductSearch from './ProductSearch';
-import { Loader } from "@googlemaps/js-api-loader"
-
+import ShipMap from './ShipMap';
+import { Loader } from '@googlemaps/js-api-loader';
 
 
 const App = ()=> {
@@ -42,10 +42,11 @@ const App = ()=> {
   const [tags, setTags] = useState([]);
   const [tag_lines, setTag_lines] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const [allAddresses, setAllAddresses] = useState([]);
   const [dropdownUser, setDropdownUser] = useState(false);
   const [dropdownAdmin, serDropdownAdmin] = useState(false);
   const [bookmarks, setBookmarks] = useState([]);
-  const el = useRef();
+  const navigate = useNavigate();
 
   const attemptLoginWithToken = async()=> {
     await api.attemptLoginWithToken(setAuth);
@@ -154,21 +155,14 @@ const App = ()=> {
     }
   }, [auth]);
 
-  useEffect(()=> {
-    const setup = async()=> {
-      const loader = new Loader({
-        apiKey: window.GOOGLE_API,
-      });
-     await loader.load();
-     const { Map } = await google.maps.importLibrary("places");
-      const map = new google.maps.Map(el.current, {
-        center: { lat: 40.749933, lng: -73.98633 },
-        zoom: 13,
-        mapTypeControl: false,
-      });
+  useEffect(() => {
+    if(auth.is_admin){
+      const fetchData = async() => {
+        await api.fetchAllAddresses(setAllAddresses);
+      };
+      fetchData();
     }
-    setup();
-  }, []);
+  }, [auth]);
   
   useEffect(()=> {
     if(auth.id){
@@ -278,6 +272,7 @@ const App = ()=> {
 
   const logout = ()=> {
     api.logout(setAuth);
+    navigate('/');
   }
   
   const handleMouseEnter = () => {
@@ -299,8 +294,6 @@ const App = ()=> {
   return (
     <div>
       <h1 id='headTitle'>BLUEBOX-BUSTER</h1>
-      {/* <div ref={ el } style={{ height: '300px'}}/> */}
-
       {
         auth.id ? (
           <>
@@ -496,7 +489,7 @@ const App = ()=> {
                 <Routes>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
-                  <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems } addresses={ addresses }/> } />
+                  <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems } allAddresses={ allAddresses }/> } />
                   <Route path={'/users/:id/edit'} element={<UpdateUser users={users} updateUser={ updateUser }/>}/>
                   <Route path={'/wishlists'} element={ <AllWishLists allWishLists={allWishLists} users={users} products={products}/>}/>
                   <Route path={'/tags/edit/'} element={ <EditTags products={products} tag_lines={ tag_lines } tags={tags} createTag_line={ createTag_line } deleteTag_line={ deleteTag_line}/> } />

@@ -56,6 +56,11 @@ const fetchAddresses = async(setAddresses)=> {
   setAddresses(response.data);
 };
 
+const fetchAllAddresses = async(setAllAddresses)=> {
+  const response = await axios.get('/api/addresses/all', getHeaders());
+  setAllAddresses(response.data);
+};
+
 
 const fetchBookmarks = async(setBookmarks)=> {
   const response = await axios.get('/api/bookmarks', getHeaders());
@@ -209,7 +214,6 @@ const updateSelf = async({ updatedSelf, auth, setAuth}) => {
 
 const register = async({ credentials, setAuth }) => {
   const response = await axios.post('/api/users', credentials);
-  console.log(response);
   if (response.data.id && response.data.username === credentials.username) {
     login({credentials, setAuth});
   }
@@ -274,6 +278,7 @@ const api = {
   fetchAllLineItems,
   fetchReviews,
   fetchAddresses,
+  fetchAllAddresses,
   createLineItem,
   addWishList,
   createAddress,

@@ -15,6 +15,18 @@ const fetchAddresses = async(userId)=> {
   return response.rows;
 };
 
+const fetchAllAddresses = async(userId)=> {
+  const SQL = `
+    SELECT addresses.* 
+    FROM
+    addresses
+    JOIN users
+    ON users.id = addresses.user_id
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
 
 const createAddress = async(address)=> {
   const SQL = `
@@ -27,5 +39,6 @@ const createAddress = async(address)=> {
 
 module.exports = {
   createAddress,
-  fetchAddresses
+  fetchAddresses,
+  fetchAllAddresses
 };
