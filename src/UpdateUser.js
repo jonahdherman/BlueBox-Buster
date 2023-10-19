@@ -40,8 +40,8 @@ const UpdateUser = ({ users, updateUser }) => {
     }
     return (
         <div className="container">
-            <div className="mainPage">
-            <Link to='/users'>Back to Users</Link>
+            <div className="mainPage edituser">
+            <Link to='/users'><p id="backButton">&#8592; Back</p></Link>
             <h1>Update User: {user.username}</h1>
             {
                 error ? JSON.stringify(error, null, 2) : null
