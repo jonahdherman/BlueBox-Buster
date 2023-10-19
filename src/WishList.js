@@ -25,7 +25,7 @@ const WishList = ({products, wishLists, removeWishList, createLineItem, cartItem
                           <div className="wishListDetails">
                           <img src={product.image}/>
                             <div className="wishListButtons">
-                            { cartItem ? 'Already In Your Cart' : <img src='/assets/AddToCart.png' title="Add to Cart" onClick={() => createLineItem(product)}/> }
+                            { cartItem ? 'Already In Your Cart' : <img src='/assets/addToCart.png' title="Add to Cart" onClick={() => createLineItem(product)}/> }
                             <img src='/assets/removeWishList.png' title='Remove from Wish List' onClick={ ()=> removeWishList(wishList)}/>
                           </div>
                           </div>
