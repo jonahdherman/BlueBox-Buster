@@ -541,3 +541,8 @@ form > button {
 .github:hover {
   cursor: pointer;
 }
+
+/* search */
+.searchbar {
+  margin: 2rem auto 0 3rem ;
+}
