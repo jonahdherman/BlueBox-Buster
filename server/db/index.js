@@ -75,7 +75,6 @@ const loadImage = (filePath) => {
       }
     });
   });
-  
 }
 
 const seed = async()=> {
@@ -83,13 +82,13 @@ const seed = async()=> {
     
     DROP TABLE IF EXISTS wishlist_items;
     DROP TABLE IF EXISTS wishlists;
+    DROP TABLE IF EXISTS line_items;
+    DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS addresses;
     DROP TABLE IF EXISTS bookmarks;
     DROP TABLE IF EXISTS tag_lines;
     DROP TABLE IF EXISTS reviews;
-    DROP TABLE IF EXISTS line_items;
     DROP TABLE IF EXISTS products;
-    DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS tags;
 
@@ -124,7 +123,8 @@ const seed = async()=> {
       id UUID PRIMARY KEY,
       created_at TIMESTAMP DEFAULT now(),
       is_cart BOOLEAN NOT NULL DEFAULT true,
-      user_id UUID REFERENCES users(id) NOT NULL
+      user_id UUID REFERENCES users(id),
+      address_id UUID references addresses(id)
     );
 
     CREATE TABLE line_items(
@@ -222,6 +222,69 @@ const seed = async()=> {
   const caddyshackImage = await loadImage('/images/caddyshack.png');
   const blazingsaddlesImage = await loadImage('/images/blazingsaddles.png');
   const captainamericaImage = await loadImage('/images/captainamerica.png');
+
+  const seedAddresses = await Promise.all([
+    createAddress(
+      {
+        data: {
+      "formatted_address": "13000 SD-244, Keystone, SD 57751, USA",
+      "geometry": {
+          "location": {
+              "lat": 43.88033569999999,
+              "lng": -103.4537746
+          },
+          "viewport": {
+              "south": 43.87245680000002,
+              "west": -103.45895495,
+              "north": 43.88296199999998,
+              "east": -103.44729235
+          }
+      },
+      "html_attributions": []
+      },
+        user_id: ethyl.id
+    }),
+    createAddress(
+      {
+        data: {
+          "formatted_address": "New York, NY 10004, USA",
+          "geometry": {
+              "location": {
+                  "lat": 40.6892494,
+                  "lng": -74.04450039999999
+              },
+              "viewport": {
+                  "south": 40.6796167,
+                  "west": -74.06015684999998,
+                  "north": 40.71814749999999,
+                  "east": -73.99753105
+              }
+          },
+          "html_attributions": []
+      },
+        user_id: moe.id
+    }),
+    createAddress(
+      {
+        data: {
+          "formatted_address": "Yellowstone National Park, WY 82190, USA",
+          "geometry": {
+              "location": {
+                  "lat": 44.4279684,
+                  "lng": -110.5884542
+              },
+              "viewport": {
+                  "south": 44.4199995899322,
+                  "west": -110.6044616237714,
+                  "north": 44.43593612381056,
+                  "east": -110.5724467762286
+              }
+          },
+          "html_attributions": []
+      },
+        user_id: lucy.id
+    })
+  ]);
 
   const seedData = await Promise.all([
     createProduct({
