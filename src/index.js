@@ -23,6 +23,7 @@ import { all } from 'axios';
 import User from './User';
 import Settings from './Settings';
 import AllWishLists from './AllWishLists';
+import ProductSearch from './ProductSearch';
 import { Loader } from "@googlemaps/js-api-loader"
 
 
@@ -318,6 +319,10 @@ const App = ()=> {
                 <Link to='/tags'>Tags ({ tags.length })</Link>
               </div>
               <div className='navItem'>
+                <img src='/assets/search.png'/>
+                <Link to='/products/search'>Search</Link>
+              </div>
+              <div className='navItem'>
                 <img src='assets/cart48.png'/>
                 <Link to='/cart'>Cart ({ cartCount })</Link>
               </div>
@@ -372,7 +377,7 @@ const App = ()=> {
                 }/>
 
                 <Route path='/products/search/:term' element={
-                  <Products
+                  <ProductSearch
                   auth = { auth }
                   products={ products }
                   cartItems = { cartItems }
@@ -390,6 +395,26 @@ const App = ()=> {
                   removeBookmark={ removeBookmark }
                 />
                 } />
+                <Route path='/products/search' element={
+                  <ProductSearch
+                  auth = { auth }
+                  products={ products }
+                  cartItems = { cartItems }
+                  createLineItem = { createLineItem }
+                  updateLineItem = { updateLineItem }
+                  createProduct = { createProduct }
+                  updateProduct={ updateProduct }
+                  tags = { tags }
+                  tag_lines = { tag_lines }
+                  wishLists = { wishLists }
+                  addWishList = { addWishList }
+                  removeWishList = { removeWishList }
+                  bookmarks = { bookmarks }
+                  createBookmark={ createBookmark }
+                  removeBookmark={ removeBookmark }
+                />
+                } />
+                
                 <Route path='/products' element={
                   <Products
                   auth = { auth }
