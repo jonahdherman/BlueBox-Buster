@@ -22,10 +22,11 @@ const ProductSearch = ({ products, cartItems, createLineItem, updateLineItem, au
 
     return(
         <div>
-            <h2>Search For Products</h2>
-            <input placeholder='search for products' value = { term || ''} onChange = { ev => 
-            navigate(ev.target.value ? `/products/search/${ev.target.value}` : '/products/search')}/>
-
+            <div className="searchbar">
+                <h2>Search For Products</h2>
+                <input placeholder='search for products' value = { term || ''} onChange = { ev => 
+                navigate(ev.target.value ? `/products/search/${ev.target.value}` : '/products/search')}/>
+            </div>
             {
                 auth.is_vip ? (
                     <div className="productsPage">
