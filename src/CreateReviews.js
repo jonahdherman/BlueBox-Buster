@@ -23,9 +23,9 @@ const CreateReviews = ({ reviews, createReviews })=> {
   };
   
   return (
-        <div>
-          <h4>Add a review:</h4>
-          <form onSubmit={saveInfo}>
+        <div className="reviewFormPage">
+          <h4>Leave a Review!</h4>
+          <form onSubmit={saveInfo} className="reviewForm">
             <textarea
               value={text}
               rows={ 5 }
@@ -33,8 +33,7 @@ const CreateReviews = ({ reviews, createReviews })=> {
               onChange={event => setText(event.target.value)}
             ></textarea>
             <div>
-              <p>Stars:</p>
-            <input 
+            Stars: <input 
               value={rating}
               type="number" 
               id="quantity" 
@@ -42,10 +41,10 @@ const CreateReviews = ({ reviews, createReviews })=> {
               min="1" 
               max="5"
               placeholder= "?"
-              onChange={event => setRating(event.target.value)}/>
-              
-            <button type='submit' disabled={ !text || !rating }>Add Review</button>
+              onChange={event => setRating(event.target.value)}
+            />
             </div>
+            <button type='submit' disabled={ !text || !rating }>Add Review</button>
         </form>
         </div>
         )

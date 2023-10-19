@@ -4,7 +4,8 @@ import UpdateUser from './UpdateUser';
 
 const Users = ({ users }) => {
     return (
-        <div>
+        <div className="container">
+            <div className="mainPage users">
             <h1>All Users ({users.length})</h1>
             <ul>
                 {
@@ -22,11 +23,13 @@ const Users = ({ users }) => {
                                         <Link to={`/users/${user.id}/edit`}>Edit User</Link>
                                     </div>
                                 </div>
+                                <hr/>
                             </li>
                         );
                     })
                 }
             </ul>
+            </div>
         </div>
     );
 }

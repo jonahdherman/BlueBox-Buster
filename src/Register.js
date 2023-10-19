@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Register = ({ registerUser }) => {
     const [username, setUsername] = useState('');
@@ -17,28 +18,33 @@ const Register = ({ registerUser }) => {
         }
         setUsername('');
         setPassword('');
-       
+
     }
     return (
-        <div>
-            <h2>or Register</h2>
-            <form onSubmit={register}>
-                <input
-                    placeholder='create username'
-                    value={username}
-                    onChange={ev => setUsername(ev.target.value)}
-                />
-                <input
-                    type='password'
-                    placeholder='create password'
-                    value={password}
-                    onChange={ev => setPassword(ev.target.value)}
-                />
-                {
-                    error ? <p>{error}</p> : ''
-                }
-                <button disabled={!username || !password}>Register</button>
-            </form>
+        <div className='container'>
+            <div className='mainPage register'>
+                <div>
+                    <h2>Create an Account</h2>
+                    <form onSubmit={register}>
+                        <input
+                            placeholder='create username'
+                            value={username}
+                            onChange={ev => setUsername(ev.target.value)}
+                        />
+                        <input
+                            type='password'
+                            placeholder='create password'
+                            value={password}
+                            onChange={ev => setPassword(ev.target.value)}
+                        />
+                        {
+                            error ? <p>{error}</p> : ''
+                        }
+                        <button disabled={!username || !password}>Register</button>
+                        <Link to='/login'>Already have an account? Login Now!</Link>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 }

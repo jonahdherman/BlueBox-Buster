@@ -29,7 +29,7 @@ const Addresses = ({ addresses, createAddress })=> {
   }, []);
   return (
     <div>
-      <h2>Addresses</h2>
+      <h3>Addresses</h3>
       <input ref={ el } />
       <ul>
         {

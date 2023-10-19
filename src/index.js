@@ -298,13 +298,13 @@ const App = ()=> {
 
   return (
     <div>
+      <h1 id='headTitle'>BLUEBOX-BUSTER</h1>
       {/* <div ref={ el } style={{ height: '300px'}}/> */}
 
       {
         auth.id ? (
           <>
             <nav>
-
               {/* <Link to='/wishlist'>Wish List</Link> */}
 
               <div className='navItem'>
@@ -327,15 +327,11 @@ const App = ()=> {
                 <Link to='/cart'>Cart ({ cartCount })</Link>
               </div>
               <div className='navItem'>
-                <img src='assets/order48.png'/>
-                <Link to='/orders'>Orders ({ orders.filter(order => !order.is_cart).length })</Link>
-              </div>
-              <div className='navItem'>
                   { auth.avatar ? <img className='avatar' src={ auth.avatar } /> : <img className='avatar' src={'assets/defaultavatar.png'} />}
                 <div onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}>
                   Welcome { auth.is_vip === true ? 'VIP,' : ',' } { auth.username }!
-                  { dropdownUser && <UserMenu logout={ logout } auth={ auth } wishLists={wishLists}/> }
+                  { dropdownUser && <UserMenu logout={ logout } auth={ auth } wishLists={wishLists} orders={orders}/> }
                 </div>
               </div>
               
@@ -373,6 +369,13 @@ const App = ()=> {
                   wishLists={wishLists}
                   addWishList={addWishList}
                   removeWishList={removeWishList}
+                  cartItems={cartItems}
+                  tag_lines={tag_lines}
+                  tags={tags}
+                  createLineItem = { createLineItem }
+                  updateLineItem = { updateLineItem }
+                  createProduct = { createProduct }
+                  updateProduct={ updateProduct }
                   />
                 }/>
 
@@ -504,8 +507,15 @@ const App = ()=> {
             </>
         ):(
           <div>
-            <Login login={ login } githubLogin={ githubLogin }/>
-            <Register registerUser={ registerUser }/>
+            { !auth.id ? 
+              <Routes>
+                <Route path='/' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/login' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/register' element={<Register registerUser={ registerUser }/>}/>
+              </Routes>
+            : null}
+            
+            
             <Routes>
               <Route path='/products' element= {
                 <Products
