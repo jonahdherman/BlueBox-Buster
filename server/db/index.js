@@ -224,26 +224,7 @@ const seed = async()=> {
   const captainamericaImage = await loadImage('/images/captainamerica.png');
 
   const seedAddresses = await Promise.all([
-    createAddress(
-      {
-        data: {
-      "formatted_address": "13000 SD-244, Keystone, SD 57751, USA",
-      "geometry": {
-          "location": {
-              "lat": 43.88033569999999,
-              "lng": -103.4537746
-          },
-          "viewport": {
-              "south": 43.87245680000002,
-              "west": -103.45895495,
-              "north": 43.88296199999998,
-              "east": -103.44729235
-          }
-      },
-      "html_attributions": []
-      },
-        user_id: ethyl.id
-    }),
+    
     createAddress(
       {
         data: {

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Loader } from "@googlemaps/js-api-loader"
+import { Loader } from "@googlemaps/js-api-loader";
 
 const Addresses = ({ addresses, createAddress })=> {
   const el = useRef();
