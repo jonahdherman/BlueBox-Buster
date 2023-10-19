@@ -497,7 +497,7 @@ const App = ()=> {
                 <Routes>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
                   <Route path={'/products/:id/edit'} element={ <UpdateProduct products={ products } updateProduct={updateProduct}/> }/>
-                  <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems }/> } />
+                  <Route path={'/orders/all'} element={ <AllOrders allOrders={allOrders} products = { products } allLineItems = { allLineItems } addresses={ addresses }/> } />
                   <Route path={'/users/:id/edit'} element={<UpdateUser users={users} updateUser={ updateUser }/>}/>
                   <Route path={'/wishlists'} element={ <AllWishLists allWishLists={allWishLists} users={users} products={products}/>}/>
                   <Route path={'/tags/edit/'} element={ <EditTags products={products} tag_lines={ tag_lines } tags={tags} createTag_line={ createTag_line } deleteTag_line={ deleteTag_line}/> } />

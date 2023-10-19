@@ -227,6 +227,26 @@ const seed = async()=> {
     createAddress(
       {
         data: {
+          "formatted_address": "San Diego, CA, USA",
+          "geometry": {
+              "location": {
+                  "lat": 32.715738,
+                  "lng": -117.1610838
+              },
+              "viewport": {
+                  "south": 32.534855982486,
+                  "west": -117.3097969462756,
+                  "north": 33.11424900445905,
+                  "east": -116.9081599711481
+              }
+          },
+          "html_attributions": []
+      },
+        user_id: ethyl.id
+    }),
+    createAddress(
+      {
+        data: {
           "formatted_address": "New York, NY 10004, USA",
           "geometry": {
               "location": {
@@ -836,12 +856,12 @@ const seed = async()=> {
 
   let orders = await fetchOrders(ethyl.id);
   let cart = orders.find(order => order.is_cart);
-  cart.address_id = seedAddresses[0].id;
+  
   let lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[1].id });
   lineItem.quantity++;
   await updateLineItem(lineItem);
   lineItem = await createLineItem({ order_id: cart.id, product_id: seedData[2].id });
-  cart.is_cart = false;
+  cart = {...cart, is_cart: false, address_id: seedAddresses[0].id};
   await updateOrder(cart);
 };
 
