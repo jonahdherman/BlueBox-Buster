@@ -53,14 +53,11 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                         auth.is_admin ? <img id='ticketIcon' src='/assets/ticketRemove.png' title={'Remove VIP Exclusive'} onClick={() => removeVIP(product)}/> : null    
                                         }
                                     </div>
-                                        {
-                                        wishLists.find(wishlist => wishlist.product_id === product.id) ? <button onClick={() => removeWishList(wishLists.find(wishlist => wishlist.product_id === product.id))}>Remove from Wish List</button> : 
-                                        <button onClick={() => addWishList({product_id: product.id})}>Add to Wish List</button>
-                                    }
-                                    <h3>{product.name}</h3>
+                                    <h2>{product.name}</h2>
                                     {
                                         product.image ? <img src={product.image} /> : null
                                     }
+                                    <div className="priceAndTags">
                                     <h4>{`$${(product.price / 100).toFixed(2)}`}</h4>
                                     {productTags.length ?
                                         <ul>
@@ -73,18 +70,12 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                             }
                                         </ul>
                                         : <p>No</p>}
-
-                                    <p>{`${cutOff}...`}<Link to={`/products/${product.id}`} className='readMore'>{`Read More`}</Link></p>
-
-                                    {
-                                        auth.id ? (
-                                            cartItem ? <button onClick={() => updateLineItem(cartItem)}>Add Another to Cart</button> : <button onClick={() => createLineItem(product)}>Add to Cart</button>
-                                        ) : null
-                                    }
+                                    </div>
+                                    <p>{`${cutOff}... `}<Link to={`/products/${product.id}`} className='readMore'>{`Read More`}</Link></p>
                                     
                                     {auth.is_admin ? (
                                         <div className="adminOptions">
-                                            <p>Admin Options</p>
+                                            <p>Admin</p>
                                             <div>
                                                 <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
                                                 <Link to={'/tags/edit'}>Edit tags</Link>
