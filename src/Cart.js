@@ -33,7 +33,6 @@ const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, cartCoun
       autocomplete.addListener('place_changed', async()=> {
         const place = autocomplete.getPlace();
         const address = { data: place };
-        console.log(address);
         await createAddress(address); 
         el.current.value = '';
       });

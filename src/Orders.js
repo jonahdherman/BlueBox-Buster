@@ -20,11 +20,13 @@ const Orders = ({ orders, products, lineItems, addresses }) => {
               const orderCount = orderLineItems.reduce((acc, item) => {
                 return acc += item.quantity;
               }, 0);
+              const address = addresses.find(address => address.id === order.address_id );
               return (
                 <li key={order.id}>
                   <p>Order #: {order.id}</p>
                   <p>Date: ({new Date(order.created_at).toLocaleString()})</p>
                   <p>Total: ${(totalPrice / 100).toFixed(2)} ({orderCount} items)</p>
+                  { address ? <p>Shipped to: {address.data.formatted_address}</p> : null }
                   <ul>
                     {
                       orderLineItems.map(lineItem => {
