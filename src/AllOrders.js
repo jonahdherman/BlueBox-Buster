@@ -5,49 +5,47 @@ const AllOrders = ({ allOrders, products, allLineItems }) => {
         return null;
     }
     return (
-        <div>
-            <h1>ALL ORDERS</h1>
-            <ul>
-                {
-                    allOrders.filter(order => !order.is_cart).map(order => {
-                        const orderLineItems = allLineItems.filter(lineItem => lineItem.order_id === order.id);
-                        let totalPrice = 0;
-                        console.log(orderLineItems)
-                        orderLineItems.forEach(lineItem => {
-                            const product = products.find(product => product.id === lineItem.product_id);
-                            totalPrice += product.price * lineItem.quantity;
-                        });
-                        const orderCount = orderLineItems.reduce((acc, item) => {
-                            return acc += item.quantity;
-                        }, 0);
-                        return (
-                            <li key={order.id}>
-                                Order ID: {order.id}
-                                <br />
-                                User ID: {order.user_id}
-                                <br/>
-                                Date placed: ({new Date(order.created_at).toLocaleString()})
-                                <br />
-                                Order Total: ${(totalPrice / 100).toFixed(2)} ({orderCount} items)
-                                <ul>
-                                    {
-                                        orderLineItems.map(lineItem => {
-                                            const product = products.find(product => product.id === lineItem.product_id);
-                                            return (
-                                                <li key={lineItem.id}>
-                                                    {product ? product.name : ''} ({lineItem.quantity} x ${(product.price / 100).toFixed(2)})
-                                                </li>
-                                            );
-                                        })
-                                    }
-                                </ul>
-                                <hr />
-                            </li>
-                            
-                        );
-                    })
-                }
-            </ul>
+        <div className="container">
+            <div className="mainPage allOrders">
+                <h1>ALL ORDERS</h1>
+                <ul>
+                    {
+                        allOrders.filter(order => !order.is_cart).map(order => {
+                            const orderLineItems = allLineItems.filter(lineItem => lineItem.order_id === order.id);
+                            let totalPrice = 0;
+                            orderLineItems.forEach(lineItem => {
+                                const product = products.find(product => product.id === lineItem.product_id);
+                                totalPrice += product.price * lineItem.quantity;
+                            });
+                            const orderCount = orderLineItems.reduce((acc, item) => {
+                                return acc += item.quantity;
+                            }, 0);
+                            return (
+                                <li key={order.id}>
+                                    <p>Order ID: {order.id}</p>
+                                    <p>User ID: {order.user_id}</p>
+                                    <p>Date placed: ({new Date(order.created_at).toLocaleString()})</p>
+                                    <p>Order Total: ${(totalPrice / 100).toFixed(2)} ({orderCount} items)</p>
+                                    <ul>
+                                        {
+                                            orderLineItems.map(lineItem => {
+                                                const product = products.find(product => product.id === lineItem.product_id);
+                                                return (
+                                                    <li key={lineItem.id}>
+                                                        {product ? product.name : ''} ({lineItem.quantity} x ${(product.price / 100).toFixed(2)})
+                                                    </li>
+                                                );
+                                            })
+                                        }
+                                    </ul>
+                                    <hr />
+                                </li>
+
+                            );
+                        })
+                    }
+                </ul>
+            </div>
         </div>
     );
 }

@@ -46,16 +46,14 @@ const Products = ({ products, cartItems, createLineItem, updateLineItem, auth, c
         createBookmark={createBookmark}
         removeBookmark={removeBookmark}
       />
-
-      {
+      </div>
+    {
         auth.is_admin ? (
-          <div className='productForm'>
+          <div>
           <CreateProduct createProduct={createProduct} />
           </div>
         ) : null
       }
-      </div>
-    
     </div>
   );
 };

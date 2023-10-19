@@ -38,7 +38,7 @@ const save = (event) => {
 }
 
 return (
-    <div>
+    <div className="createProductForm">
         <h2>Create New Product *Admin*</h2>
         <form onSubmit={save}>
             <input

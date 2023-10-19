@@ -7,26 +7,28 @@ const TagDetails = ({ tag_lines, products, tag }) => {
         return null;
     }
     return (
-        <div>
-            {
-                tag.id === term ? (
-                    <ul>
-                        {
-                        tag_lines.filter(tagline => tagline.tag_id === term)
-                        .map(tagline => products.find(product => product.id === tagline.product_id))
-                        .map(product => {
-                            return (
-                                <li key={product.id}>
-                                <Link to={`/products/${product.id}`}>
-                                {product.name}
-                                </Link>
-                                </li>
-                            );
-                        })
-                        }
-                    </ul> 
-                ) : null
-            }      
+        <div className="container">
+            <div className="tagDetails">
+                {
+                    tag.id === term ? (
+                        <ul>
+                            {
+                                tag_lines.filter(tagline => tagline.tag_id === term)
+                                    .map(tagline => products.find(product => product.id === tagline.product_id))
+                                    .map(product => {
+                                        return (
+                                            <li key={product.id}>
+                                                <Link to={`/products/${product.id}`}>
+                                                    {product.name}
+                                                </Link>
+                                            </li>
+                                        );
+                                    })
+                            }
+                        </ul>
+                    ) : null
+                }
+            </div>
         </div>
     );
 }
