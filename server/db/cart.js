@@ -104,9 +104,9 @@ const fetchOrders = async(userId)=> {
   const cart = response.rows.find(row => row.is_cart);
   if(!cart){
     await client.query(`
-      INSERT INTO orders(is_cart, id, user_id) VALUES(true, $1, $2)
+      INSERT INTO orders(is_cart, id, user_id, address_id) VALUES(true, $1, $2, $3)
       `,
-      [uuidv4(), userId]
+      [uuidv4(), userId, null]
     ); 
     response = await client.query(SQL, [ userId ]);
     return response.rows;

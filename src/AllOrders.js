@@ -1,6 +1,6 @@
 import React from "react";
 
-const AllOrders = ({ allOrders, products, allLineItems }) => {
+const AllOrders = ({ allOrders, products, allLineItems, addresses }) => {
     if (!products.length) {
         return null;
     }
@@ -20,11 +20,13 @@ const AllOrders = ({ allOrders, products, allLineItems }) => {
                             const orderCount = orderLineItems.reduce((acc, item) => {
                                 return acc += item.quantity;
                             }, 0);
+                            const address = addresses.find(address => address.id === order.address_id );
                             return (
                                 <li key={order.id}>
                                     <p>Order ID: {order.id}</p>
                                     <p>User ID: {order.user_id}</p>
                                     <p>Date placed: ({new Date(order.created_at).toLocaleString()})</p>
+                                    { address ? <p>Shipped to: {address.data.formatted_address}</p> : null }
                                     <p>Order Total: ${(totalPrice / 100).toFixed(2)} ({orderCount} items)</p>
                                     <ul>
                                         {
