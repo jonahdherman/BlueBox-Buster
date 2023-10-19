@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProductImageEditor from "./ProductImageEditor";
-import WishList from './WishList';
 import NonVipPagination from "./NonVipPagination";
 
 
@@ -9,7 +8,7 @@ const NonVipProducts = ({ products, cartItems, createLineItem, updateLineItem, a
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage, setProductsPerPage] = useState(9);
 
-    const nonVip = products.filter(product => product.vip_only === false)
+    const nonVip = products.filter(product => product.vip_only === false);
 
     const totalPages = Math.ceil(nonVip.length / productsPerPage);
     const lastProductIndex = currentPage * productsPerPage;
