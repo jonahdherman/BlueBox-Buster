@@ -39,7 +39,8 @@ const UpdateUser = ({ users, updateUser }) => {
         return null;
     }
     return (
-        <div>
+        <div className="container">
+            <div className="mainPage">
             <Link to='/users'>Back to Users</Link>
             <h1>Update User: {user.username}</h1>
             {
@@ -63,6 +64,7 @@ const UpdateUser = ({ users, updateUser }) => {
                 </select>
                 <button type='submit'>Update User!</button>
             </form>
+        </div>
         </div>
     );
 }

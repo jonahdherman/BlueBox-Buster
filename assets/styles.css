@@ -555,3 +555,14 @@ form > button {
 .searchbar {
   margin: 2rem auto 0 3rem ;
 }
+
+.edituser>form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.edituser>form>* {
+  margin: 1rem;
+}

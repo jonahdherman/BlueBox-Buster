@@ -492,7 +492,6 @@ const App = ()=> {
                 } />
 
               </Routes>
-
               { auth.is_admin ? (
                 <Routes>
                   <Route path={'/users'} element={ <Users users={ users } />}/>
