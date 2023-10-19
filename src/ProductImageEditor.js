@@ -16,7 +16,7 @@ const ProductImageEditor = ({ product, updateProduct }) => {
 
     return(
         <div>
-            <p>Change Product Image?</p>
+            {`Change Product Image: `}
             <input type='file' ref={ el }/>
         </div>
     );
