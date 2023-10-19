@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import ShipMap from "./ShipMap";
 
-const AllOrders = ({ allOrders, products, allLineItems, addresses }) => {
+const AllOrders = ({ allOrders, products, allLineItems, allAddresses }) => {
+
     if (!products.length) {
         return null;
     }
+
     return (
-        <div className="container">
+        <div>
+            <div id='shipMap'>
+            <ShipMap allAddresses={allAddresses} allOrders={allOrders}/>
+            </div>
+        <div className="container">      
             <div className="mainPage allOrders">
                 <h1>ALL ORDERS</h1>
                 <ul>
@@ -20,7 +27,7 @@ const AllOrders = ({ allOrders, products, allLineItems, addresses }) => {
                             const orderCount = orderLineItems.reduce((acc, item) => {
                                 return acc += item.quantity;
                             }, 0);
-                            const address = addresses.find(address => address.id === order.address_id );
+                            const address = allAddresses.find(address => address.id === order.address_id );
                             return (
                                 <li key={order.id}>
                                     <p>Order ID: {order.id}</p>
@@ -48,6 +55,8 @@ const AllOrders = ({ allOrders, products, allLineItems, addresses }) => {
                     }
                 </ul>
             </div>
+        </div>
+        
         </div>
     );
 }

@@ -587,3 +587,7 @@ form > button {
   justify-content: center;
   align-items: center;
 }
+
+#shipMap {
+  margin: 1rem 2rem;
+}
