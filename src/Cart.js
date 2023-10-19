@@ -13,8 +13,6 @@ const Cart = ({ updateOrder, removeFromCart, lineItems, cart, products, cartCoun
     updateOrder(newOrder);
   }
 
-  console.log(shipping);
-
   return (
     <div className='container'>
       <div className='mainPage cartPage'>
