@@ -12,7 +12,6 @@ import UpdateProduct from './UpdateProduct'
 import Product from './Product';
 import Register from './Register';
 import AllOrders from './AllOrders';
-import Reviews from './Reviews'
 import UpdateUser from './UpdateUser';
 import Tags from './Tags';
 import EditTags from './EditTags';
@@ -24,8 +23,6 @@ import User from './User';
 import Settings from './Settings';
 import AllWishLists from './AllWishLists';
 import ProductSearch from './ProductSearch';
-import ShipMap from './ShipMap';
-import { Loader } from '@googlemaps/js-api-loader';
 
 
 const App = ()=> {

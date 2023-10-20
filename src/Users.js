@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import UpdateUser from './UpdateUser';
 
 const Users = ({ users }) => {
     return (
