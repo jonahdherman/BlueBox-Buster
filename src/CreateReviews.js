@@ -5,10 +5,8 @@ import { useParams } from "react-router-dom";
 
 const CreateReviews = ({ reviews, createReviews })=> {
   const [text, setText] = useState('')
-  const [product_id, setProduct_id] = useState('')
   const [rating, setRating] = useState('')
   const { id } = useParams();
-  const review = reviews.find(review => review.product_id === id);
   
   
   const saveInfo = (event) => {

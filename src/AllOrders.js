@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import ShipMap from "./ShipMap";
 
 const AllOrders = ({ allOrders, products, allLineItems, allAddresses }) => {

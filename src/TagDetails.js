@@ -17,7 +17,7 @@ const TagDetails = ({ tag_lines, products, tag }) => {
                                     .map(tagline => products.find(product => product.id === tagline.product_id))
                                     .map(product => {
                                         return (
-                                            <li key={product.id}>
+                                            <li key={product.id} onClick={()=> scroll(0, -1000)}>
                                                 <Link to={`/products/${product.id}`}>
                                                     {product.name}
                                                 </Link>

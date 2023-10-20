@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import CreateReviews from './CreateReviews';
-import WishList from './WishList'
 
 const Product = ({ products, reviews, createReviews, auth, updateProduct, addWishList, removeWishList, wishLists, bookmarks, createBookmark, removeBookmark, cartItems, tag_lines, tags, createLineItem, updateLineItem }) => {
 
