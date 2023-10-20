@@ -177,6 +177,8 @@ form > button {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  text-overflow: hidden;
 }
 
 .productsCard {
