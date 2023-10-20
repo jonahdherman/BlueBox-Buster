@@ -82,6 +82,7 @@ nav {
   background-color: whitesmoke;
   margin-top: 1rem;
   box-shadow: 1px 3px 5px black;
+  z-index: 1;
 }
 
 .adminDrop {
@@ -590,4 +591,6 @@ form > button {
 
 #shipMap {
   margin: 1rem 2rem;
+  height: 700px;
+  z-index: 0;
 }

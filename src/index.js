@@ -505,6 +505,16 @@ const App = ()=> {
               <Routes>
                 <Route path='/' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
                 <Route path='/login' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/orders' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/wishlist' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/cart' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/tags' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/tags/:term' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/products/search' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/products/search/:term' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/products/:id' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/users/:id' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
+                <Route path='/settings/:id' element={<Login login={ login } githubLogin={ githubLogin }/>}/>
                 <Route path='/register' element={<Register registerUser={ registerUser }/>}/>
               </Routes>
             : null}

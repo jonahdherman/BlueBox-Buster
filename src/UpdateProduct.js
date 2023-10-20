@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 const UpdateProduct = ({ products, updateProduct }) => {
     const { id } = useParams();
-    const product = products.find(product => product.id === id)
+    const product = products.find(product => product.id === id);
+    const navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
@@ -34,14 +35,16 @@ const UpdateProduct = ({ products, updateProduct }) => {
         }
         try {
             updateProduct(updatedProduct);
+            navigate('/products');
+
         } catch (err) {
-            setError(err)
+            setError(err.data.message)
         }
     }
 
     return (
         <div id='flexer'>
-        <div classname="container">
+        <div className="container">
             <div className="mainPage editproduct">
             <h2>Edit Product: {product.name}</h2>
             {
