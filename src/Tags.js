@@ -38,7 +38,7 @@ const Tags = ({ tags, tag_lines, auth, products, createTag }) => {
                 auth.is_admin ? (
                     <div>
                         <CreateTag createTag={createTag} />
-                        <Link to='/tags/edit'>Edit Tags</Link>
+                        <Link to='/tags/edit' onClick={() => scroll(0, 2000)}>Edit Tags</Link>
                     </div>
                 ) : null
             }

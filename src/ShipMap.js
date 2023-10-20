@@ -29,7 +29,7 @@ const ShipMap = ({ allAddresses, allOrders }) => {
     }, [allAddresses, allOrders]);
     return (
         <>
-            <div ref={el} style={{ height: '700px' }}></div>
+            <div ref={el} style={{ height: '700px', position: 'relative', zIndex: 0 }}></div>
         </>
     );
 }

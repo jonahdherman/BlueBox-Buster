@@ -78,7 +78,7 @@ const VipProducts = ({ products, cartItems, createLineItem, updateLineItem, wish
                                             <p>Admin</p>
                                             <div>
                                                 <Link to={`/products/${product.id}/edit`}>Edit Product</Link><br />
-                                                <Link to={'/tags/edit'}>Edit tags</Link>
+                                                <Link to={'/tags/edit'} onClick={ () => scroll(0, 2000)}>Edit tags</Link>
                                                 <ProductImageEditor product={product} updateProduct={updateProduct} />
                                             </div>
                                         </div>

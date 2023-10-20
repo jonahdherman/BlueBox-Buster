@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import CreateReviews from './CreateReviews';
 import WishList from './WishList'
 
 const Product = ({ products, reviews, createReviews, auth, updateProduct, addWishList, removeWishList, wishLists, bookmarks, createBookmark, removeBookmark, cartItems, tag_lines, tags, createLineItem, updateLineItem }) => {
 
     const { id } = useParams();
+    const navigate = useNavigate();
     const product = products.find(product => product.id === id);
     
     if (!product) {
@@ -29,7 +30,7 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct, addWis
     return (
       <div className="container">
         <div className="mainPage">
-            <Link to='/products'><p id="backButton">&#8592; Back</p></Link>
+            <p id="backButton" onClick={() => navigate(-1)}>&#8592; Back</p>
             <h1>{product.name}</h1>
             { product.image ? <img src={product.image} /> : null }
             <div className="priceAndTags">
