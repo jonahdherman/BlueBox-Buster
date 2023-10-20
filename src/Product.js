@@ -44,7 +44,7 @@ const Product = ({ products, reviews, createReviews, auth, updateProduct, addWis
                         })
                       }
                   </ul>
-                  : <p>No</p>}
+                  : null}
               </div>
               <div id='singleProductButtons'>
                   {
